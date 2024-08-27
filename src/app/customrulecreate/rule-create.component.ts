@@ -199,13 +199,10 @@ export class RuleCreateComponent implements OnInit {
         weight: score.weight
       }))
     );
-
     const allRangeScores = this.ranges.map((rscore: any) => {
       console.log(rscore)
       if (this.checkedIds.has(rscore._id)) {
-        console.log('yes available');
-        const index = this.rangeScores.find((r: { _id: any; }) => r._id == rscore._id);
-        console.log(index)
+        const index = this.rangeScores.findIndex((r: { _id: any; }) => r._id == rscore._id);
         const scores = this.creative === 'VIDEO' ? 'videoruleRangeScores' : 'ruleRangeScores';
         return {
           rangeNames: rscore._id,
