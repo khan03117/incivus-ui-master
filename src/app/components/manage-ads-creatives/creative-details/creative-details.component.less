@@ -1,0 +1,41 @@
+@import url('../../../common/less/page-sub-header.less');
+@import url('../../../common/less/form-component.less');
+@import url('../../../common/less/modal.less');
+.ant-layout-content{
+    margin-top:1rem;
+    .details-wrapper{
+        margin-left: 1rem;
+        margin-bottom: 1rem;
+        .flex-row{
+            display: flex;
+            align-items: center;
+            font-size: 0.87rem;
+            margin-bottom: 0.5rem;
+            .title{
+                font-weight: 600;
+                color:#1E293B;
+                min-width: 9.375rem;
+                text-align: left;
+                margin-right: 1rem;
+            }
+            .value{
+                font-weight: 400;
+                color:#475569;
+                .upload{
+                    cursor: pointer;
+                }
+            }
+        }
+        .flex-image-row{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            img{
+                max-width:33.25rem;
+                max-height: 16.5rem;
+                border-radius: 4px 4px 0 0;
+            }
+        }
+    }
+}

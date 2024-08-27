@@ -1,0 +1,127 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-extra>
+        <nz-space>
+            <!-- <button *nzSpaceItem nz-button>
+                Filter
+            </button>
+            <button *nzSpaceItem nz-button>
+                Edit Column Header
+            </button> -->
+            <button class="primary" *nzSpaceItem nz-button (click)="addNewRole()">
+                + Add new user
+            </button>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Users({{userCount}})<!-- <span class="showAll">(Showing All)</span> --></nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <!-- <ng-container>
+                <button *nzSpaceItem nz-button>
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Edit user
+                </button>
+            </ng-container> -->
+            <ng-container *ngIf="listOfData.length && setOfCheckedId.size > 0">
+                <button *nzSpaceItem nz-button (click)="activateUser()">
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Activate
+                </button>
+            </ng-container> 
+            <ng-container *ngIf="listOfData.length && setOfCheckedId.size > 0">
+                <button *nzSpaceItem nz-button (click)="assignBrand()">
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Assign brands
+                </button>
+            </ng-container>
+            <ng-container *ngIf="listOfData.length && setOfCheckedId.size > 0">
+                <button *nzSpaceItem nz-button (click)="delete()">
+                    <img nz-icon src="assets/icons/delete.svg">
+                    Delete
+                </button>
+            </ng-container>
+            <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+                <input type="text" nz-input [(ngModel)]="searchText" (keyup)="filter()" [ngModelOptions]="{standalone: true}" placeholder="Search firstname or lastname" />
+            </nz-input-group>
+            <ng-template #prefixIconSearch>
+                <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+            </ng-template>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+    #rowSelectionTable
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    [nzNoResult]="adminCustomerListEmpty"
+    class="admin-list-table"
+    [nzShowPagination]="true"
+>
+    <thead>
+        <tr>
+            <th
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th [nzShowSort]="false">First name</th>
+            <th [nzShowSort]="false">Last name</th>
+            <th [nzShowSort]="false">Role</th>
+            <th [nzShowSort]="false">Status</th>
+            <th [nzShowSort]="false">Brand</th>
+            <th [nzShowSort]="false"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ data.firstName | titlecase}}</td>
+            <td>{{ data.lastName | titlecase}}</td>
+            <td>
+                <app-badge *ngIf="data.role" [label]="data.role.role"></app-badge>
+            </td>
+            <td>
+                <app-badge [status]="data.status" [label]="data.status"></app-badge>
+            </td>
+            <td>{{ data.brands ? data.brands.join(', ') : '' | titlecase }}</td>
+            <td>
+                <button
+                    nz-button
+                    nzNoAnimation
+                    nz-tooltip
+                    class="action-trigger"
+                    [nzTooltipTitle]="menu"
+                    nzTooltipOverlayClassName="tableTooltipOverlay"
+                    [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                >
+                    <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0,87rem; vertical-align: top;"></span>
+                </button>
+                <ng-template #menu>
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="editUser(data.id)">
+                            <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                            <span>Edit</span>
+                        </li>
+                        <li nz-menu-item (click)="deleteUserId(data.id)">
+                            <img nz-icon src="assets/icons/delete.svg">
+                            <span>Delete</span>
+                        </li>
+                    </ul>
+                </ng-template>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+    <nz-result>
+        <img nz-result-icon src="assets/icons/no-company.svg">
+        <div nz-result-subtitle>
+            No users added yet
+        </div>
+    </nz-result>
+</ng-template>

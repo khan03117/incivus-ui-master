@@ -1,0 +1,51 @@
+<nz-page-header class="container">
+    <nz-page-header-title>
+        Rules
+    </nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <!-- <button class="btn btn-outline-primary">
+                Edit Column Header
+            </button> -->
+            <a [routerLink]="['/reports/rules/create']" class="btn btn-primary ms-3 ml-3">
+                + Add new rules
+            </a>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<table class="table text-left admin-list-table">
+    <thead>
+        <tr>
+            <!-- <th>
+                <input placeholder="check user" type="checkbox" name="" id="" class="form-check" />
+            </th> -->
+            <th>Name</th>
+            <th>
+                Brand
+            </th>
+            <th>Market</th>
+            <th>Channel</th>
+            <th>Default</th>
+            <th>Show</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let rule of rules">
+            <!-- <td>
+                <input placeholder="_" type="checkbox" class="form-check" />
+            </td> -->
+            <td>{{ rule.name.toUpperCase() }}</td>
+            <td>{{ rule.brandNames.join(', ').toUpperCase() }}</td>
+            <td>{{ rule.market.join(', ') }}</td>
+            <td>{{ rule.channels.join(', ').toUpperCase() }}</td>
+            <td>{{ rule.isDefault ? 'Yes' : 'No' }}</td>
+            
+            <td>
+                <a [routerLink]="['/reports/rules/show/'+rule._id + '/DISPLAY']" class="btn btn-primary ms-3 ml-3">
+                    Show
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://incvs-api.kishul.com/",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

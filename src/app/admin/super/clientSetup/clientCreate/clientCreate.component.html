@@ -1,0 +1,169 @@
+<form
+  nz-form
+  nzLayout="vertical"
+  [formGroup]="companyForm"
+  class="clientCreateAdmin"
+>
+  <nz-form-item>
+    <nz-form-label nzFor="company-name" class="input-float-label"
+      >Add company<span style="color: #ef4444">*</span></nz-form-label
+    >
+    <nz-form-control
+      [nzValidateStatus]="f['name'].errors && unBlur ? 'error' : ''"
+      nzErrorTip="Company name is mandatory and should be minimum 3 character"
+    >
+      <nz-input-group nzSearch nzSize="large" nzStatus="error">
+        <input
+          type="text"
+          class="rounded-input"
+          formControlName="name"
+          nzStatus="error"
+          (blur)="unBlur = true"
+          (focus)="unBlur = false"
+          nz-input
+          placeholder="Enter your company name"
+          id="company-name"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="status" class="input-float-label"
+      >Select status<span style="color: #ef4444">*</span></nz-form-label
+    >
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large">
+        <nz-select
+          (ngModelChange)="changeStatus()"
+          nzPlaceHolder="Select Status"
+          class="select-radio-list"
+          formControlName="status"
+        >
+          <nz-option nzCustomContent nzLabel="Active" nzValue="active">
+            <input
+              type="radio"
+              [checked]="f['status'].value === 'active'"
+              name="status"
+              id="active"
+            /><label for="active">Active</label>
+          </nz-option>
+          <nz-option nzCustomContent nzLabel="Inactive" nzValue="inactive">
+            <input
+              type="radio"
+              [checked]="f['status'].value === 'inactive'"
+              name="status"
+              id="inactive"
+            /><label for="inactive">Inactive</label>
+          </nz-option>
+          <nz-option
+            nzCustomContent
+            *ngIf="!(client && client.status && client.status == 'active')"
+            nzLabel="Trial"
+            nzValue="trial"
+          >
+            <input
+              type="radio"
+              [checked]="f['status'].value === 'trial'"
+              name="status"
+              id="trial"
+            /><label for="trial">Trial</label>
+          </nz-option>
+        </nz-select>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="featureAccess" class="input-float-label"
+      >Feature access<span style="color: #ef4444">*</span></nz-form-label
+    >
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large">
+        <input
+          type="text"
+          class="rounded-input"
+          [(ngModel)]="featureAccess"
+          [ngModelOptions]="{ standalone: true }"
+          nz-input
+          placeholder="Select access"
+          id="feature-access"
+          readonly
+          (click)="toggleFeatureAccessModal()"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="featureAccess" class="input-float-label"
+      >Users<span style="color: #ef4444">*</span></nz-form-label
+    >
+    <nz-form-control
+      [nzValidateStatus]="f['noOfUser'].errors && nouBlur ? 'error' : ''"
+      nzErrorTip="Number of Users is a mandatory field and should be greater than 0."
+    >
+      <nz-input-group nzSearch nzSize="large">
+        <input
+          type="number"
+          class="rounded-input"
+          nz-input
+          (blur)="nouBlur = true"
+          (focus)="nouBlur = false"
+          formControlName="noOfUser"
+          placeholder="Number of users allowed for the company"
+          id="user-count"
+          min="1"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item class="row-switch-container">
+    <nz-form-label nzFor="featureAccess" class="input-radio-label"
+      >Oversight<span style="color: #ef4444">*</span></nz-form-label
+    >
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large">
+        <nz-switch formControlName="oversight"></nz-switch>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="form-footer">
+    <div class="form-footer-wrapper">
+      <app-button
+        buttonClass="secondary"
+        (click)="saveProgress('save')"
+        label="{{ client && client.id ? 'Update' : 'Save progress' }}"
+      ></app-button>
+      <app-button
+        buttonClass="primary"
+        (click)="saveProgress('continue')"
+        label="Continue"
+      ></app-button>
+    </div>
+  </div>
+</form>
+
+<nz-modal
+  [(nzVisible)]="isFeatureAccessVisible"
+  [nzMaskClosable]="false"
+  [nzKeyboard]="false"
+  [nzFooter]="null"
+  nzClassName="feature-modal featureAccess"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  (nzOnCancel)="handleClose($event)"
+>
+  <ng-template #modalTitle>Feature access</ng-template>
+
+  <ng-template #modalContent>
+  <app-feature-access [featuresIn]="features" [client]="client" (close)="handleClose($event)"></app-feature-access>
+    <!-- </form> -->
+  </ng-template>
+</nz-modal>
+
+<app-service-user
+  *ngIf="serviceUser"
+  (closePopup)="onServiceUserClose($event)"
+  (cancel)="onServiceUserCancel()"
+  (save)="onServiceUserSave($event)"
+  [serviceUser]="serviceUser"
+></app-service-user>

@@ -1,0 +1,11 @@
+<div class="modal-wrapper">
+    <app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+    <app-upload [myCallback]="getFile" [fileAccept]="fileAccept" [fileType]="fileType"></app-upload>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="tertiary" label="Cancel" [myCallback]="cancel"></app-button>
+            <app-button buttonClass="secondary" *ngIf="isAnalyze" label="Upload and analyze" [myCallback]="analyze"></app-button>
+            <app-button buttonClass="primary" label="Upload" [myCallback]="upload"></app-button>
+        </div>
+    </div>
+</div>

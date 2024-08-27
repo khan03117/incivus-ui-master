@@ -1,0 +1,200 @@
+<div>
+  <nz-spin [nzSpinning]="isLoading">
+    <form nz-form nzLayout="vertical" [formGroup]="form" class="sm-form">
+      <div class="form-description">
+        <img
+          class="top-back-icon"
+          src="assets/icons/caret-left.svg"
+          alt=""
+          (click)="back()"
+          *ngIf="step > 1"
+        />
+        <span *ngIf="step == 1">Connect Facebook Account</span>
+        <span *ngIf="step == 2">Select Business Manager Account</span>
+        <span *ngIf="step == 3">Map Account ID, Brand and Market</span>
+      </div>
+    <app-alert [message]="alert?.msg" [alertType]="alert?.type" *ngIf="alert?.msg"></app-alert>
+      <nz-card class="card login-card">
+        <ng-container *ngIf="step === 1">
+          <ng-container *ngIf="!showToken">
+            <button
+              class="loginBtn loginBtn--facebook"
+              (click)="signInWithFB()"
+            >
+              Login with Facebook
+            </button>
+            <span
+              class="links manual-token-message"
+              (click)="toggleTokenVisibility()"
+              >Enter token manually</span
+            >
+          </ng-container>
+          <nz-form-item *ngIf="showToken">
+            <span class="heading"
+              >Account Token<span class="heading" style="color: #ef4444"
+                >*</span
+              ></span
+            >
+            <nz-input-group nzSearch nzSize="large">
+              <input
+                nz-input
+                type="text"
+                class="rounded-input"
+                nz-input
+                formControlName="accessToken"
+                id="accessToken"
+              />
+            </nz-input-group>
+            <span
+              *ngIf="loginWithFacebook"
+              (click)="toggleTokenVisibility()"
+              class="links login-with-fb-link"
+              >Login using facebook</span
+            >
+          </nz-form-item>
+          <span
+            *ngIf="form.get('accessToken')?.valid"
+            style="text-align: center; display: block; margin: 1rem 0"
+            >{{ connectionMessage }}</span
+          >
+        </ng-container>
+        <div *ngIf="step === 2">
+          <nz-form-item class="form-input-item fullWidth">
+            <nz-form-control>
+              <nz-radio-group formControlName="business" class="ad-account-item">
+                <label nz-radio *ngFor="let item of businessList" [nzValue]="item.id" [id]="item.id" class="ad-account-name">
+                  {{ item.name }} <br /><span class="ad-account-id">{{ item.id }}</span>
+                </label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div *ngIf="step === 3">
+          <nz-table
+            (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+            [nzNoResult]="adAccountListEmpty"
+            [nzData]="accountList"
+            [nzShowPagination]="false"
+          >
+            <thead>
+              <tr>
+                <th>
+                  <label
+                    nz-checkbox
+                    [nzChecked]="globalCheckStatus == 2"
+                    [nzIndeterminate]="globalCheckStatus == 1"
+                    (nzCheckedChange)="onAllChecked($event)"
+                  ></label>
+                </th>
+                <th style="width: 20%">Account Name</th>
+                <th style="width: 20%">Account ID</th>
+                <th style="width: 20%">Brand</th>
+                <th>Market</th>
+              </tr>
+            </thead>
+            <tbody formArrayName="accountList">
+              <tr
+                *ngFor="let data of items.controls; let i = index"
+                [formGroupName]="i"
+              >
+                <!-- <td
+            ></td> -->
+                <td> <label nz-checkbox formControlName="checked" (nzCheckedChange)="onItemChecked(data.value, $event)"></label></td>
+                <td>{{ data.value?.name }}</td>
+                <td>{{ data.value?.id }}</td>
+                <td>
+                  <nz-form-item
+                    [class.translucent]="data.value?.checked != true"
+                  >
+                    <nz-form-control>
+                      <nz-input-group nzSize="large">
+                        <nz-select
+                          [nzMaxTagCount]="3"
+                          [nzMaxTagPlaceholder]="tagPlaceHolder"
+                          [nzOptionOverflowSize]="8"
+                          nzPlaceHolder="Select brand"
+                          id="brand"
+                          nzDropdownClassName="custom-radio-dropdown"
+                          [nzShowArrow]="true"
+                          formControlName="brand"
+                        >
+                          <ng-container *ngFor="let brand of brandDetails">
+                            <nz-option
+                              [nzValue]="brand.masterBrand.name"
+                              [nzLabel]="brand.masterBrand.name"
+                            ></nz-option>
+                            <nz-option
+                              *ngFor="let pb of brand.productBrand"
+                              [nzValue]="pb.name"
+                              [nzLabel]="pb.name"
+                            >
+                            </nz-option>
+                          </ng-container>
+                        </nz-select>
+
+                        <ng-template #tagPlaceHolder let-selectedList
+                          >+ {{ selectedList.length }}</ng-template
+                        >
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </td>
+                <td>
+                  <nz-form-item
+                    [class.translucent]="data.value?.checked != true"
+                  >
+                    <nz-form-control>
+                      <nz-input-group nzSize="large">
+                        <nz-select
+                          [nzMaxTagCount]="3"
+                          [nzMaxTagPlaceholder]="tagPlaceHolder"
+                          nzMode="multiple"
+                          [nzOptionOverflowSize]="8"
+                          nzPlaceHolder="Select company entity"
+                          id="entityList"
+                          class="select-list"
+                          nzDropdownClassName="custom-check-dropdown"
+                          [nzShowArrow]="true"
+                          formControlName="markets"
+                        >
+                          <nz-option
+                            *ngFor="let item of markets"
+                            [nzValue]="item"
+                            [nzLabel]="item"
+                          ></nz-option>
+                        </nz-select>
+                        <ng-template #tagPlaceHolder let-selectedList
+                          >+ {{ selectedList.length }}</ng-template
+                        >
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <ng-template #adAccountListEmpty class="customer-empty">
+            <nz-result>
+              <img nz-result-icon src="assets/icons/no-company.svg" />
+              <div nz-result-subtitle>No Ad Accounts found</div>
+            </nz-result>
+          </ng-template>
+        </div>
+
+        <div class="add-media-footer">
+          <button nz-button  (click)="back()" *ngIf="step > 1; else backPlaceholder">Back</button>
+          <ng-template #backPlaceholder> <div></div> </ng-template>
+          <button
+            nz-button
+            nzType="primary"
+            [disabled]="!enableContinue()"
+            (click)="continue()"
+          >
+            Continue
+          </button>
+        </div>
+      </nz-card>
+    </form>
+  </nz-spin>
+</div>

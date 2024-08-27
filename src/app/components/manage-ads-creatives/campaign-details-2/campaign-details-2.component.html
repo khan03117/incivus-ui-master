@@ -1,0 +1,354 @@
+<div class="cd-2-main-container">
+  <app-breadcrumb
+    [labels]="breadcrumb"
+    fullBC="{{ true }}"
+    myCallback="/client/list"
+  ></app-breadcrumb>
+  <app-alert class="app-alert" [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+
+
+  <nz-page-header class="page-header-container heading">
+    <nz-page-header-title >Campaign information</nz-page-header-title>
+    <nz-page-header-extra>
+      <nz-space>
+        <div class="num-of-creatives">
+          No of creatives: ({{ adsData.length }})
+        </div>
+      </nz-space>
+    </nz-page-header-extra>
+  </nz-page-header>
+  <div class="campaign-info">
+    <div class="left-info" *ngIf="insights">
+      <div class="info">
+        <div class="heading" style="font-size: 0.87rem;">Campaign title:</div>
+        <div class="value" style="font-size: 0.87rem;">{{ campaign?.name }}</div>
+      </div>
+      <div class="info">
+        <div class="heading" style="font-size: 0.87rem;">Brand:</div>
+        <div class="value" style="font-size: 0.87rem;">{{ adAccount?.brand }}</div>
+      </div>
+      <div class="info" *ngIf="insights?.spend != null">
+        <div class="heading" style="font-size: 0.87rem;">Spend:</div>
+        <div class="value" style="font-size: 0.87rem;">{{ insights.spend | number : "1.2-2" }}</div>
+      </div>
+      <div class="info" *ngIf="campaign.lifetime_budget != null">
+        <div class="heading" style="font-size: 0.87rem;">Budget:</div>
+        <div class="value" style="font-size: 0.87rem;">{{ campaign.lifetime_budget }}</div>
+      </div>
+      <div class="info" *ngIf="campaign.daily_budget != null">
+        <div class="heading" style="font-size: 0.87rem;">Daily Budget:</div>
+        <div class="value" style="font-size: 0.87rem;">{{ campaign.daily_budget }}</div>
+      </div>
+      <div class="info">
+        <div class="heading" style="font-size: 0.87rem;">Channel:</div>
+         <div class="value" style="font-size: 0.87rem;">{{ campaign.channels?.join(", ") | capitalize}}</div>
+        <!-- <img class="channel-image" src="assets/icons/channel-icon.svg" alt="" /> -->
+      </div>
+      <div class="info">
+        <div class="heading" style="font-size: 0.87rem;">Status:</div>
+        <div class="value" style="font-size: 0.87rem;">{{ campaign?.status | capitalize }}</div>
+      </div>
+      <div class="info">
+        <div class="heading" style="font-size: 0.87rem;">Objective:</div>
+        <div class="value" style="font-size: 0.87rem;">
+          {{ campaign?.objective.replaceAll("_", " ") | capitalize }}
+        </div>
+      </div>
+    </div>
+    <div class="right-info" *ngIf="insights">
+      <div
+        style="
+          align-self: stretch;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          gap: 12px;
+          display: inline-flex;
+        "
+      >
+        <div class="info">
+          <div class="heading" style="font-size: 0.87rem;">Start date:</div>
+          <div class="value" style="font-size: 0.87rem;">
+            {{ campaign.start_time | date : "yyyy-MM-dd" }}
+          </div>
+        </div>
+
+        <div class="info">
+          <div class="heading" style="font-size: 0.87rem;">End date:</div>
+          <div class="value" style="font-size: 0.87rem;">
+            {{ campaign.stop_time | date : "yyyy-MM-dd" }}
+          </div>
+        </div>
+
+        <!-- <div class="info">
+          <div class="heading">Description:</div>
+          <div class="value">
+            <textarea name="description" id="desc" cols="40" rows="5"></textarea>
+          </div>
+        </div>
+        <div style="width: 302px; height: 38px; position: relative"></div> -->
+      </div>
+    </div>
+  </div>
+  <td colspan="4" class="insights" *ngIf="insights && previousInsights">
+    <div class="insight-container">
+      <span class="heading">Spend</span>
+      <span class="value">₹{{ insights.spend | number : "1.2-2" }}</span>
+      <span
+        class="improvement 
+          {{
+          insights.impressions - previousInsights.impressions < 0
+            ? 'negative'
+            : 'positive'
+        }}"
+      >
+        {{ (insights?.spend ?? 0) - (previousInsights?.spend ?? 0) | counter }}
+      </span>
+      <span class="previous">vs previous 30 days</span>
+    </div>
+
+    <div class="insight-container">
+      <span class="heading">Impressions</span>
+      <span class="value">{{ insights.impressions | counter }}</span>
+      <span
+        class="improvement 
+          {{
+          insights.impressions - previousInsights.impressions < 0
+            ? 'negative'
+            : 'positive'
+        }}"
+      >
+        {{
+          100 *
+            (previousInsights.impressions > 0
+              ? (insights.impressions - previousInsights.impressions) /
+                previousInsights.impressions
+              : 0) | number : "1.2-2"
+        }}%
+      </span>
+      <span class="previous">vs previous 30 days</span>
+    </div>
+
+    <div class="insight-container">
+      <span class="heading">Clicks</span>
+      <span class="value">{{ insights.clicks | counter }}</span>
+      <span
+        class="improvement 
+          {{
+          insights.impressions - previousInsights.impressions < 0
+            ? 'negative'
+            : 'positive'
+        }}"
+      >
+        {{
+          100 *
+            (previousInsights.clicks > 0
+              ? (insights.clicks - previousInsights.clicks) /
+                previousInsights.clicks
+              : 0) | number : "1.2-2"
+        }}%
+      </span>
+      <span class="previous">vs previous 30 days</span>
+    </div>
+
+    <div class="insight-container">
+      <span class="heading">CTR</span>
+      <span class="value">{{ insights.ctr | number : "1.2-2" }}</span>
+      <span
+        class="improvement 
+        {{
+          insights.impressions - previousInsights.impressions < 0
+            ? 'negative'
+            : 'positive'
+        }}"
+      >
+        {{
+          (previousInsights.ctr > 0
+            ? (insights.ctr - previousInsights.ctr) / previousInsights.ctr
+            : 0) * 100 | number : "1.2-2"
+        }}%
+      </span>
+      <span class="previous">vs previous 30 days</span>
+    </div>
+  </td>
+  <div class="bottom-list">
+    <nz-page-header class="page-header-container heading">
+      <nz-page-header-title style="font-size: 0.87rem;">Creatives({{ ads.length }})</nz-page-header-title>
+      <nz-page-header-extra>
+        <nz-space>
+          <!-- <ng-container *ngIf="ads.length">
+            <button *nzSpaceItem nz-button>
+              <img nz-icon src="assets/icons/edit-icon.svg" />
+              Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="ads.length">
+            <button *nzSpaceItem nz-button>
+              <img nz-icon src="assets/icons/delete.svg" />
+              Delete
+            </button>
+          </ng-container> -->
+          <nz-input-group class="search" [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="searchText"
+              (keyup)="filter()"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Search..."
+            />
+          </nz-input-group>
+          <ng-template #prefixIconSearch>
+            <span
+              nz-icon
+              nzType="search"
+              nzTheme="outline"
+              class="search-extra"
+            ></span>
+          </ng-template>
+        </nz-space>
+      </nz-page-header-extra>
+    </nz-page-header>
+
+    <nz-table 
+      #permissionSelectionTable
+      [nzData]="ads"
+      class="admin-list-table"
+      [nzShowPagination]="true"
+    >
+      <thead>
+        <tr>
+          <th [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"></th>
+          <th [nzShowSort]="false">Creative name</th>
+          <th [nzShowSort]="false">Ad set name</th>
+          <th [nzShowSort]="false">Type</th>
+          <th [nzShowSort]="false">Status</th>
+          <th [nzShowSort]="false">Started running on</th>
+          <th [nzShowSort]="false">Analyse</th>
+          <th [nzShowSort]="false"></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let ad of ads; let i = index">
+        <tr>
+          <td [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"></td>
+          <td class="campaignData">
+              <a [href]="ad?.preview_shareable_link" target="_blank">
+                <img
+                  class="creative-image"
+                  *ngIf="ad?.creative?.thumbnail_url"
+                  [src]="ad?.creative?.thumbnail_url"
+                />
+              </a>
+              <span *ngIf="ad?.name.length > 10">{{ ad?.name.substring(0, 10) + '...' }}</span>
+              <span *ngIf="ad?.name.length <= 10">{{ ad?.name }}</span>
+           
+           <div class="hover-text">{{ ad?.name }}</div>
+          </td>
+          
+          <td class="campaignData">
+            <span *ngIf="ad?.adset?.name.length > 10">{{ ad?.adset?.name.substring(0, 10) + '...' }}</span>
+              <span *ngIf="ad?.adset?.name.length <= 10">{{ ad?.adset?.name  }}</span>
+              <div class="hover-text">{{ad?.adset?.name }}</div>
+          </td>
+          <td>
+            <span *ngIf="ad?.creative?.image_url != null">Image Ad</span>
+            <span *ngIf="ad?.creative?.object_story_spec?.video_data?.video_id != null">Video Ad</span>
+          </td>
+          <td>
+            <div class="status" [class.active]="ad['status'] == 'ACTIVE'" [class.inactive]="ad['status'] != 'ACTIVE'">
+              {{ ad["status"] ?? "" }}
+            </div>
+          </td>
+
+          <td>
+            {{ ad["created_time"] | date:'dd/MM/yy; h:mm a' }}
+          </td>
+
+          <td>
+            <div class="status-parent">
+            <div
+              class="status"
+              [ngClass]="{
+                'in-progress': ad?.artifact?.metadata?.status == '10' || ad?.artifact?.metadata?.status == '90',
+                'active': ad?.artifact?.metadata?.status == '100',
+                'inactive': ad?.artifact?.metadata?.status == '50',
+              }"
+              *ngIf="ad?.artifact?.metadata?.status != null"
+            >
+              {{ getAnalyzeStatusLabel(ad?.artifact?.metadata?.status) }}
+            </div>
+            <div class="status new"
+              *ngIf="(ad?.creative?.image_url != null || ad?.creative?.object_story_spec?.video_data?.video_id != null) && (ad?.artifact?.metadata?.status == null || ad?.artifact?.metadata?.status == '0')"
+              (click)="analyseAds(ads[i], i)">Analyze</div>
+            </div>
+            <div class="status new" *ngIf="(ad?.artifact?.metadata?.status == '50')" (click)="reanalyze(ads[i], i)">Analyze</div>
+          </td>
+
+          <td>
+            <div (click)="expandAd(ads[i])">
+              <!--caret-up.svg-->
+              <span nz-icon *ngIf="ad.expanded != true" class="caret-down"
+                ><img nz-icon src="assets/icons/caret-down.svg"
+              /></span>
+              <span nz-icon *ngIf="ad.expanded === true" class="caret-up"
+                ><img nz-icon src="assets/icons/caret-down.svg"
+              /></span>
+            </div>
+
+            <ng-template #menu>
+              <ul nz-menu>
+                <li nz-menu-item>
+                  <span nz-icon
+                    ><img nz-icon src="assets/icons/edit-icon.svg"
+                  /></span>
+                  <span>Edit</span>
+                </li>
+                <li nz-menu-item>
+                  <img nz-icon src="assets/icons/delete.svg" />
+                  <span>Delete</span>
+                </li>
+              </ul>
+            </ng-template>
+          </td>
+        </tr>
+
+      
+
+        
+
+        <tr *ngIf="ad.expanded === true">
+          <td colspan="10">
+            <div class="expanded-row">
+              <span class="expanded-heading">Reach:</span>
+              <span class="expanded-value">{{
+                ad.insights?.reach | counter
+              }}</span>
+              <span class="expanded-heading">Impression:</span>
+              <span class="expanded-value">{{
+                ad.insights?.impressions | counter
+              }}</span>
+              <span class="expanded-heading">Ad Spend:</span>
+              <span class="expanded-value"
+                >{{ ad.insights?.spend | currency : "INR" }}
+              </span>
+              <span class="expanded-heading">Ad Clicks:</span>
+              <span class="expanded-value">{{
+                ad.insights?.clicks | counter
+              }}</span>
+              <span class="expanded-heading">Ad frequency:</span>
+              <span class="expanded-value">{{
+                ad.insights?.frequency | number : "1.2-2"
+              }}</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+
+
+
+
+

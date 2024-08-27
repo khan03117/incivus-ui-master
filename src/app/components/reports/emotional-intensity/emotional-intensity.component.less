@@ -1,0 +1,96 @@
+#emotionalintensity{
+    .accordion-container{
+        .setup-conatainer{
+            margin-top: unset;
+            .setup-wrapper{
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                border: none;
+                .ant-collapse-item-disabled {
+                    .expandCollapseIcon {
+                        display: none;
+                    }
+                }
+                .ant-collapse-item{
+                    border-radius: 1rem;
+                    border:1px solid #38B3E4 !important;
+                    background-color: #EFFAFF;
+                    &.ant-collapse-item-active{
+                        .ant-collapse-header{
+                            border: unset;
+                            border-bottom-left-radius: unset;
+                            border-bottom-right-radius: unset;
+                        }
+                    }
+                    .ant-collapse-content{
+                        background-color: #EFFAFF;
+                    }
+                }
+                .ant-collapse-header{
+                    border:unset;
+                    background-color: #EFFAFF;
+                    font-size: 0.87rem;
+                    font-weight: 500;
+                    border-radius: 1rem !important;
+                    padding: 1rem 2.5rem 1rem 1.5rem;
+                    .sub-title{
+                        font-size: 0.87rem;
+                        font-weight: 500;
+                        display: inline-block;
+                        margin-left: 1rem;
+                        text-transform: capitalize;
+                    }
+                }
+            }
+        }
+    }
+    .graph-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap:3rem;
+        margin-bottom:1rem;
+        .graph-wrapper{
+            width:calc(100% - 12rem);
+        }
+        #customVerticalSlider {
+            height: 24.063rem;
+            width:10rem;
+            .ngx-slider {
+                .ngx-slider-bar {
+                    height: 100%;
+                    background: linear-gradient(
+                    0deg,
+                    #0000fe 0% 20%,
+                    #0054aa 20% 40%,
+                    #01a956 40% 60%,
+                    #55fe00 60% 80%,
+                    #aaff01 80%
+                    );
+                    width: 20px;
+                }
+                .ngx-slider-pointer {
+                    display: none;
+                }
+                .ngx-slider-ticks {
+                    left: 120px;
+                    text-align: center;
+                }
+                .ngx-slider-tick {
+                    margin-top: unset;
+                    width: 0;
+                    ngx-slider-tooltip-wrapper {
+                    display: none;
+                    }
+                }
+                .ngx-slider-limit {
+                    display: none;
+                }
+                .ngx-slider-model-value {
+                    display: none;
+                }
+            }
+        }
+    } 
+}

@@ -1,0 +1,45 @@
+@import url('../../../../common/less/carousel.less');
+.attention-card {
+    .ant-col{
+        &:first-child{
+            margin-top: 2.5rem;
+        }
+    }
+}
+
+.videoCarousel {
+    position: relative;
+    .title{
+        font-size:0.87rem;
+        font-weight: 500;
+        margin: 1.5rem 0;
+    }
+    .owl-carousel {
+        .owl-stage-outer{
+            .owl-item {
+                .ant-card{
+                    padding: 0;
+                    .ant-card-cover{
+                        width: 100%;
+                       img{
+                        width: 100%;
+                        height: 100%;
+                       } 
+                    }
+                    .ant-card-body{
+                        padding:0.25rem 0 0 0;
+                        font-size: 0.87rem;
+                        font-weight: 400;
+                        color:#64748B;
+                        border: none;
+                    }
+                }
+            }
+        }
+        .owl-nav{
+            position: absolute;
+            top: -85px;
+            right: 5px
+        }
+    }
+}

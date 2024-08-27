@@ -1,0 +1,30 @@
+<!-- <nz-alert nzType="info" nzMessage="You can create company setup and come back to edit the same as required." nzShowIcon></nz-alert> -->
+<ng-container *ngIf="alertType === 'error'">
+    <nz-alert
+        nzType="error"
+        nzMessage="{{message}}"
+        [nzIcon]="customIconTemplate"
+        nzShowIcon
+    ></nz-alert>
+    <ng-template #customIconTemplate><span nz-icon nzType="info-circle" nzTheme="fill"></span></ng-template>
+</ng-container>
+
+<ng-container *ngIf="alertType === 'info'">
+    <nz-alert
+        nzType="info"
+        nzMessage="{{message}}"
+        [nzIcon]="customIconTemplate"
+        nzShowIcon
+    ></nz-alert>
+    <ng-template #customIconTemplate><span nz-icon nzType="info-circle" nzTheme="fill"></span></ng-template>
+</ng-container>
+
+<ng-container *ngIf="alertType === 'warning'">
+    <nz-alert
+        nzType="warning"
+        nzMessage="{{message}}"
+        [nzIcon]="customIconTemplate"
+        nzShowIcon
+    ></nz-alert>
+    <ng-template #customIconTemplate><span nz-icon nzType="info-circle" nzTheme="fill"></span></ng-template>
+</ng-container>

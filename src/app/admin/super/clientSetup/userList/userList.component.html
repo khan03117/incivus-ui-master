@@ -1,0 +1,48 @@
+<nz-table
+    #rowSelectionTable
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    [nzShowPagination]="true"
+>
+    <thead>
+        <tr>
+            <th
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Status</th>
+            <th>Email id</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ data.firstName | titlecase }}</td>
+            <td>{{ data.lastName | titlecase }}</td>
+            <td class="tags">
+                <!-- change tag nzColor [active: success, NotActive : error] -->
+                <nz-tag nzColor="{{data.status.toLowerCase() === 'active' ? 'success' : 'error'}}">{{ data.status | titlecase}}</nz-tag> 
+            </td>
+            <td>{{ data.email }}</td>
+        </tr>
+    </tbody>
+</nz-table>
+<div class="table-footer">
+    <div class="table-footer-wrapper">
+        <app-button buttonClass="secondary" *ngIf="setOfCheckedId.size === 1" label="Delete user" [myCallback]="deleteUser"></app-button>
+        <app-button buttonClass="secondary" *ngIf="setOfCheckedId.size === 1" label="Edit user" [myCallback]="editUser"></app-button>
+        <app-button [buttonClass]="isServiceRequest? 'secondary' : 'primary'" label="Add new user" [myCallback]="addUser"></app-button>
+        <app-button buttonClass="primary" *ngIf="isServiceRequest" label="Continue" [myCallback]="continue"></app-button>
+    </div>
+</div>
+
+<!-- <app-modal></app-modal> -->
+<nz-modal [(nzVisible)]="isAddTrialUserVisible" [nzMaskClosable]="false" [nzKeyboard]="false" nzClassName="feature-modal" [nzFooter]="null" [nzTitle]="modalTitle" [nzContent]="modalContent" (nzOnCancel)="handleCancel()">
+    <ng-template #modalTitle>Add new trial user</ng-template>
+    <ng-template #modalContent>
+        <app-user-create-modal [data]="addUserData" [type]="'modal'"></app-user-create-modal>
+    </ng-template>
+</nz-modal>

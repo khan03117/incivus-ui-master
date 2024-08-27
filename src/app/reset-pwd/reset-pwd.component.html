@@ -1,0 +1,71 @@
+<div class="super_container" id="authContainer">
+  <div class="container maincontainer d-flex justify-content-center flex-column mx-auto">
+    <div class="row">
+      <div class="col-lg-7 col-md-10 col-sm-10 col-10  mx-auto middle-container  text-center" *ngIf = "!isLoading">
+          <div class="login-form-container" id="forgot_password_fields" *ngIf="valid_token_user">
+              <div class="col-sm-12 ">
+                <img src="assets/incivus new logo.svg" class="logoPH"/>
+              </div>
+              <div class="" style="margin: 0.75rem 0 1rem 0;">
+                <div class="login-text" style="margin-bottom: 0.5rem;">Set your password</div>
+              </div>
+              <app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+              <div class="col-sm-12 logininput">
+                <form nz-form nzLayout ="vertical" name="forgotPwd" [formGroup]="resetPwdForm">
+                  <nz-card class="loginCard">
+                    <div class="row-input-container">
+                      <nz-form-item>
+                          <nz-form-label class="input-float-label">Password<span style="color:#EF4444">*</span></nz-form-label>
+                          <nz-form-control class="role-form" [nzValidateStatus]="f['password'].errors && (pBlur || submitted) ? 'error':''"  nzErrorTip="
+                            {{ f['password'].errors && f['password'].errors['required'] ? 'Uh! Oh! password is mandatory' : 'Your password must contain atleast 8 to 12 characters including atleast 1 lowercase and 1 uppercase characters with atleast 1 special character. Allowed special characters (!, @, #, $, %, ^, &, *)'}}"
+                          >
+                              <nz-input-group nzSearch nzSize="large">
+                                  <input nz-input type="password" class="rounded-input" (blur)="pBlur=true" (focus)="pBlur=false" nz-input placeholder="Password" formControlName="password" id="password"/>
+                              </nz-input-group>
+                          </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div class="row-input-container">
+                      <nz-form-item>
+                          <nz-form-label class="input-float-label">Confirm<span style="color:#EF4444">*</span></nz-form-label>
+                          <nz-form-control class="role-form" [nzValidateStatus]="f['confirmPassword'].errors && (cpBlur || submitted) ? 'error':''"  
+                            nzErrorTip="{{ f['confirmPassword'].errors && f['confirmPassword'].errors['required'] ? 'Uh! Oh! confirm password is mandatory' : 'Uh! Oh! password does not match'}}">
+                              <nz-input-group nzSearch nzSize="large">
+                                  <input nz-input type="password" class="rounded-input" (blur)="cpBlur=true" (focus)="cpBlur=false" nz-input placeholder="Confirm password" formControlName="confirmPassword" id="confPassword"/>
+                              </nz-input-group>
+                          </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </nz-card>      
+                  <app-button buttonClass="primary" label="Set password" (click)="onSubmit()"></app-button>
+                </form>
+
+              </div>
+          </div>
+
+          <div class="login-form-container" id="login_back_message" *ngIf="reset_password_success">
+              <div class="col-sm-12 ">
+                <img src="assets/incivus new logo.svg" class="logoPH"/>
+              </div>
+              <div class="col-sm-12 my-5 fpSuccessIcon">
+                <img src="assets/checked.png"/>
+              </div>
+              <div class="" style="margin: 0.75rem 0 1rem 0;">
+                <div class="login-text" style="margin-bottom: 0.5rem;">Your password has been set successfully.</div>
+              </div>
+              <app-button buttonClass="primary" label="Go back to login" (click)="gotoLogin()"></app-button>
+          </div>
+
+          <div class="login-form-container" id="invalid_token_user" *ngIf="invalid_token_user">
+            <div class="col-sm-12 ">
+              <img src="assets/incivus new logo.svg" class="logoPH"/>
+            </div>
+            <div class="" style="margin: 0.75rem 0 1rem 0;">
+              <div class="login-text" style="margin-bottom: 0.5rem;">Either your reset password link has expired or you do not have correct link, please contact your admin.</div>
+            </div>
+            <app-button buttonClass="primary" label="Go back to login" (click)="gotoLogin()"></app-button>
+        </div>
+      </div>
+  </div>  
+  </div>
+</div>

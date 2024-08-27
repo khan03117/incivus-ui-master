@@ -1,0 +1,647 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<div style="margin-top:1rem;"></div>
+<nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-extra>
+        <nz-space>
+            <ng-container>
+                <button class="primary primary-btn" *nzSpaceItem nz-button (click)="saveCompare()">
+                    Save
+                </button>
+            </ng-container>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+<nz-content>
+    <app-alert 
+        [message]="'You can continue to select more Brand and Products to compare. We recommend you save the comparison to refer back later.'" 
+        [alertType]="'warning'"
+    ></app-alert>
+    <nz-table 
+        #columnTable  
+        [nzScroll]="{ x: '1300px' }" 
+        class="comparison-table"
+        [nzFrontPagination]="false"
+    >
+        <thead>
+            <tr>
+                <th nzLeft></th>
+                <th *ngFor="let data of compareObj; let i = index">
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-input-group nzSearch nzSize="large">
+                                <nz-select
+                                    nzPlaceHolder="Brand"
+                                    nzDropdownClassName="custom-check-dropdown"
+                                    nzShowSearch="false"
+                                    id="brandName"
+                                    [(ngModel)]="brandArray[i]" 
+                                    (ngModelChange)="selectBrand($event, i)" 
+                                    [ngModelOptions]="{standalone: true}"
+                                >
+                                    <nz-option *ngFor="let brand of productBrand"
+                                        nzValue="{{brand.toLowerCase()}}" nzLabel="{{ brand | titlecase }}" ></nz-option>
+                                    
+                                </nz-select>
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <div class="image-container">
+                        <ng-container *ngIf="data">
+                            <div>
+                                <!-- <img src="{{data.imageLink}}"> -->
+                                <div style="display: flex;justify-content: center;align-items: center;">
+                                    <div style="width: 9rem; height: 5rem; background: #E3E3E370 0% 0% no-repeat padding-box;
+                                    border-radius: 0.6rem;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    position: relative;">
+                                        <img src="{{data.imageLink}}"
+                                            style="border-radius: 0.6rem;width: 100%; height: 100%;" />
+                                    </div>
+                                    <div style="display: flex;flex-direction: column;justify-content: center;">
+                                        <img src="assets/icons/change.svg" (click)="selectAd(i)"
+                                            alt="Click here to replace Ad" title="Click here to replace Ad"
+                                            style="margin-left: 0.5rem; margin-bottom: 1rem; width:0.7rem; cursor: pointer;">
+                                        <img src="assets/icons/Close.svg" (click)="removeAd(i)" alt="Remove"
+                                            title="Remove" style="margin-left: 0.5rem; width:0.7rem; cursor: pointer;">
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!data">
+                            <div class="action-container">
+                                <div class="action-icon">
+                                    <span (click)="selectAd(i)" style="cursor: pointer;" nz-icon nzType="plus" nzTheme="outline"></span>
+                                </div>
+                                <div class="action-btn">
+                                    <app-button (click)="selectAd(i)" buttonClass="secondary" label="Select Ad"></app-button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </th>
+                <th>
+                    <div class="action-container">
+                        <div (click)="addNewComp()" style="cursor: pointer;" class="action-icon">
+                            <span nz-icon nzType="plus" nzTheme="outline"></span>
+                        </div>
+                        <div class="action-btn">
+                            <app-button (click)="addNewComp()" buttonClass="secondary" label="Add more"></app-button>
+                        </div>
+                    </div>
+                </th>
+                <th nzRight></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td nzLeft>Creative effectiveness score</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.creativeEffectivenessScore ? (data.creativeEffectivenessScore*100).toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.creativeEffectivenessScore && data.creativeEffectivenessScore*100 >= Range.CESH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.creativeEffectivenessScore && data.creativeEffectivenessScore*100 < Range.CESL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.creativeEffectivenessScore && data.creativeEffectivenessScore*100 < Range.CESH && data.creativeEffectivenessScore*100 >= Range.CESL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr>
+                <td nzLeft>Recall score</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.recallScore ? data.recallScore.toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.recallScore && data.recallScore >= Range.RECALLH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.recallScore && data.recallScore < Range.RECALLL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.recallScore && data.recallScore < Range.RECALLH && data.recallScore >= Range.RECALLL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr>
+                <td nzLeft>Cognitive load</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.cognitiveLoad ? (data.cognitiveLoad*100).toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.cognitiveLoad && data.cognitiveLoad >= Range.CLH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.cognitiveLoad && data.cognitiveLoad < Range.CLL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.cognitiveLoad && data.cognitiveLoad < Range.CLH && data.cognitiveLoad >= Range.CLL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight [(nzExpand)]="clExpand" class="expand-icon"></td>
+            </tr>
+            <tr *ngIf="clExpand" class="subRow">
+                <td nzLeft>Design complexity</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.designComplexity ? (data.designComplexity*100).toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.designComplexity && data.designComplexity >= Range.DESIGNCH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.designComplexity && data.designComplexity < Range.DESIGNCL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.designComplexity && data.designComplexity < Range.DESIGNCH && data.designComplexity >= Range.DESIGNCL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="clExpand" class="subRow">
+                <td nzLeft>Ad copy complexity</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.adCopyComplexity ? data.adCopyComplexity*100 : 'NA'}}</span>
+                        <ng-container *ngIf="data.adCopyComplexity && data.adCopyComplexity >= Range.ADCOPYCH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.adCopyComplexity && data.adCopyComplexity < Range.ADCOPYCL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.adCopyComplexity && data.adCopyComplexity < Range.ADCOPYCH && data.adCopyComplexity >= Range.ADCOPYCH">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr>
+                <td nzLeft>Ad copy effectiveness</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.adCopyEffectiveness ? data.adCopyEffectiveness.toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.adCopyEffectiveness && data.adCopyEffectiveness >= Range.ADCOPYEH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.adCopyEffectiveness && data.adCopyEffectiveness < Range.ADCOPYEL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.adCopyEffectiveness && data.adCopyEffectiveness < Range.ADCOPYEH && data.adCopyEffectiveness >= Range.ADCOPYEL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight [(nzExpand)]="acExpand" class="expand-icon"></td>
+            </tr>
+            <tr *ngIf="acExpand && selection.type === 'image'" class="subRow">
+                <td nzLeft>Persuasiveness</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container">
+                        <span class="col-label">{{data.persusiveness ? data.persusiveness : 'NA'}}</span>
+                        <ng-container *ngIf="data.persusiveness && data.persusiveness === 1">
+                            <app-badge [status]="'10'" [label]="'1'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.persusiveness && data.persusiveness === 2">
+                            <app-badge [status]="'50'" [label]="'2'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.persusiveness && data.persusiveness === 3">
+                            <app-badge [status]="'100'" [label]="'3'"></app-badge>
+                        </ng-container>
+                        
+                    </div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="acExpand" class="subRow">
+                <td nzLeft>Text readability</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.textReadability ? data.textReadability.toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.textReadability && data.textReadability >= Range.TEXTRH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.textReadability && data.textReadability < Range.TEXTRL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.textReadability && data.textReadability < Range.TEXTRH && data.textReadability >= Range.TEXTRL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="acExpand" class="subRow">
+                <td nzLeft>Attention</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.attention ? data.attention.toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.attention && data.attention >= Range.ATTNH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.attention && data.attention < Range.ATTNL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.attention && data.attention < Range.ATTNH && data.attention >= Range.ATTNL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr>
+                <td nzLeft>Brand compliance</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.brandCompliance ? data.brandCompliance.toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.brandCompliance && data.brandCompliance >= Range.BCH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.brandCompliance && data.brandCompliance < Range.BCL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.brandCompliance && data.brandCompliance < Range.BCH && data.brandCompliance >= Range.BCL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight [(nzExpand)]="bcExpand" class="expand-icon"></td>
+            </tr>
+            <tr *ngIf="bcExpand" class="subRow">
+                <td nzLeft>Brand recognition</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <ng-container *ngIf="data.logoAttr && data.logoAttr.length">
+                            <ng-container *ngFor="let logo of data.logoAttr">
+                                <span class="col-label">{{logo.brandRecognition ? (logo.brandRecognition*100).toFixed(2) : 'NA'}}</span>
+                                <ng-container *ngIf="logo.brandRecognition && logo.brandRecognition*100 >= Range.BCH">
+                                    <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                                </ng-container>
+                                <ng-container *ngIf="logo.brandRecognition && logo.brandRecognition*100 < Range.BCL">
+                                    <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                                </ng-container>
+                                <ng-container *ngIf="logo.brandRecognition && logo.brandRecognition*100 < Range.BCH && logo.brandRecognition >= Range.BCL">
+                                    <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="!(data.logoAttr && data.logoAttr.length)">-</ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr>
+                <td nzLeft>Emotional intensity</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <span class="col-label">{{data.emotionalIntensity ? data.emotionalIntensity.toFixed(2) : 'NA'}}</span>
+                        <ng-container *ngIf="data.emotionalIntensity && data.emotionalIntensity >= Range.EIH">
+                            <app-badge [status]="'100'" [label]="'High'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.emotionalIntensity && data.emotionalIntensity < Range.EIL">
+                            <app-badge [status]="'50'" [label]="'Low'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.emotionalIntensity && data.emotionalIntensity < Range.EIH && data.emotionalIntensity >= Range.EIL">
+                            <app-badge [status]="'10'" [label]="'Medium'"></app-badge>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight [(nzExpand)]="eiExpand" class="expand-icon"></td>
+            </tr>
+            <tr *ngIf="eiExpand && selection.type === 'video'" class="subRow">
+                <td nzLeft>Music emotion</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container">
+                        <ng-container *ngIf="data">
+                            <div class="col-label-container" *ngIf="data.musicEmotion && data.musicEmotion.length">
+                                <app-badge [status]="'na'" [label]="data.musicEmotion.join(', ')"></app-badge>
+                            </div>
+                            <div class="col-label-container" *ngIf="!(data.musicEmotion && data.musicEmotion.length)">
+                                <app-badge [status]="'na'" [label]="'NA'"></app-badge>
+                            </div>
+                        </ng-container>
+                    </div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="eiExpand" class="subRow">
+                <td nzLeft>Human facial emotion</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <ng-container *ngIf="data">
+                            <div class="col-label-container" *ngIf="data.humanEmotions && data.humanEmotions.length">
+                                <app-badge [status]="'na'" [label]="data.humanEmotions.length > 3 ? data.humanEmotions.splice(0,3).join(', ') : data.humanEmotions.join(', ')"></app-badge>
+                            </div>
+                            <div class="col-label-container" *ngIf="!(data.humanEmotions && data.humanEmotions.length)">
+                                <app-badge [status]="'na'" [label]="'NA'"></app-badge>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="eiExpand" class="subRow">
+                <td nzLeft>Color emotion</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <ng-container *ngIf="data">
+                            <div class="col-label-container" *ngIf="data.colorEmotion && data.colorEmotion.length">
+                                <app-badge [status]="'na'" [label]="data.colorEmotion.join(', ')"></app-badge>
+                            </div>
+                            <div class="col-label-container" *ngIf="!(data.colorEmotion && data.colorEmotion.length)">
+                                <app-badge [status]="'na'" [label]="'NA'"></app-badge>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="eiExpand" class="subRow">
+                <td nzLeft>Ad copy emotion</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <ng-container *ngIf="data">
+                            <div class="col-label-container" *ngIf="data.adCopyEmotion && data.adCopyEmotion.length">
+                                <app-badge [status]="'na'" [label]="data.adCopyEmotion.join(', ')"></app-badge>
+                            </div>
+                            <div class="col-label-container" *ngIf="!(data.adCopyEmotion && data.adCopyEmotion.length)">
+                                <app-badge [status]="'na'" [label]="'NA'"></app-badge>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr>
+                <td nzLeft>Digital accessibility</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+
+                        <ng-container *ngIf="!showOptimizedForSound && data.optimizedForColor && data.optimizedForColor === 'Yes'">
+                            <app-badge [status]="'100'" [label]="'100'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="!showOptimizedForSound && data.optimizedForColor && data.optimizedForColor === 'No'">
+                            <app-badge [status]="'50'" [label]="'0'"></app-badge>
+                        </ng-container>
+                        
+                        <ng-container *ngIf="showOptimizedForSound && data.optimizedForColor && data.optimizedForSound && data.optimizedForColor === 'Yes' && data.optimizedForSound==='Yes' ">
+                            <app-badge [status]="'100'" [label]="'100'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="showOptimizedForSound && data.optimizedForColor && data.optimizedForSound && data.optimizedForColor === 'No' && data.optimizedForSound=== 'No' ">
+                            <app-badge [status]="'50'" [label]="'0'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="showOptimizedForSound && (data.optimizedForColor && data.optimizedForSound) && ( (data.optimizedForColor === 'No' && data.optimizedForSound=== 'Yes' ) ||  (data.optimizedForColor === 'Yes' && data.optimizedForSound=== 'No' ))">
+                            <app-badge [status]="'100'" [label]="'50'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="!data.optimizedForColor && !data.optimizedForSound">
+                            'NA'
+                        </ng-container>
+                        
+                    </div>
+                   
+                     <!-- <div class="col-label-container" *ngIf="data">
+                        
+                        <ng-container *ngIf="data.optimizedForColor && data.optimizedForColor === 'Yes'">
+                            <app-badge [status]="'100'" [label]="'Yes'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.optimizedForColor && data.optimizedForColor === 'No'">
+                            <app-badge [status]="'50'" [label]="'No'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="!data.optimizedForColor">
+                            'NA'
+                        </ng-container>
+                        
+                    </div> -->
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight [(nzExpand)]="dcExpand" class="expand-icon"></td>
+            </tr>
+            <tr *ngIf="dcExpand" class="subRow">
+                <td nzLeft>Optimized for color</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <ng-container *ngIf="data.optimizedForColor && data.optimizedForColor === 'Yes'">
+                            <app-badge [status]="'100'" [label]="'Yes'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.optimizedForColor && data.optimizedForColor === 'No'">
+                            <app-badge [status]="'50'" [label]="'No'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="!data.optimizedForColor">
+                            'NA'
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+            <tr *ngIf="dcExpand && showOptimizedForSound" class="subRow">
+                <td nzLeft>Optimized for sound</td>
+                <td *ngFor="let data of compareObj">
+                    <div class="col-label-container" *ngIf="data">
+                        <ng-container *ngIf="data.optimizedForSound && data.optimizedForSound === 'Yes'">
+                            <app-badge [status]="'100'" [label]="'Yes'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="data.optimizedForSound && data.optimizedForSound === 'No'">
+                            <app-badge [status]="'50'" [label]="'No'"></app-badge>
+                        </ng-container>
+                        <ng-container *ngIf="!data.optimizedForSound">
+                            'NA'
+                        </ng-container>
+                    </div>
+                    <div class="col-label-container" *ngIf="!data">-</div>
+                </td>
+                <td></td>
+                <td nzRight></td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-content>
+
+
+<div id="compareNameModal"
+    style="z-index: 98;position: absolute;width: 30rem;top: 10%;left: 50%;transform: translateX(-50%); display: none;">
+    <div style="background: #FFF 0% 0% no-repeat padding-box;
+    box-shadow: 0.18rem 0.18rem 0.9rem #00000057;
+    border-radius: 0.5rem;
+    ">
+        <div style="background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 0.18rem 0.37rem #00000029;
+        border-radius: 0.5rem 0.5rem 0px 0px;">
+
+            <div class="videoUplHead"
+                style="display: flex;align-items: center;padding: 1rem;justify-content: space-between;">
+                <div class="headerT" style="display: flex; align-items: center;">
+                    Ad compare report name
+                </div>
+                <div class="closeIconPH" style="cursor: pointer;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    background: #C1C1C13B 0% 0% no-repeat padding-box;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;" (click)="closeCompareName()">
+                    <img src="assets/icons/Close.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div>
+            <ng-container>
+                <div class="container"
+                    style="padding:1rem; display: flex; align-items: center; justify-content: space-between; flex-direction: column;">
+                    <!-- <div class="input-list">
+                        <label class="input-label" for="compareName" id="llComparename">Ad compare report name</label>
+                        <input class="input-tick" id="compareName" name="compareName" [(ngModel)]="compareName"
+                            placeholder="Enter name" type="text">
+                    </div> -->
+                    <div class="row-input-container">
+                        <nz-form-item>
+                            <nz-form-label class="input-float-label">Report name<span style="color:#EF4444">*</span></nz-form-label>
+                            <nz-form-control class="role-form">
+                                <nz-input-group nzSearch nzSize="large">
+                                    <input nz-input type="text" class="rounded-input" nz-input placeholder="Ad compare report name" [(ngModel)]="compareName"
+                                    [ngModelOptions]="{standalone: true}"/>
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div class="row videocard">
+                        <div class="text-right">
+                            <app-button *ngIf="compareName" buttonClass="primary saveAdReport" label="Save" (click)="checkCompareName()"></app-button>
+                            <app-button *ngIf="!compareName" buttonClass="primary saveAdReport disabled" label="Save"></app-button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<div id="overlayModal" style="
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #66666680;
+    display: none;
+    z-index: 97;
+"></div>
+
+<div id="adPickerModal"
+    style="z-index: 98;position: absolute;width: 50rem;top: 10%;left: 50%;transform: translateX(-50%); display: none;">
+    <div style="background: #F8F8F8 0% 0% no-repeat padding-box;
+    box-shadow: 0.18rem 0.18rem 0.9rem #00000057;
+    border-radius: 0.5rem;
+    ">
+        <div style="background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 0.18rem 0.37rem #00000029;
+        border-radius: 0.5rem 0.5rem 0px 0px;">
+
+            <div class="videoUplHead"
+                style="display: flex;align-items: center;padding: 1rem;justify-content: space-between;">
+                <div class="headerT" style="display: flex; align-items: center;">
+                    <img src="assets/icons/selectAd.svg" alt=""
+                        style="width: 1.25rem; margin-right: 1.6rem;"> Select Ad
+                </div>
+                <!-- <div style="margin-left: 18rem;">
+                    <ul
+                        class="list-unstyled right-side-tag d-flex  justify-content-end align-items-center video-gallery-search">
+                        <li
+                            style="background: #39b3ea00 0% 0% no-repeat padding-box; border: 0.06rem solid #007AC1; height: 2rem; margin: 0;">
+                            <div
+                                class="searchbar-library d-flex justify-content-center justify-content-lg-end align-items-center">
+                                <input style="height: 1.25rem;" class="search_input-library" type="text" name=""
+                                    placeholder="Search..." [(ngModel)]="searchText">
+                                <img style="width: 1rem;" src="../incvs/assets/Search.png" alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="closeIconPH" style="cursor: pointer;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    background: #C1C1C13B 0% 0% no-repeat padding-box;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;" (click)="closeSelectAd()">
+                    <img src="assets/icons/Close.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div style="height: 20rem; overflow-y: scroll;">
+            <ng-container *ngIf="adList && adList.length">
+                <div class="container  paddingbtvideo pd-hm">
+                    <div class="row videocard mt-5">
+                        <div class="col-lg-3 col-md-6 col-sm-6" style="display: flex;"
+                            *ngFor="let ad of adList; let i = index">
+                            <div class="form-check check-video">
+                                <input style="width: 1rem; height: 1rem;" class="form-check-input" type="checkbox" id="{{ad.metadata.id}}"
+                                    (change)="toggleAdSelection($event,ad)">
+                            </div>
+                            <div class="video-content">
+                                <div class="only-video">
+                                    <img *ngIf="ad.metadata.artifactType == 'video'" src="{{ad.metadata.thumbnail}}" width="100%" class="videoImg"
+                                        style="max-height: 5.5rem; min-height: 5.5rem; border-radius: 0.5rem;" />
+                                    <img *ngIf="ad.metadata.artifactType == 'image'" src="{{ad.url}}" width="100%" class="videoImg"
+                                        style="max-height: 5.5rem; min-height: 5.5rem; border-radius: 0.5rem;" />
+                                </div>
+                                <div class="video-description">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-9" style="text-align: left;">
+                                                <h2 class="projectTitleCR" title="{{ad.metadata.title}}">
+                                                    {{ad.metadata.title}}</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

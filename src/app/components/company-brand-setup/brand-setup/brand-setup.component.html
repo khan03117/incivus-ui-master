@@ -1,0 +1,27 @@
+<form nz-form nzLayout ="vertical" [formGroup]="addBrandForm">
+    <nz-form-item>
+        <nz-form-label nzFor="brand-name" class="input-float-label">Add master brand</nz-form-label>
+        <nz-form-control [nzValidateStatus]="( f['brandName'].errors || brandDupError ) && submitted ? 'error':'noError'"  nzErrorTip="Mandatory field or brand already exist">
+          <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="csButton">
+            <input type="text" nzSearch nz-input placeholder="Enter your brand name" id="brand-name" formControlName="brandName"/>
+          </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <ng-template #csButton>
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="addBrandName()">Add</button>
+    </ng-template>
+</form>
+<div class="brand-tag-details" *ngIf="brandDetails && brandDetails.length > 0">
+  <nz-tag *ngFor="let tag of brandDetails; let i = index">
+    <span>{{ sliceTagName(tag.masterBrand.name) }}</span>
+    <button nz-button nzType="primary" (click)="addBrandDetails(tag.masterBrand.name)">{{tag.productBrand && tag.productBrand.length ? 'Edit details' : tag.masterBrand.id ? 'Edit details' : 'Add details'}}</button>
+  </nz-tag>
+</div>
+    
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <!-- <app-button buttonClass="secondary" label="Cancel" [myCallback]="buttonCallback"></app-button> -->
+            <!-- <app-button buttonClass="primary" label="Save Progress" [myCallback]="save"></app-button> -->
+        </div>
+    </div>
+<!-- </form> -->

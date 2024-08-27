@@ -1,0 +1,38 @@
+<div class="setup-conatainer" *ngIf="fullBC === 'false'">
+  <div class="setup-wrapper">
+    <nz-breadcrumb [nzSeparator]="iconTemplate">
+      <nz-breadcrumb-item></nz-breadcrumb-item>
+      <nz-breadcrumb-item>{{ label }}</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <ng-template #iconTemplate>
+      <a routerLink="{{ myCallback }}">
+        <svg
+          title="{{ label }}"
+          xmlns="http://www.w3.org/2000/svg"
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+        >
+          <path
+            d="M24.5169 13.5333L18.0502 20L24.5169 26.4667C25.1669 27.1167 25.1669 28.1667 24.5169 28.8167C23.8669 29.4667 22.8169 29.4667 22.1669 28.8167L14.5169 21.1667C13.8669 20.5167 13.8669 19.4667 14.5169 18.8167L22.1669 11.1667C22.8169 10.5167 23.8669 10.5167 24.5169 11.1667C25.1502 11.8167 25.1669 12.8833 24.5169 13.5333Z"
+            fill="#1E293B"
+          />
+        </svg>
+      </a>
+    </ng-template>
+  </div>
+</div>
+
+<nz-breadcrumb nzSeparator=">" *ngIf="fullBC === 'true'">
+  <nz-breadcrumb-item *ngFor="let label of labels">
+    <ng-container *ngIf="label.link else notLinked">
+      <a href="javascript:void(0)" routerLink="{{ label.link }}">
+        {{ label.name | capitalize:capitalize}}
+      </a>
+    </ng-container>
+    <ng-template #notLinked>
+      <span [ngStyle]="{ 'font-weight': label.bold ? '500' : 'normal' }">{{ label.name | capitalize: capitalize }}</span>
+    </ng-template>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>

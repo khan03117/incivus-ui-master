@@ -1,0 +1,107 @@
+.ant-modal {
+  width: 40rem;
+
+  &.feature-modal {
+    width: 45.25rem !important;
+  }
+  &.report-details-modal {
+    width: 63.5rem !important;
+    max-width: 1100px;
+    .ant-modal-body {
+      padding: 0.5rem;
+    }
+    .ant-modal-header {
+      display: none;
+    }
+    .report-card {
+      max-width: 25rem;
+    }
+  }
+  // &.full-width-modal{
+  //     max-width: 63.5rem !important;;
+  // }
+  .ant-modal-content {
+    padding: 1.25rem;
+    border-radius: 1.125rem;
+    .ant-modal-header {
+      border-bottom: none;
+      // margin-bottom: 1.563rem;
+      .ant-modal-title {
+        font-size: 0.87rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        letter-spacing: 0em;
+        text-align: left;
+      }
+    }
+    .ant-modal-body {
+      // .form-description{
+      //     display: none;
+      // }
+      .setup-wrapper {
+                border:0.063rem solid #2B95FF;
+        border-radius: 1.125rem;
+        margin-bottom: 1.563rem;
+        .ant-collapse {
+          border-radius: 1.125rem;
+          border: none;
+          background: #fff;
+          .ant-collapse-item {
+            border-bottom: none;
+          }
+          .ant-collapse-header {
+            padding: 1.5rem 2.5rem 1.5rem 1.5rem;
+            .input-radio-label {
+              label {
+                font-size: 0.87rem;
+              }
+            }
+          }
+          .row-switch-container {
+            margin: 0rem;
+            display: grid;
+            grid-template-columns: 3.125rem auto;
+          }
+        }
+        .ant-collapse-content {
+          border: none;
+          border-radius: 1.125rem;
+          .ant-collapse-content-box {
+            padding: 0rem 1.5rem 1.5rem;
+            .chk-box-label {
+              label {
+                font-size: 0.87rem;
+                font-weight: 500;
+                margin-bottom: 0.625rem;
+              }
+              .ant-checkbox-inner {
+                width: 1.125rem;
+                height: 1.125rem;
+                                border:0.125rem solid #212B36;
+                border-radius: 0.188rem;
+              }
+              .ant-checkbox-checked {
+                .ant-checkbox-inner {
+                                    border:0.125rem solid #1890FF;
+                }
+                &::after {
+                  border-radius: 0.188rem;
+                                    border:0.125rem solid #1890FF;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .ant-modal-close {
+      top: 0.938rem;
+      right: 0.938rem;
+      .ant-modal-close-icon {
+        font-size: 0.87rem;
+                color:#212B36;
+        font-weight: 600;
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+<div class="ant-layout-content-list">
+    <ng-container *ngIf="finalCreativeData.length === 0">
+        <nz-empty
+            nzNotFoundImage="assets/no-creatives.svg"
+            [nzNotFoundContent]="contentTpl"
+        >
+            <ng-template #contentTpl>
+                <h4>
+                    No creatives yet!
+                </h4>
+                <p>There are no creatives uploaded and analyzed for your review.</p>
+            </ng-template>
+        </nz-empty>
+    </ng-container>
+    <ng-container *ngIf="finalCreativeData.length > 0">
+        <div class="carousel-container carousel-grid">
+            <owl-carousel-o [options]="creativeOptions" #creativeCarousel>
+                <ng-container *ngIf="finalCreativeData.length > 4">
+                    <ng-container *ngFor="let creativeItem of finalCreativeData; let i = index; let even = even">
+                        <ng-container *ngIf="even">
+                            <ng-template carouselSlide>
+                                <nz-list nzGrid *ngIf="finalCreativeData[i]">
+                                    <!-- <div nz-row [nzGutter]="24">
+                                        <div nz-col [nzXXl]="24" [nzXl]="24" [nzLg]="24" [nzMd]="24" [nzSm]="6" [nzXs]="6" > -->
+                                            <div class="flex-grid-item">
+                                                <div class="grid-checkbox-wrapper"><label nz-checkbox [nzChecked]="setOfCheckedId.has(finalCreativeData[i].metadata.id)" (nzCheckedChange)="onItemChecked(finalCreativeData[i].metadata.id, finalCreativeData[i].metadata.brand, $event)" nzValue="{{finalCreativeData[i].metadata.id}}"></label></div>
+                                                <nz-card class="abTestCard" [nzCover]="coverTemplate" [nzActions]="[actionIcon, actionEllipsis]">
+                                                    <nz-card-meta></nz-card-meta>
+                                                </nz-card>
+                                            </div>
+                                            
+                                            <ng-template #coverTemplate>
+                                                <img alt="{{finalCreativeData[i].metadata.title}}" *ngIf="finalCreativeData[i].metadata.artifactType === 'video'" [src]="finalCreativeData[i].metadata.thumbnail" />
+                                                <img alt="{{finalCreativeData[i].metadata.title}}" *ngIf="finalCreativeData[i].metadata.artifactType === 'image'" [src]="finalCreativeData[i].url" />
+                                            </ng-template>
+                                            <ng-template #actionIcon>
+                                                <img *ngIf="finalCreativeData[i].metadata.artifactType === 'video'" nz-icon src="assets/icons/creative_video.svg">
+                                                <img *ngIf="finalCreativeData[i].metadata.artifactType === 'image'" nz-icon src="assets/icons/creative_image.svg">
+                                            </ng-template>
+                                            <ng-template #actionEllipsis>
+                                                <app-badge [status]="finalCreativeData[i].metadata.status" [label]="getCes(finalCreativeData[i]['metadata']['ces'])"></app-badge>
+                                            </ng-template>
+                                        <!-- </div>
+                                    </div> -->
+                                </nz-list>
+                                <nz-list nzGrid *ngIf="finalCreativeData[i+1]">
+                                    <!-- <div nz-row [nzGutter]="24">
+                                        <div nz-col [nzXXl]="24" [nzXl]="24" [nzLg]="24" [nzMd]="24" [nzSm]="6" [nzXs]="6" > -->
+                                            <div class="flex-grid-item">
+                                                <div class="grid-checkbox-wrapper"><label nz-checkbox [nzChecked]="setOfCheckedId.has(finalCreativeData[i+1].metadata.id)" (nzCheckedChange)="onItemChecked(finalCreativeData[i+1].metadata.id, finalCreativeData[i+1].metadata.brand, $event)" nzValue="{{finalCreativeData[i+1].metadata.id}}"></label></div>
+                                                <nz-card class="abTestCard" [nzCover]="coverTemplate" [nzActions]="[actionIcon, actionEllipsis]">
+                                                    <nz-card-meta></nz-card-meta>
+                                                </nz-card>
+                                            </div>
+                                            
+                                            <ng-template #coverTemplate>
+                                                <img alt="{{finalCreativeData[i+1].metadata.title}}" *ngIf="finalCreativeData[i+1].metadata.artifactType === 'video'" [src]="finalCreativeData[i+1].metadata.thumbnail" />
+                                                <img alt="{{finalCreativeData[i+1].metadata.title}}" *ngIf="finalCreativeData[i+1].metadata.artifactType === 'image'" [src]="finalCreativeData[i+1].url" />
+                                            </ng-template>
+                                            <ng-template #actionIcon>
+                                                <img *ngIf="finalCreativeData[i+1].metadata.artifactType === 'video'" nz-icon src="assets/icons/creative_video.svg">
+                                                <img *ngIf="finalCreativeData[i+1].metadata.artifactType === 'image'" nz-icon src="assets/icons/creative_image.svg">
+                                            </ng-template>
+                                            <ng-template #actionEllipsis>
+                                                <app-badge [status]="finalCreativeData[i+1].metadata.status" [label]="getCes(finalCreativeData[i]['metadata']['ces'])"></app-badge>
+                                            </ng-template>
+                                        <!-- </div>
+                                    </div> -->
+                                </nz-list>
+                            </ng-template>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="finalCreativeData.length <= 4">
+                    <ng-container *ngFor="let creativeItem of finalCreativeData; let i = index; let even = even">
+                            <ng-template carouselSlide>
+                                <nz-list nzGrid>
+                                    <!-- <div nz-row [nzGutter]="24">
+                                        <div nz-col [nzXXl]="24" [nzXl]="24" [nzLg]="24" [nzMd]="24" [nzSm]="6" [nzXs]="6" > -->
+                                            <div class="flex-grid-item">
+                                                <div class="grid-checkbox-wrapper"><label nz-checkbox [nzChecked]="setOfCheckedId.has(finalCreativeData[i].metadata.id)" (nzCheckedChange)="onItemChecked(finalCreativeData[i].metadata.id, finalCreativeData[i].metadata.brand, $event)" nzValue="{{finalCreativeData[i].metadata.id}}"></label></div>
+                                                <nz-card class="abTestCard" [nzCover]="coverTemplate" [nzActions]="[actionIcon, actionEllipsis]">
+                                                    <nz-card-meta></nz-card-meta>
+                                                </nz-card>
+                                            </div>
+                                            
+                                            <ng-template #coverTemplate>
+                                                <img alt="{{finalCreativeData[i].metadata.title}}" *ngIf="finalCreativeData[i].metadata.artifactType === 'video'" [src]="finalCreativeData[i].metadata.thumbnail" />
+                                                <img alt="{{finalCreativeData[i].metadata.title}}" *ngIf="finalCreativeData[i].metadata.artifactType === 'image'" [src]="finalCreativeData[i].url" />
+                                            </ng-template>
+                                            <ng-template #actionIcon>
+                                                <img *ngIf="finalCreativeData[i].metadata.artifactType === 'video'" nz-icon src="assets/icons/creative_video.svg">
+                                                <img *ngIf="finalCreativeData[i].metadata.artifactType === 'image'" nz-icon src="assets/icons/creative_image.svg">
+                                            </ng-template>
+                                            <ng-template #actionEllipsis>
+                                                <app-badge [status]="finalCreativeData[i].metadata.status" [label]="getCes(finalCreativeData[i]['metadata']['ces'])"></app-badge>
+                                            </ng-template>
+                                        <!-- </div>
+                                    </div> -->
+                                </nz-list>
+                            </ng-template>
+                    </ng-container>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,21 @@
+<div class="upload-wrapper">
+    <nz-upload [nzAccept]="fileAccept" [nzBeforeUpload]="beforeUploadLogo" nzMultiple="false" [nzShowUploadList]="uploadInfo">
+        <button nz-button>
+            <div class="button-content" *ngIf="!logoListPreview">
+                <span>Drag & Drop here</span>
+                <span>OR</span>
+                <span class="browse-file">Browse files</span>
+            </div>
+            <div class="image-preview" *ngIf="logoListPreview">
+                <img [src]=sanitize(logoListPreview) style="width: 100%; max-height: 9rem;" *ngIf="fileType === 'image' || type === 'image'"/>
+                <video *ngIf="fileType === 'video' || type === 'video'" style="width: 100%; max-height: 9rem;">
+                    <source [src]="sanitize(logoListPreview)" id="source_video"/>
+                </video>
+            </div>
+        </button>
+    </nz-upload>
+    <label class="upload-label error" *ngIf="errorMsg">{{errorMsg}}</label>
+    <label class="upload-label" *ngIf="fileType === 'image'">Accepted files types : <span>.png, .jpg, .jpeg</span></label>
+    <label class="upload-label" *ngIf="fileType === 'video'">Accepted files types : <span>.mp4, .avi, .wmv, .ogg, .webm, .mov</span></label>
+    <label class="upload-label" *ngIf="fileType === 'any'">Accepted files types : <span>.mp4,.avi,.wmv,.ogg,.webm,.mov,.jpg, .jpeg, .png</span></label>
+</div>

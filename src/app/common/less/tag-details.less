@@ -1,0 +1,29 @@
+.custom-tag-details{
+    display: flex;
+    gap:1.25rem;
+    margin:1.25rem 0rem 1.875rem 0rem;
+    &.compliance-tag-details{
+        max-width: 40rem;
+        flex-wrap: wrap;
+        nz-tag{
+            background-color: #E7F8FF;
+            color: #1E293B;
+        }
+    }
+    nz-tag{
+        border: 0.031rem solid #38B3E4;
+        display: flex;
+        align-items: center;
+        padding: 1.125rem;
+        border-radius: 1.125rem;
+        font-size: 0.87rem;
+        .ant-tag-close-icon{
+            margin-left: 0.625rem;
+            svg{
+                width: 0.75rem;
+                height: 0.75rem;
+                fill: #1E293B;
+            }
+        }
+    }
+}

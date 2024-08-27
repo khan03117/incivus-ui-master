@@ -1,0 +1,49 @@
+<div class="super_container" id="authContainer">
+  <div class="container maincontainer d-flex justify-content-center flex-column mx-auto">
+    <div class="row">
+      <div class="col-lg-7 col-md-10 col-sm-10 col-10  mx-auto middle-container  text-center">
+        <div class="login-form-container">
+        <div class="col-sm-12 ">
+          <img src="assets/incivus new logo.svg" class="logoPH"/>
+        </div>
+        <div class="" style="margin: 0.75rem 0 1rem 0;" *ngIf="!confForgotPwd">
+          <div class="login-text" style="margin-bottom: 0.5rem;">Reset your password</div>
+          <div class="login-text">Please enter your email id. We will send you a link to reset your password.</div>
+        </div>
+        <app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+        <div class="col-sm-12 logininput">
+          <form nz-form nzLayout ="vertical" *ngIf="!confForgotPwd" class="login_white_container password_cred_container fleft" name="forgotPwd" [formGroup]="forgotPwdForm">
+            <nz-card class="loginCard">
+              <div class="row-input-container">
+                <nz-form-item>
+                    <nz-form-label class="input-float-label">Email Id<span style="color:#EF4444">*</span></nz-form-label>
+                    <nz-form-control class="role-form" [nzValidateStatus]="f['username'].errors && rnBlur ? 'error':''"  nzErrorTip="Email is mandatory and provide valid email">
+                        <nz-input-group nzSearch nzSize="large">
+                            <input nz-input type="text" class="rounded-input" (blur)="rnBlur=true" (focus)="rnBlur=false" nz-input placeholder="Email id" formControlName="username" id="username"/>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+              </div>
+            </nz-card>  
+
+            <app-button buttonClass="primary" label="Send" (click)="onSubmit()"></app-button>
+            <div class="mb-3 forgetpswd go-to">
+                <h3><a href="javascript:void(0)" (click)="login()">Go back to login</a></h3>
+            </div>
+          </form>
+          <div *ngIf="confForgotPwd">
+              <div class="col-sm-12 my-5 fpSuccessIcon">
+                <img src="assets/checked.png"/>
+              </div>
+              <div class="logininput">
+                <div class="login-text">Please check your email to reset your password through password link.</div>
+              </div>
+              <div class="col-sm-12 my-4">
+                <app-button buttonClass="primary" label="Login" (click)="login()"></app-button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

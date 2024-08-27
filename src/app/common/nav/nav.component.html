@@ -1,0 +1,230 @@
+<nz-sider
+  nzCollapsible
+  [(nzCollapsed)]="isCollapsed"
+  [nzTrigger]="null"
+  nzWidth="15.87rem"
+  [nzCollapsedWidth]="104"
+>
+  <div class="logo-container">
+    <div class="logo-expand">
+      <img
+        [src]="
+          isCollapsed
+            ? 'assets/icons/incivus-mob-logo.svg'
+            : 'assets/icons/incivus-logo.svg'
+        "
+      />
+    </div>
+    <span
+      class="nav-arrow"
+      [class.nav-arrow-collpse]="isCollapsed"
+      (click)="floatNavMenu()"
+    ></span>
+  </div>
+  <ul nz-menu nzMode="inline">
+    <li
+      nz-menu-item
+       *ngIf="(isUser || isTrialUser) && show.preFlight" 
+      [nzSelected]="page === 'pre-flight'"
+       nzMenuClassName="submenulist"
+       nzOpen="true"
+      (click)="openPage(['creatives', 'pre-flight', 'list'])"
+    >
+      <span class="menu-icon"><img src="assets/icons/pre-flight.svg" /></span>
+      <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+        >Pre-flight</span
+      >
+    </li>
+    <li
+      nz-menu-item
+      *ngIf="(isUser || isTrialUser) && show.inFlight"  
+      [nzSelected]="page === 'in-flight'"
+      (click)="openPage(['creatives', 'in-flight', 'list'])"
+    >
+      <span class="menu-icon"><img src="assets/icons/in-flight.svg" /></span>
+      <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+        >In-flight</span
+      >
+    </li>
+    <li
+      nz-menu-item
+      *ngIf="(isUser || isTrialUser) && show.postFlight"
+      [nzSelected]="page === 'post-flight'"
+      (click)="openPage(['creatives', 'post-flight', 'list'])"
+      
+    >
+      <span class="menu-icon"><img src="assets/icons/post-flight.svg" /></span>
+      <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+        >Post-flight</span
+      >
+    </li>
+
+    <li
+      nz-menu-item
+      *ngIf="!isClAdmin && !isIncAdmin && !isServiceManager && showABTest"
+      [nzSelected]="page === 'compare'"
+      (click)="openPage(['compare', 'creative'])"
+    >
+      <span class="menu-icon"><img src="assets/icons/ad-testing.svg" /></span>
+      <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+        >A/B Testing</span
+      >
+    </li>
+    <li
+      nz-submenu
+       nzOpen="isAdmin"
+      *ngIf="!isServiceManager && 
+
+      ((show.inFlight || show.preFlight || show.postFlight
+      ) && (user?.permission?.viewFullReport || user?.permission?.viewSummaryPage) || isIncAdmin)"
+      nzMenuClassName="submenulist"
+    >
+      <span title>
+        <span class="menu-icon"><img src="assets/icons/nav-report.svg" /></span>
+        <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+          >Reports</span
+        >
+      </span>
+      <ul>
+        <li
+          nz-menu-item
+          [nzSelected]="page === 'reports-pre-flight'"
+          *ngIf="isIncAdmin || (isUser || isTrialUser) && show.preFlight" 
+          (click)="openPage(['reports', 'pre-flight', 'list'])"
+        >
+          Pre-flight
+        </li>
+
+        <li
+          nz-menu-item
+          [nzSelected]="page === 'reports-in-flight'"
+          *ngIf="isIncAdmin || (isUser || isTrialUser) && show.inFlight"
+          (click)="openPage(['reports', 'in-flight', 'list'])"
+        >
+          In-flight
+        </li>
+
+        <li
+          nz-menu-item
+          [nzSelected]="page === 'reports-post-flight'"
+          *ngIf="isIncAdmin || (isUser || isTrialUser) && show.postFlight"
+          (click)="openPage(['reports', 'post-flight', 'list'])"
+        >
+          Post-flight
+        </li>
+      </ul>
+    </li>
+     <li
+      nz-submenu
+      nzOpen="isAdmin"
+      nzMenuClassName="submenulist"
+      *ngIf="show.serviceRequest"
+    >
+      <span title>
+        <span class="menu-icon"
+          ><img src="assets\icons\services-request.svg"
+        /></span>
+        <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+          >Service Requests</span
+        >
+      </span>
+      <ul>
+        <li
+          nz-menu-item
+          [nzSelected]="page === 'service-requests/all'"
+          (click)="openPage(['client', 'service-requests', 'all'])"
+        >
+          All
+        </li>
+        <li
+          nz-menu-item
+          [nzSelected]="page === 'service-requests/archived'"
+          (click)="openPage(['client', 'service-requests', 'archived'])"
+        >
+          Archived
+        </li>
+      </ul>
+    </li>
+    <li
+      nz-submenu
+      nzOpen="isAdmin"
+      nzMenuClassName="submenulist"
+      *ngIf="!(isUser || isTrialUser)"
+    >
+      <span title>
+        <span class="menu-icon"><img src="assets/icons/settings.svg" /></span>
+        <span [class.collapseNavText]="isCollapsed" class="menu-link-text"
+          >Settings</span
+        >
+      </span>
+      <ul>
+        <li
+          nz-menu-item
+          *ngIf="isClAdmin"
+          [nzSelected]="page === 'users'"
+          (click)="openPage(['client', 'user'])"
+        >
+          Users
+        </li>
+        <li
+          nz-menu-item
+          *ngIf="
+            user?.roles?.includes(ROLES.SERVICE_MANAGER) ||
+            user?.roles?.includes(ROLES.INC_ADMIN)
+          "
+          [nzSelected]="page === 'service-requests/all'"
+          (click)="openPage(['client', 'service-requests', 'all'])"
+        >
+          Task List
+        </li>
+        <li
+          nz-menu-item
+          *ngIf="isClAdmin"
+          [nzSelected]="page === 'permission'"
+          (click)="openPage(['client', 'permission'])"
+        >
+          Permissions
+        </li>
+        <li
+          nz-menu-item
+          *ngIf="isClAdmin"
+          [nzSelected]="page === 'roles'"
+          (click)="openPage(['client', 'role'])"
+        >
+          Roles
+        </li>
+        <li
+          nz-menu-item
+          *ngIf="isClAdmin"
+          [nzSelected]="page === 'company'"
+          (click)="
+            openPage(isIncAdmin ? ['client', 'list'] : ['client', 'company'])
+          "
+        >
+          Company setup
+        </li>
+        <li
+          nz-menu-item
+          *ngIf="isClAdmin && (user?.client?.featureAccess?.inFlight?.isAvailable == true
+      || user?.client?.featureAccess?.postFlight?.isAvailable == true)"
+          [nzSelected]="page === 'media-accounts'"
+          (click)="
+            openPage(['client', 'media-accounts'])
+          "
+        >
+          Media accounts
+        </li>
+        <li
+          nz-menu-item
+          *ngIf="isIncAdmin"
+          [nzSelected]="page === 'company'"
+          (click)="
+            openPage(isIncAdmin ? ['client', 'list'] : ['client', 'company'])
+          "
+        >
+          Customer setup
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nz-sider>

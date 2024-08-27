@@ -1,0 +1,302 @@
+@import url('../../../common/less/form-component.less');
+@import url('../../../common/less/custom-component.less');
+
+.custom-check-dropdown .ant-select-dropdown .ant-select-item .ant-select-item-option-content {
+    display: inline-block;
+}
+
+.brand-list-container{
+    .product-details{
+        font-size: 0.87rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+    }
+    .guideline-title{
+        font-size: 0.87rem;
+        font-weight: 500;
+        color: #1E293B;
+        margin-bottom: 1.25rem;
+    }
+    .guideline-additional-input{
+        .guideline-additional-wrapper{
+            margin: 0 !important;
+        }
+        .ant-form-item{
+            margin: 0;
+            width: 100%;
+        }
+        .ant-card{
+            border: none;
+            padding: 0;
+            margin-bottom: 1rem;
+            &.custom-radio-input{
+                .ant-card-body{
+                    padding: 1.5rem;
+                }
+                .ant-form-item {
+                    margin-bottom: 1rem;
+                }
+                .ant-radio-group{
+                    height: 2.563rem;
+                    align-items: center;
+                    display: flex;
+                    box-sizing: border-box;
+                    background: transparent;
+                    margin-bottom: 0.75rem;
+                    .ant-radio-button-wrapper{
+                        border: none;
+                        background-color: #E7F8FF;
+                        padding: 10px;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        border-top: 0.063rem solid #2B95FF;
+                        border-bottom: 0.063rem solid #2B95FF;
+                        transition: transform .2s;
+                        height: 1.5rem;
+                        &.cdk-focused{
+                            outline: none;
+                        }
+                        &:before{
+                            display: none;
+                        }
+                        &:first-child{
+                            border-top-left-radius: 0.5rem;
+                            border-bottom-left-radius: 0.5rem;
+                            border-left: 0.063rem solid #2B95FF;
+                        }
+                        &:last-child{
+                            border-top-right-radius: 0.5rem;
+                            border-bottom-right-radius: 0.5rem;
+                            border-right: 0.063rem solid #2B95FF;
+                        }
+                        &.ant-radio-button-wrapper-checked{
+                            background: #39B3EA;
+                            border-radius: 0.5rem;
+                            font-size: 0.87rem;
+                            height: 2rem;
+                            box-shadow: unset;
+                        }
+                    }
+                }
+            }
+            &.emotions-checkbox {
+                .ant-checkbox-wrapper{
+                    margin-bottom: 0.625rem;
+                    .ant-checkbox{
+                        display: none;
+                        & + span{
+                            padding: 0.5rem;
+                            border-radius: 0.5rem;
+                            background: #fff;
+                            border:0.063rem solid #CBD5E1;
+                            color: #1E293B;
+                            max-height: 2.063rem;
+                            display: flex;
+                            align-items: center;
+                            position: relative;
+                        }
+                        &.ant-checkbox-checked{
+                            & + span{
+                                padding-right: 1.625rem;
+                                border:0.063rem solid #38B3E4;
+                                background: #E7F8FF;
+                                &:after, &:before{
+                                    content:"";
+                                    width: 0.75rem;
+                                    height: 0.75rem;
+                                    border-right: 0.125rem solid #1E293B;
+                                    position: absolute;
+                                    right:12px;
+                                }
+                                &:after{
+                                    transform: rotateZ(45deg);
+                                    top:8px;
+                                    
+                                }
+                                &:before{
+                                    transform: rotateZ(-45deg);
+                                    top:17px;
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            .ant-card-head{
+                min-height: unset;
+                padding: 0;
+                line-height: 0.938rem;
+                border-bottom: none;
+                .ant-card-head-title{
+                    padding: 0 0 0.75rem 0;
+                }
+            }
+            .ant-card-body{
+                padding: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border: 0.063rem solid #2B95FF;
+                border-radius: 1rem;
+                .form-input-item{
+                    margin-bottom: 1.5rem;
+                    .ant-radio-wrapper{
+                        margin-bottom: 0.5rem;
+                        display: flex;
+                    }
+                }
+                .ant-upload{
+                    button{
+                        font-size: 0.87rem;
+                        font-weight: 400;
+                        color:#475569;
+                        height: 3.5rem;
+                        background: #EAF4FE;
+                        border-radius: 0.25rem;
+                        border: none;
+                        background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='4' ry='4' stroke='%2364748BFF' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='12' stroke-linecap='square'/%3e%3c/svg%3e");
+                        .browse-file{
+                            font-weight: 500;
+                            color:#39B3EA;
+                        }
+                    }
+                }
+                nz-upload{
+                    display: flex;
+                    flex-direction: column-reverse;
+                    nz-upload-list{
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        margin-bottom: 1.5rem;
+                        .ant-upload-list-item{
+                            padding: 0;
+                            border: none;
+                            height: unset;
+                            margin: 0;
+                        }
+                        .ant-upload-list-picture-container{
+                            margin-right: 0.625rem;
+                            margin-bottom: 0.625rem;
+                            .ant-upload-list-item-thumbnail{
+                                width: 2.5rem;
+                                height: 2.5rem;
+                                img{
+                                    border-radius: 50%;
+                                    width: 2.5rem;
+                                    height: 2.5rem;
+                                }
+                            }
+                        }
+                        .ant-upload-list-item-name{
+                            display: none;
+                        }
+                    }
+                }
+                .color-preview{
+                    margin-bottom: 1.5rem;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap:0.5rem;
+                    .ant-tag{
+                        width: 2.5rem;
+                        height: 2.5rem;
+                        border-radius: 50%;
+                        margin: 0;
+                    }
+                }
+                .keyword-preview, .tagline-preview, .product-form-preview, .signature-preview{
+                    margin-bottom: 1.5rem;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap:0.625rem;
+                    .ant-tag{
+                        padding: 0.5rem;
+                        border: 0.063rem solid #38B3E4;
+                        border-radius: 0.5rem;
+                        background-color: #E7F8FF;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin: 0;
+                        .tagName{
+                            font-size: 0.87rem;
+                            line-height: 0.75rem;
+                        }
+                        .ant-tag-close-icon{
+                            width:0.75rem;
+                            height: 0.75rem;
+                            margin-left: 0.5rem;
+                            svg{
+                                width: 100%;
+                                height: 100%;
+                                color: #1E293B;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.br-selected-list{
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    &.fullWidth {
+        width: 100%;
+    }
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            position: relative;
+            width: 3.1rem;
+            height: 3.1rem;
+            margin: 0 0.8rem 0.8rem 0;
+            border: 0.06rem solid #9a9a9a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem;
+            &:hover {
+                .close-icon-cont {
+                    display: block !important;
+                    &+div {
+                        display: block !important;
+                    }
+                }    
+            }
+            .close-icon-cont {
+                position: absolute;
+                box-shadow: -0.06rem 0.3rem 0.37rem #00000024;
+                top: 0;
+                right: 0;
+                background: #fff;
+                border-radius: 50%;
+                width: 0.7rem;
+                height: 0.7rem;
+                cursor: pointer;
+                display: none;
+                img {
+                    width: 0.4rem;
+                    margin: 0.15rem auto;
+                    background: #fff;
+                    display: inherit;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+.ant-card-extra {
+    font-size: 0.87rem;
+    padding: 0 0 0.75rem 0;
+}

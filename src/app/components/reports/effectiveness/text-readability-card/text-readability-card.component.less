@@ -1,0 +1,50 @@
+@import url('../../../../common/less/report-card.less');
+.tag-container{
+    .title{
+        font-size: 0.87rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+    .tag-details{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        max-width: 35rem;
+        .ant-tag{
+            padding: 1rem;
+            font-size: 0.87rem;
+            font-weight: 400;
+            border-radius: 1rem;
+        }
+    }
+}
+
+.card-details-container .report-details-card.textReCon {
+    width: 33% !important;
+    .perCardHt {
+        width: 100%;
+    }
+}
+
+.card-details-wrapper {
+    &.tr-card-details {
+        align-items: stretch;
+        .report-details-card.textReCon {
+            display: flex;
+            align-items: stretch;
+            .ant-card-body {
+                display: flex;
+                align-items: stretch;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.card-details-wrapper {
+    &.tr-card-info {
+        .description-container {
+            margin-top: 0;
+        }
+    }
+}

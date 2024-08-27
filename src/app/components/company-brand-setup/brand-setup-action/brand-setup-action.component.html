@@ -1,0 +1,14 @@
+<app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+<div class="action-container">
+    <!-- <div class="action-title">{{brandDetails.masterBrand.name | titlecase}}</div> -->
+    <app-brand-list *ngIf="brandDetails" [brandDetailsList]="brandDetails" [tagLength]="15" [myCallback]="handleClose"></app-brand-list>
+    <div class="action-list">
+        <!-- <button nz-button nzType="primary" nzGhost nzBlock (click)="renderAddProdcuts()">+ Add products</button> -->
+        <button nz-button nzType="primary" nzGhost nzBlock (click)="renderAddBrandGuildeline()">+ Add brand guidelines</button>
+    </div>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="secondary" label="Go back" [loading]="submitted" [myCallback]="closeModal"></app-button>
+        </div>
+    </div>
+</div>

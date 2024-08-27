@@ -1,0 +1,31 @@
+<!-- <app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert> -->
+<form nz-form nzLayout ="vertical" [formGroup]="createFolderForm">
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group nzSearch nzSize="large">
+                <nz-select
+                    nzPlaceHolder="*Select a folder"
+                    formControlName="selectedFolder"
+                    nzDropdownClassName="custom-check-dropdown"
+                    nzShowSearch="false"
+                >
+                    <nz-option *ngFor="let folder of folderList" nzValue="{{folder}}" nzLabel="{{folder | titlecase}}" ></nz-option>
+                </nz-select>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="card-title">Or create new folder</div>
+    <nz-form-item>
+        <nz-form-control style="text-align: left;">
+            <nz-input-group nzSearch nzSize="large">
+                <input nz-input type="text" class="rounded-input" nz-input placeholder="*Enter a folder name" formControlName="folderName" id="folderName"/>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="secondary" label="Skip" [myCallback]="cancel"></app-button>
+            <app-button buttonClass="primary" label="Ok" [myCallback]="createFolder"></app-button>
+        </div>
+    </div>
+</form>

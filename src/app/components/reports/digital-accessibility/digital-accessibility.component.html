@@ -1,0 +1,99 @@
+<div class="card-details-container">
+    <nz-breadcrumb nzSeparator=">" class="marginBottomSpace">
+        <nz-breadcrumb-item>{{data.title | titlecase}}</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+            <a>Digital accessibility</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngIf="!showDigital">Color contrast</nz-breadcrumb-item>
+    </nz-breadcrumb>
+
+    <div class="tab-button-list">
+        <app-button buttonClass="{{showDigital && 'default-btn active' || 'default-btn' }}" label="Digital accessibility" [myCallback]="switchBtnClick"></app-button>
+        <app-button buttonClass="{{!showDigital && 'default-btn active' || 'default-btn' }}" label="Color contrast" [myCallback]="switchBtnClick"></app-button>
+    </div>
+
+    <app-report-card *ngIf="!showDigital"
+        title="Color contrast"
+        description="By eliminating barriers in our digital content, we show that we care about all consumers-not just those with specific abilities."
+        [score]="data.data.colorContrast"
+        [scoreDisplay]="data.data.colorContrast ? data.data.colorContrast.toFixed(2) : 'NA'"
+        rangeInfo="Above 53"
+        metric="COLOR"
+    ></app-report-card>
+    <nz-divider></nz-divider>
+    
+    <div *ngIf="!showDigital" class="card-details-wrapper">
+        <app-color-contrast [data]="data.data"></app-color-contrast>
+
+    </div>
+    
+    <div *ngIf="showDigital" class="card-details-wrapper digital-acc">
+        <div class="focus-details-wrapper">
+            <div class="focus-description">According to the World Health Organization, 15% of the global population lives with some form of a disability. An accessibility-conscious brand is expanding their target market and tapping into over $6 trillion in spending power. </div>
+
+            <div style="display: flex;">
+            <nz-card class="report-details-card" [nzBordered]="false" *ngIf="isVideoReport && this.checkOptimizedForsound">
+                <div class="details-card-wrapper">
+                    
+                    <div nz-row style="justify-content: space-between;">
+                        <div nz-col><div class="title">Optimized for sound-off</div></div>
+                        <div nz-col style="height: 2rem;padding: 0 0.5rem;"></div>
+                    </div>
+                    <div class="target-title">
+                        <span nz-icon nzType="check-circle" nzTheme="fill"></span>
+                        <span>{{ optimizedForSound | titlecase}}</span>
+                    </div>
+
+                    <div *ngIf="optimizedForSound === 'Yes'" class="text_desc">
+                        Well done! Your ad is optimized for sound.
+                        <!-- ok -->
+                    </div>
+                    <div *ngIf="optimizedForSound === 'No'" class="text_desc">
+                        Your ad needs to be optimized for sound to be accessible to everyone.
+                    </div>    
+                </div>
+                <div class="description-container">
+                    <div class="description-text">
+                        <img nz-icon src="assets/icons/idea-light.svg"> 
+                        <div>
+                           <p>Nearly 80% of users on Facebook watch ads without sound. In the US, 40% of users watch ads on YouTube without sound, compared to 35% in the UK.</p> 
+                           <p> Interestingly enough, content popularity does not seem to hinge on the presence of sound.    </p>                    
+                        
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+
+            <nz-card class="report-details-card" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    
+                    <div nz-row style="justify-content: space-between;">
+                        <div nz-col><div class="title">Optimized for color</div></div>
+                        <div nz-col><app-button buttonClass="primary reportDetailsBtn" label="Details" [myCallback]="switchBtnClick"></app-button></div>
+                    </div>
+                    <div class="target-title">
+                        <span nz-icon nzType="check-circle" nzTheme="fill"></span>
+                        <span>{{ optimizedForColor | titlecase}}</span>
+                    </div>
+
+                    <div *ngIf="optimizedForColor === 'Yes'" class="text_desc">
+                        Well done! Your ad is optimized for color.
+                    </div>
+                    
+                    <div *ngIf="optimizedForColor === 'No'"  class="text_desc">
+                       Your ad needs to be optimized for color to be accessible to everyone.
+                    </div>
+                </div>
+                <div class="description-container">
+                    <div class="description-text">
+                        <img nz-icon src="assets/icons/idea-light.svg"> 
+                        <div>
+                            Color plays an important role in text legibility. Provide enough contrast between text and its background so that it can be read by people with moderately low vision
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        </div>
+    </div>
+</div>

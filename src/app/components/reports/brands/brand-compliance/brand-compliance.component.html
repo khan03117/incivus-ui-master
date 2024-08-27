@@ -1,0 +1,136 @@
+<div class="card-details-container">
+    <app-report-card *ngIf="brandCues.brandCompScr"
+        title="Brand compliance"
+        description="In a crowded marketplace, brand consistency helps a company stand out from competitors."
+        [score]="brandCues.brandCompScr"
+        [scoreDisplay]="brandCues.brandCompScr"
+        rangeInfo="Above 86"
+        metric="BRANDC"
+    ></app-report-card>
+    <nz-divider></nz-divider>
+    <div class="card-details-wrapper flex-compliance">
+        <div class="details-table-wrapper">
+            <nz-table #brandInfoTable [nzData]="brandCues.brandElement" [nzFrontPagination]="false">
+                <thead>
+                    <tr>
+                        <th>Brand element</th>
+                        <th>Presence</th>
+                        <th>Contrast</th>
+                        <th>Relative brand size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of brandCues.brandElement">
+                        <td>{{data.label}}</td>
+                        <td *ngIf="modalData.isVideoReport"><span title="{{data.present}}">{{data.present ? 'YES' : 'NO'}}</span></td>
+                        <td *ngIf="!modalData.isVideoReport"><span>YES</span></td>
+                        <td>{{data.contrast | uppercase}}</td>
+                        <td>{{data.relativeSize | uppercase}}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+        <div class="card-wrapper">
+            <nz-card class="compliance-card" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    <div class="title">Brand colors</div>
+                    <div class="sub-title">Top 5 dominant colors:</div>
+                    <div class="flex-wrapper">
+                        <div class="flex-emotions">
+                            <div class="flex-title">Foreground</div>
+                            <div class="color-flex">
+                                <nz-badge *ngFor="let color of brandCues.foregroundColor" [nzColor]="color.colorCode"></nz-badge>
+                                <!-- <nz-badge nzColor="#B3E4F6"></nz-badge>
+                                <nz-badge nzColor="#A4AE00"></nz-badge>
+                                <nz-badge nzColor="#E72388"></nz-badge>
+                                <nz-badge nzColor="#7B848E"></nz-badge> -->
+                            </div>
+                        </div>
+                        <div class="flex-emotions">
+                            <div class="flex-title">Background</div>
+                            <div class="color-flex">
+                                <nz-badge *ngFor="let color of brandCues.backgroundColor" [nzColor]="color.colorCode"></nz-badge>
+                                <!-- <nz-badge nzColor="#B3E4F6"></nz-badge>
+                                <nz-badge nzColor="#A4AE00"></nz-badge>
+                                <nz-badge nzColor="#E72388"></nz-badge>
+                                <nz-badge nzColor="#7B848E"></nz-badge> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+            <nz-card class="compliance-card" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    <div class="title">Color compliance score</div>
+                    <div class="sub-title">Detected Vs. Defined</div>
+                    <div class="target-title">
+                        <ng-container *ngIf="brandCues.num_of_matched && brandCues.total_colors">
+                            {{brandCues.num_of_matched}}/{{brandCues.total_colors}}
+                        </ng-container>
+                        <ng-container *ngIf="!(brandCues.num_of_matched && brandCues.total_colors)">
+                            NA
+                        </ng-container>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        <!-- <div class="card-wrapper">
+            <nz-card class="compliance-card" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    <div class="title">Typography:</div>
+                    <div class="flex-wrapper typography">
+                        <div class="flex-emotions">
+                            <div class="flex-title">Background color</div>
+                            <div class="label-txt">Helvetica</div>
+                            <div class="label-txt">Rockwell</div>
+                            <div class="label-txt">Verdana</div>
+                        </div>
+                        <div class="flex-emotions">
+                            <div class="flex-title">Fonts defined</div>
+                            <div class="label-txt">Helvetica</div>
+                            <div class="label-txt">Rockwell</div>
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        <div class="card-wrapper" *ngIf="modalData.isVideoReport">
+            <nz-card class="compliance-card" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    <div class="title">Other Objects</div>
+                    <div class="flex-wrapper typography">
+                        <div class="flex-emotions">
+                            <div class="flex-title">Object</div>
+                            <div class="label-txt">Helvetica</div>
+                            <div class="label-txt">Rockwell</div>
+                            <div class="label-txt">Verdana</div>
+                        </div>
+                        <div class="flex-emotions">
+                            <div class="flex-title">Presense</div>
+                            <div class="label-txt">Helvetica</div>
+                            <div class="label-txt">Rockwell</div>
+                        </div>
+                        <div class="flex-emotions">
+                            <div class="flex-title">Contrast</div>
+                            <div class="label-txt">Helvetica</div>
+                            <div class="label-txt">Rockwell</div>
+                            <div class="label-txt">Verdana</div>
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+        </div> -->
+        <div class="card-wrapper" *ngIf="isVideoReport">
+            <nz-card class="compliance-card toneOfVoice" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    <div class="title">Tone of voice:</div>
+                    <div *ngFor="let adTones of adToneObj; let i = index" class="custom-tag-details compliance-tag-details">
+                        <nz-tag *ngFor="let adTone of adTones; let j = index" style="display: flex; flex-basis: 22%; justify-content: center;" [nzColor]="isVoiceTone(adTone, brandCues.voiceTone[i]) ? 'rgba(0,130,43,.26)':''">
+                            <span>{{adTone}}</span>
+                        </nz-tag>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+    </div>
+</div>

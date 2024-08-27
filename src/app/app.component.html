@@ -1,0 +1,9 @@
+<div id="app">
+  <div class="container">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="isLoader > 0">
+      <nz-spin [nzSize]="'large'" [nzSpinning]="longLoader">
+        <router-outlet></router-outlet>
+      </nz-spin>
+    </nz-spin>
+  </div>
+</div>

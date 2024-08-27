@@ -1,0 +1,106 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<form nz-form nzLayout ="vertical" [formGroup]="addUserForm" *ngIf="!isLoading">
+    <nz-card [nzTitle]="userId === 'create' ? 'Create new user' : 'Edit user'">
+        <div class="form-description role-description">Fill in the following information to {{userId === 'create' ? 'create new' : 'update'}} user.</div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-label nzFor="firstName" class="input-float-label">First name<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['firstName'].errors && submitted ? 'error':''"  nzErrorTip="First name is mandatory">
+                    <nz-input-group nzSearch nzSize="large">
+                        <input nz-input type="text" class="rounded-input" nz-input placeholder="First name" formControlName="firstName" id="firstName"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="lastName" class="input-float-label">Last name<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['lastName'].errors && submitted ? 'error':''"  nzErrorTip="Last name is mandatory">
+                    <nz-input-group nzSearch nzSize="large">
+                        <input nz-input type="text" class="rounded-input" nz-input placeholder="Last name" formControlName="lastName" id="lastName"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-label nzFor="email" class="input-float-label">Email id<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['emailId'].errors && submitted ? 'error':''"  nzErrorTip="Email is mandatory and provide valid email">
+                    <nz-input-group nzSearch nzSize="large">
+                        <input nz-input type="text" class="rounded-input" nz-input placeholder="Email id" formControlName="emailId" id="email"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="status" class="input-float-label">Select status<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['status'].errors && submitted ? 'error':''"  nzErrorTip="Status is mandatory">
+                    <nz-input-group nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Status"
+                            formControlName="status"
+                            [nzShowArrow]="true"
+                            nzDropdownClassName="custom-radio-dropdown"
+                            nzShowSearch="false"
+                        >
+                            <nz-option nzValue="active" nzLabel="Active"></nz-option>
+                            <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['role'].errors && submitted ? 'error':''"  nzErrorTip="Role is mandatory">
+                    <nz-form-label class="input-float-label">Role<span style="color:#EF4444">*</span></nz-form-label>
+                    <nz-input-group nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Role"
+                            formControlName="role"
+                            [nzShowArrow]="true"
+                            nzDropdownClassName="custom-radio-dropdown"
+                            nzShowSearch="false"
+                        >
+                            <nz-option *ngFor="let roleselection of roles"
+                                [nzValue]="roleselection.role"
+                                [nzLabel]="roleselection.role"
+                            >
+                            </nz-option>
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['brands'].errors && submitted ? 'error':''"  nzErrorTip="Brands is mandatory">
+                    <nz-form-label class="input-float-label">Master brands<span style="color:#EF4444">*</span></nz-form-label>
+                    <nz-input-group nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Master brands and products" 
+                            nzDropdownClassName="custom-check-dropdown"
+                            formControlName="brands"
+                            [nzShowArrow]="true"
+                            [nzMaxTagCount]="2"
+                            [nzMaxTagPlaceholder]="tagPlaceHolder"
+                            nzMode="multiple"
+                        >
+                            <ng-container *ngFor="let brand of brandDetails">
+                                <nz-option [nzValue]="brand.masterBrand.name" [nzLabel]="brand.masterBrand.name"></nz-option>
+                                <nz-option *ngFor="let pb of brand.productBrand"
+                                    [nzValue]="pb.name"
+                                    [nzLabel]="pb.name"
+                                >
+                                </nz-option>
+                            </ng-container>
+                        </nz-select>
+                        <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="form-footer">
+            <div class="form-footer-wrapper"> 
+                <app-button buttonClass="secondary" label="cancel" [myCallback]="cancel"></app-button>
+                <app-button *ngIf="userId === 'create'" buttonClass="primary" label="Create user" [myCallback]="save"></app-button>
+                <app-button *ngIf="userId !== 'create'" buttonClass="primary" label="Update user" [myCallback]="update"></app-button>
+            </div>
+        </div>
+    </nz-card>
+</form>

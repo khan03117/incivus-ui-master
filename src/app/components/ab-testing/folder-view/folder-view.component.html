@@ -1,0 +1,69 @@
+<div class="ant-layout-content-list">
+    <ng-container>
+        <nz-list nzGrid>
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="6" [nzXs]="6" *ngFor="let creativeItem of creativeData index as i">
+                    <nz-card [nzCover]="coverTemplate" [nzActions]="[actionIcon, actionEllipsis]" class="folder-card">
+                        <nz-card-meta></nz-card-meta>
+                    </nz-card>
+                    
+                    <ng-template #coverTemplate>
+                        <img alt="example" [src]="creativeItem.image" />
+                        <!-- <div class="image-wrapper">
+                            <img alt="example" [src]="creativeItem.image" />
+                        </div>
+                        <div class="image-wrapper">
+                            <img alt="example" [src]="creativeItem.image" />
+                        </div>
+                        <div class="image-wrapper">
+                            <img alt="example" [src]="creativeItem.image" />
+                        </div> -->
+                    </ng-template>
+                    <ng-template #actionIcon>
+                        <div class="folder-info-container">
+                            <div class="label">Report name</div>
+                            <div class="file-count">5 Files</div>
+                        </div>
+                    </ng-template>
+                    <ng-template #actionEllipsis>
+                        <div class="folder-info-container">
+                            <div class="label">dd/mm/yy</div>
+                            <div class="count">00:00:00</div>
+                        </div>
+                        <button
+                            nz-button
+                            nzNoAnimation
+                            nz-tooltip
+                            class="action-trigger"
+                            [nzTooltipTitle]="menu"
+                            nzTooltipOverlayClassName="tableTooltipOverlay"
+                            [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                        >
+                            <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top;"></span>
+                        </button>
+                    </ng-template>
+                    <ng-template #menu>
+                        <ul nz-menu>
+                            <li nz-menu-item>
+                                <span nz-icon nzType="project" nzTheme="outline"></span>
+                                <span>View report</span>
+                            </li>
+                            <li nz-menu-item>
+                                <span nz-icon><img nz-icon src="assets/icons/download_report.svg"></span>
+                                <span>Download report</span>
+                            </li>
+                            <li nz-menu-item>
+                                <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                                <span>Edit report name</span>
+                            </li>
+                            <li nz-menu-item>
+                                <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
+                                <span>Delete</span>
+                            </li>
+                        </ul>
+                    </ng-template>
+                </div>
+            </div>
+        </nz-list>
+    </ng-container>
+</div>

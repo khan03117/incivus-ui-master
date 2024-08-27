@@ -1,0 +1,26 @@
+<app-breadcrumb
+  *ngIf="isIncAdmin"
+  [labels]="breadcrumb"
+  fullBC="{{ true }}"
+></app-breadcrumb>
+<div style="margin-bottom: 1rem"></div>
+<app-alert [message]="infoMsg" [alertType]="'info'" *ngIf="infoMsg"></app-alert>
+<app-alert
+  [message]="errorMsg"
+  [alertType]="'error'"
+  *ngIf="errorMsg"
+></app-alert>
+
+<ng-container *ngIf="!isLoading">
+  <div *ngFor="let panel of panels; let i = index">
+    <app-accordion [panel]="panel" [index]="i + 1"></app-accordion>
+  </div>
+  <div *ngIf="check"  style="float: right; margin: 1rem 3rem 0">
+    <app-button
+      buttonClass="primary"
+      label="Done"
+      [myCallback]="save"
+    ></app-button>
+  </div>
+  <div style="clear: both"></div>
+</ng-container>

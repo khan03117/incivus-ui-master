@@ -1,0 +1,65 @@
+<app-report-card
+    title="Attention score"
+    description="High Recall score leads to Ad being highly memorable therefore enabling you to meet your Ad goals effectively."
+    [score] = "recallData.videoScore ? recallData.videoScore.toFixed(2) : 'NA'"
+    [scoreDisplay] = "recallData.videoScore ? recallData.videoScore.toFixed(2) : 'NA'"
+    rangeInfo="Above 75"
+    metric="ATTENTION"
+></app-report-card>
+<nz-divider></nz-divider>
+<div nz-row class="flex-card attention-card" style="width: 100%;">
+    <div nz-col style="width: 49%;justify-content: center;align-items: center;display: flex;flex-direction: column;">
+        <img *ngIf="!isVideoReport" nz-icon src="{{recallData.imageLink}}" style="width: 100%; height: 260px;">
+        <video *ngIf="isVideoReport" data-html2canvas-ignore="true" (play)="handleVideoPlay()"
+            (pause)="handleVideoPause()" (seeked)="handleVideoSeeked($event)" #videoPlayerAttn controls=""
+            disablepictureinpicture="" controlslist="nodownload">
+            <source src="{{url}}" type="video/mp4">
+        </video>
+    </div>
+    <div nz-col style="width: 49%;justify-content: center;align-items: center;display: flex;flex-direction: column;">
+        <div class="graph-container">
+            <div class="graph-title">Attention graph</div>
+            <div class="graph-content">
+                <!-- <div class="graph-sub-title">Low</div>
+                <div class="graph-data"></div>
+                <div class="graph-sub-title">high</div> -->
+                <img src="assets/attn_heatmap_legend_video.svg"/>
+                <!-- <img src="assets/attn_heatmap_legend_video.svg"/> -->
+            </div>
+        </div>
+        <img *ngIf="!isVideoReport" nz-icon src="{{recallData.heatMapImageLink}}" style="width: 100%; height: 260px;">
+        <video *ngIf="isVideoReport" data-html2canvas-ignore="true" playsinline #videoPlayerAttnHM
+            disablepictureinpicture="" controlslist="nodownload">
+            <source src="{{recallData.heatMapVideo}}" type="video/mp4">
+        </video>
+    </div>
+</div>
+<div class="carousel-container videoCarousel" *ngIf="isVideoReport">
+    <div class="title">
+        <div>Key frame ({{recallData.keyFrames.length}}/{{recallData.frames.length}})</div>
+        <div>Click on the frame to go to location in video</div>
+    </div>
+    <owl-carousel-o [options]="carouselOptions" #videoCarousel>
+        <ng-container *ngFor="let slide of recallData.keyFrames">
+            <ng-template carouselSlide>
+                <nz-card [nzCover]="coverTemplate" class="campaignCard" [nzBordered]="false" (click)="handleVideoSeek(slide.timeOffset)">
+                    <ng-container>
+                        <nz-card-meta nzDescription="{{slide.timeOffset}} sec"></nz-card-meta>
+                    </ng-container>
+                    
+                </nz-card>
+                <ng-template #coverTemplate>
+                    <img alt="example" src="{{slide.image}}" />
+                </ng-template>
+            </ng-template>
+        </ng-container>
+    </owl-carousel-o>
+</div>
+<div class="description-container">
+    <div class="description-text">
+        <img nz-icon src="assets/icons/idea-light.svg"> 
+        <p>
+            Attention is the ability of humans to select one stimulus over the other, by a mental integration of perception, emotion, and cognition to fulfil the desire.
+        </p>
+    </div>
+</div>

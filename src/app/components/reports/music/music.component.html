@@ -1,0 +1,105 @@
+<div class="card-details-container" id="nav-music" *ngIf="!isLoading">
+    <div class="tab-button-list">
+        <app-button buttonClass="{{showGenre && 'default-btn active' || 'default-btn' }}" label="Genre" [myCallback]="switchBtnClick" callbackParam="genre"></app-button>
+        <app-button buttonClass="{{showMood && 'default-btn active' || 'default-btn' }}" label="Mood" [myCallback]="switchBtnClick" callbackParam="mood"></app-button>
+        <app-button buttonClass="{{showEmotion && 'default-btn active' || 'default-btn' }}" label="Emotion" [myCallback]="switchBtnClick" callbackParam="emotion"></app-button>
+    </div>
+
+    <div *ngIf="showGenre">
+        <div class="insights-text"
+            *ngFor="let item of finalGenre; let i = index">
+            <p>{{item.key | titlecase}} <span>: {{
+                    item.value | number : '1.2-2'}}</span>
+            </p>
+            <app-musicProgress [data]="item.value"
+                [color]="getColor(i,'genre')">
+            </app-musicProgress>
+        </div>
+        <div class="row chartSection">
+            <div class="col-12 col-md-8 col-lg-8">
+                <app-apxChart [data]="getChartData('genre')">
+                </app-apxChart>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4 chartLegend">
+                <div class="legend"
+                    *ngFor="let genre of musicElements.allGenres">
+                    <span
+                        [style.background-color]="getGenreClass(genre)"></span>{{genre}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showMood">
+        <div class="insights-text"
+            *ngFor="let item of finalMoodList; let i = index">
+            <p>{{item.key | titlecase}} <span>: {{
+                    item.value | number : '1.2-2'}}</span>
+            </p>
+            <app-musicProgress [data]="item.value"
+                [color]="getColor(i,'mood')">
+            </app-musicProgress>
+        </div>
+        <div class="row chartSection">
+            <div class="col-12 col-md-8 col-lg-8">
+                <app-apxChart [data]="getChartData('mood')">
+                </app-apxChart>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4 chartLegend">
+                <div class="legend"
+                    *ngFor="let mood of data.data.music.allMoods | keyvalue">
+                    <span
+                        [style.background-color]="getMoodClass(mood.key)"></span>{{mood.key}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showEmotion">
+        <div class="insights-text">
+            <p class="emotionTabHeading">Emotional profile /
+                Energy level</p>
+            <div class="emotionEnergy">
+                <div class="parameter"
+                    *ngIf="data.data.music.emotionalProfile">
+                    Emotional profile :
+                    <b>{{data.data.music.emotionalProfile |
+                        titlecase}}</b>
+                </div>
+                <div class="parameter"
+                    *ngIf="data.data.music.emotionalDynamics">
+                    Emotional dynamics :
+                    <b>{{data.data.music.emotionalDynamics |
+                        titlecase}}</b>
+                </div>
+                <div class="parameter"
+                    *ngIf="data.data.music.energyLevel">
+                    Energy profile :
+                    <b>{{data.data.music.energyLevel |
+                        titlecase}}</b>
+                </div>
+                <div class="parameter"
+                    *ngIf="data.data.music.energyDynamics">
+                    Energy dynamics :
+                    <b>{{data.data.music.energyDynamics |
+                        titlecase}}</b>
+                </div>
+            </div>
+
+        </div>
+        <div class="row chartSection">
+            <div class="col-12 col-md-8 col-lg-8">
+                <app-apxChart [data]="getChartData('emotion')">
+                </app-apxChart>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4 chartLegend">
+                <div class="legend">
+                    <span
+                        [style.background-color]="'#FFAE5B'"></span>Arousal
+                </div>
+                <div class="legend">
+                    <span
+                        [style.background-color]="'#5D6D60'"></span>Valence
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

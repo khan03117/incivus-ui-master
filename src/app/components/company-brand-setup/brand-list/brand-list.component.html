@@ -1,0 +1,14 @@
+<div *ngIf="brandDetailsList">
+    <div class="list-title" *ngIf="brandDetailsList.masterBrand">Master brand: {{brandDetailsList.masterBrand.name}}</div>
+    <!-- <div class="brand-list-wrapper" *ngIf="brandDetailsList.productBrand && brandDetailsList.productBrand.length > 0">
+        <div class="tag-details">
+            <nz-tag
+            *ngFor="let tag of brandDetailsList.productBrand; let i = index"
+            nzMode="closeable"
+            (nzOnClose)="myCallback(tag.name)"
+            >
+                <span>{{ sliceTagName(tag.name)}}</span>
+            </nz-tag>
+        </div>
+    </div> -->
+</div>

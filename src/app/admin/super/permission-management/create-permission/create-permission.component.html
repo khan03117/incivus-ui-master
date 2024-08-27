@@ -1,0 +1,357 @@
+<app-breadcrumb [labels]="breadcrumb" fullBC="{{ true }}"></app-breadcrumb>
+<div style="margin-top: 1rem"></div>
+<app-alert
+  [message]="warningMsg"
+  [alertType]="'warning'"
+  *ngIf="warningMsg"
+></app-alert>
+<form
+  nz-form
+  nzLayout="vertical"
+  [formGroup]="addPermissionForm"
+  *ngIf="step === 'one'"
+>
+  <nz-card
+    [nzTitle]="
+      permissionId === 'create' ? 'Create new permission' : 'Edit permission'
+    "
+  >
+    <div class="form-description role-description">
+      Fill in the following information to create new permissions
+    </div>
+    <div class="row-input-container">
+      <nz-form-item>
+        <nz-form-label nzFor="permissionName" class="input-float-label"
+          >Permissions name<span style="color: #ef4444">*</span></nz-form-label
+        >
+        <nz-form-control
+          class="role-form"
+          [nzValidateStatus]="
+            f['name'].errors && (blurPN || continueOne) ? 'error' : ''
+          "
+          nzErrorTip="
+                {{
+            f['name'].errors && f['name'].errors['required']
+              ? 'Uh! Oh! permission name is mandatory'
+              : f['name'].errors && f['name'].errors['minlength']
+              ? 'Uh! Oh! permission name has to have minimum of three characters'
+              : f['name'].errors && f['name'].errors['maxlength']
+              ? 'Uh! Oh! permission name can not exceed 100 characters'
+              : 'Uh! Oh! permission name cannot contain special characters other than spaces.'
+          }}"
+        >
+          <nz-input-group nzSearch nzSize="large">
+            <input
+              nz-input
+              type="text"
+              class="rounded-input"
+              (blur)="blurPN = true"
+              (focus)="blurPN = false"
+              nz-input
+              placeholder="Permissions name"
+              formControlName="name"
+              id="permissionName"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label class="input-float-label">Description</nz-form-label>
+          <nz-input-group nzSearch nzSize="large">
+            <input
+              nz-input
+              type="text"
+              class="rounded-input"
+              nz-input
+              placeholder="Description"
+              formControlName="description"
+              id="description"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="row-input-container">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label class="input-float-label">Select role</nz-form-label>
+          <nz-input-group nzSearch nzSize="large">
+            <nz-select
+              [nzMaxTagCount]="2"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              [nzShowArrow]="true"
+              [nzOptionOverflowSize]="8"
+              nzMode="multiple"
+              nzPlaceHolder="Select role"
+              formControlName="roles"
+              nzDropdownClassName="custom-check-dropdown"
+              nzShowSearch="false"
+            >
+              <ng-container *ngIf="roles && roles.length > 0">
+                <nz-option
+                  *ngFor="let role of roles"
+                  [nzValue]="role"
+                  [nzLabel]="role"
+                >
+                </nz-option>
+              </ng-container>
+            </nz-select>
+            <ng-template #tagPlaceHolder let-selectedList
+              >+ {{ selectedList.length }}</ng-template
+            >
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="visibility: hidden">
+        <nz-form-control>
+          <nz-form-label class="input-float-label">Description</nz-form-label>
+          <nz-input-group nzSearch nzSize="large" style="margin-bottom: 1rem">
+            <input nz-input type="text" class="rounded-input" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="form-footer">
+      <div class="form-footer-wrapper">
+        <app-button
+          buttonClass="secondary"
+          label="Cancel"
+          [myCallback]="cancel"
+        ></app-button>
+        <app-button
+          buttonClass="primary"
+          label="Continue"
+          [myCallback]="continue"
+        ></app-button>
+      </div>
+    </div>
+  </nz-card>
+</form>
+<form nz-form nzLayout="vertical" *ngIf="step === 'two'">
+  <div class="form-wrapper">
+    <nz-card nzTitle="Manage creatives" class="custom-checkbox-wrapper">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-control>
+            <nz-input-group nzSearch nzSize="large">
+              <nz-checkbox-wrapper class="feature-checkbox-selector">
+                <div class="chk-box-label">
+                  <label
+                    nz-checkbox
+                    [(ngModel)]="permissionDetails.isUpload"
+                    [ngModelOptions]="{ standalone: true }"
+                    >Upload Pre-flight Creatives</label
+                  >
+                </div>
+                <div class="chk-box-label">
+                  <label
+                    nz-checkbox
+                    [(ngModel)]="permissionDetails.isAnalyze"
+                    [ngModelOptions]="{ standalone: true }"
+                    >Analyze Pre-flight Creatives</label
+                  >
+                </div>
+                <div class="chk-box-label" *ngIf="client.featureAccess?.inFlight?.isAvailable">
+                  <label
+                    nz-checkbox
+                    [(ngModel)]="permissionDetails.isInFlight"
+                    [ngModelOptions]="{ standalone: true }"
+                    >In-flight Creatives</label
+                  >
+                </div>
+                <div class="chk-box-label" *ngIf="client.featureAccess?.postFlight?.isAvailable">
+                  <label
+                    nz-checkbox
+                    [(ngModel)]="permissionDetails.isPostFlight"
+                    [ngModelOptions]="{ standalone: true }"
+                    >Post-flight Creatives</label
+                  >
+                </div>
+              </nz-checkbox-wrapper>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-card>
+    <nz-card nzTitle="Metrics" class="custom-checkbox-wrapper">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzSearch nzSize="large">
+            <nz-checkbox-wrapper class="feature-checkbox-selector">
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.recall"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Recall score (required for creative effectiveness
+                  score)</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.attention"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Attention</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.cognitiveLoad"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Cognitive load (required for creative effectiveness
+                  score)</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.adCopy"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Ad copy effectiveness (required for creative effectiveness
+                  score)</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.brandCompliance"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Brand compliance</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.emotion"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Emotions</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.digitalAccessibility"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Digital accessibility</label
+                >
+              </div>
+            </nz-checkbox-wrapper>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-card>
+    <nz-card nzTitle="Report" class="custom-checkbox-wrapper">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzSearch nzSize="large">
+            <nz-checkbox-wrapper class="feature-checkbox-selector">
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.viewFullReport"
+                  [nzDisabled]="permissionDetails.viewSummaryPage"
+                  [ngModelOptions]="{ standalone: true }"
+                  >View full report</label
+                >
+              </div>
+              <div class="chk-box-label" style="display: none;">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.downloadFullReport"
+                  (ngModelChange)="permissionDetails.downloadSummaryPage=false"
+                  [ngModelOptions]="{ standalone: true }"
+                  [nzDisabled]="permissionDetails.viewSummaryPage"
+                  >Download full report</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.viewSummaryPage"
+                  (ngModelChange)="permissionDetails.downloadFullReport = false"
+                  [nzDisabled]="permissionDetails.viewFullReport"
+                  [ngModelOptions]="{ standalone: true }"
+                  >View summary page only</label
+                >
+              </div>
+              <div class="chk-box-label" style="display: none;">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.downloadSummaryPage"
+                  [nzDisabled]="permissionDetails.downloadFullReport"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Download summary page only</label
+                >
+              </div>
+              <div class="chk-box-label">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.viewABTestReport"
+                  [ngModelOptions]="{ standalone: true }"
+                  >View A/B test report</label
+                >
+              </div>
+              <div class="chk-box-label" style="display: none;">
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.downloadABTestReport"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Download A/B test report</label
+                >
+              </div>
+            </nz-checkbox-wrapper>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-card>
+    <nz-card
+      nzTitle="Settings"
+      class="custom-checkbox-wrapper"
+      *ngIf="client?.featureAccess?.serviceRequest == true"      
+    >
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzSearch nzSize="large">
+            <nz-checkbox-wrapper class="feature-checkbox-selector">
+              <div class="chk-box-label" >
+                <label
+                  nz-checkbox
+                  [(ngModel)]="permissionDetails.serviceRequest"
+                  [ngModelOptions]="{ standalone: true }"
+                  >Service Request</label
+                >
+              </div>
+            </nz-checkbox-wrapper>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-card>
+    <div class="form-footer">
+      <div class="form-footer-wrapper">
+        <a href="javascript:void(0)" class="backToMain" (click)="cancel()"
+          >Cancel</a
+        >
+        <app-button
+          buttonClass="secondary"
+          label="Back"
+          [myCallback]="cancelTwo"
+        ></app-button>
+        <app-button
+          *ngIf="permissionId === 'create'"
+          buttonClass="primary"
+          label="Create permission"
+          [myCallback]="save"
+        ></app-button>
+        <app-button
+          *ngIf="permissionId !== 'create'"
+          buttonClass="primary"
+          label="Update permission"
+          [myCallback]="update"
+        ></app-button>
+      </div>
+    </div>
+  </div>
+</form>

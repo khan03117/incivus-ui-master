@@ -1,0 +1,11 @@
+<div class="alert-wrapper">
+    <div class="alert-description">
+        {{description}}
+    </div>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button *ngIf="secondaryLabel" buttonClass="secondary" label="{{secondaryLabel}}" [myCallback]="secondaryCallback!"></app-button>
+            <app-button *ngIf="primaryLabel" buttonClass="primary" label="{{primaryLabel}}" [myCallback]="primaryCallback!"></app-button>
+        </div>
+    </div>
+</div>

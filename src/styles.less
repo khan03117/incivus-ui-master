@@ -1,0 +1,95 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@use 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@use 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
+
+html {
+    font-size: 1.15vw;
+}
+
+body{
+    width:100%;
+    background-color: #FDFCFF;
+    font-size: 0.87rem;
+    font-family: "Inter" !important;
+}
+
+app-login {
+    display: flex;
+    flex-basis: 38rem;
+}
+
+.navCollapse .right-layout{
+    margin-left: 104px !important;
+    width: calc(100% - 104px) !important;
+}
+
+.navCollapse nz-header {
+    left: 104px !important;
+    width: calc(100% - 104px) !important;
+}
+
+nz-layout nz-layout,
+nz-layout:last-child {
+  margin: 0;
+}
+
+.navCollapse .logo-container {
+    padding: 32px 16px 0 16px !important;
+    &:before{
+        left: 6px !important;
+    }
+    &:after{
+        left: 12px !important;
+    }
+}
+
+.ant-modal-body {
+    padding: 1.5rem;
+    font-size: 0.87rem;
+}
+
+.ant-modal-header {
+    // padding: 1rem 1.5rem;
+    color: rgba(0,0,0,.85);
+    background: #fff;
+    border-bottom: 0.06 solid #f0f0f0;
+    border-radius: 0.12 0.12 0 0;
+    font-size: 0.87rem;
+}
+
+.ant-modal-footer {
+    padding: 0.62rem 1rem;
+    text-align: right;
+    background: 0 0;
+    border-top: 0.06rem solid #f0f0f0;
+    border-radius: 0 0 0.12rem 0.12rem;
+    button {
+        font-size: 0.87rem;
+    }
+}
+
+cdk-virtual-scroll-viewport {
+    min-height: 5rem;
+    .ant-select-item-option-content {
+        font-size: 0.87rem;
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  transition: background-color 5000s ease-in-out 0s;
+  background: transparent;
+}
+
+.ant-form label {
+    font-size: 0.87rem;
+}

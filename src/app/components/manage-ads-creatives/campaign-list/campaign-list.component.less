@@ -1,0 +1,107 @@
+@import url("../../../common/less/creative-list-component.less");
+@import url("../../../common/less/page-sub-header.less");
+@import url("../../../common/less/dropdown-menu.less");
+@import url("../../../common/less/form-component.less");
+
+.campaign-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  nz-alert {
+    margin-bottom: 0rem;
+  }
+
+  .tableTooltipOverlay,
+.buttonDropDownMenuOverlay {
+  .ant-menu-item,
+  .ant-dropdown-menu-item {
+    padding: 0 0.3rem;
+  }
+}
+
+.ant-modal-title {
+  color: #212b36 !important;
+  font-size: 0.87rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+.media-icon-bar {
+  display: flex;
+  gap:.5rem; 
+  padding: .25rem 0; 
+  align-items: center;
+}
+.media-icon {
+  max-height: 1.25rem;
+  max-width: 1.25rem;
+}
+.status-activity {
+  display: flex;
+  padding: 0.3rem 0.5rem 0 0.5rem;
+  margin-top: 0rem;
+  align-items: center;
+  border-radius: 0.5rem;
+  border: 1px solid #15803d;
+  color: #15803d;
+  width: min-content;  
+  background: var(--success-2-fofdfa, #f0fdfa);
+}
+
+.page-header-container {
+  height: 3.125rem;
+  background: #f1f1f1;
+  // border-radius: 0.25rem;
+  border: 0.125rem solid #ccc;
+  padding-left: 1rem;
+}
+
+
+.campaign-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .campaign-data {
+    margin: 0 2rem 2rem 0;
+    overflow: visible;
+    position: relative;
+
+    .campaignCard {
+      overflow: visible;
+      height: 11.5rem;
+    }
+    .hover-text {
+      visibility: hidden;
+      opacity: 0;
+      z-index: 3;
+      position: absolute;
+      padding: 10px;
+      top: 102%;
+      left: 0;
+      right: 0;
+      width: max-content;
+      height: max-content;
+      background-color: #000;
+      border-radius: 10px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: opacity 0.3s;
+      transition-delay: .5s;
+    }
+
+    &:hover {
+      cursor: pointer;
+      .hover-text {
+        visibility: visible;
+        opacity: 0.75;
+      }
+    }
+  }
+}
+
+}

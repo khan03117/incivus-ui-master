@@ -1,0 +1,132 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<div style="margin-bottom:1rem;"></div>
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Campaign details</nz-page-header-title>
+</nz-page-header>
+<nz-content>
+    <app-alert [message]="warningMsg" [alertType]="'warning'" *ngIf="warningMsg"></app-alert>
+    <div class="details-wrapper">
+        <div class="flex-row">
+            <div class="title">Campaign name</div>
+            <div class="value">{{ campaignName | titlecase}}</div>
+        </div>
+        <div class="flex-row">
+            <div class="title">Brand</div>
+            <div class="value">{{ brand | titlecase}}</div>
+        </div>
+        <div class="flex-row">
+            <div class="title">Upload creatives</div>
+            <div class="value" (click)="uploadCreatives()">
+                <span nz-icon class="upload">
+                    <img nz-icon src="assets/icons/file-upload.svg">
+                </span>
+            </div>
+        </div>
+    </div>
+</nz-content>
+
+<nz-page-header class="page-header-container heading details-list-header">
+    <nz-page-header-title>Creatives ({{listOfData.length}})</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+                <input type="text" [(ngModel)]="searchText" (keyup)="filter()" [ngModelOptions]="{standalone: true}" nz-input placeholder="search creative name" />
+            </nz-input-group>
+            <ng-template #prefixIconSearch>
+                <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+            </ng-template>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+<nz-table
+    #rowSelectionTable
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    [nzNoResult]="adminCustomerListEmpty"
+    class="creative-list-table campaign-list"
+    [nzShowPagination]="true"
+>
+    <thead>
+        <tr>
+            <!-- <th
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            nzWidth="60px"
+            ></th> -->
+            <th>&nbsp;</th>
+            <th [nzShowSort]="false">Creative name</th>
+            <th [nzShowSort]="false">Created by</th>
+            <th [nzShowSort]="false">Creative type</th>
+            <th [nzShowSort]="false">Format</th>
+            <th [nzShowSort]="false">Created at</th>
+            <th [nzShowSort]="false">Status</th>
+            <!-- <th [nzShowSort]="false"></th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+            <td>&nbsp;</td>
+            <td class="flex-cell" (click)="openCreative(data.metadata.id)">
+                <span nz-icon>
+                    <ng-container *ngIf="data.metadata.artifactType === 'video'">
+                        <img alt="example" *ngIf="data.metadata.thumbnail" [src]="data.metadata.thumbnail" />
+                        <video width="100%" playsinline
+                            *ngIf="!data.metadata.thumbnail">
+                            <source src="{{data.url}}" type="video/mp4">
+                        </video>
+                    </ng-container>
+                    <ng-container *ngIf="data.metadata.artifactType === 'image'">
+                        <img nz-icon style="width: 100%" src="{{data.url}}" />
+                    </ng-container>
+                </span>
+                <span>{{ data.metadata.title | titlecase}}</span>
+            </td>
+            <td>{{data.metadata.createdBy}}</td>
+            <td>{{data.metadata.artifactType === 'video' ? "Video Ad" : "Display Ad"}}</td>
+            <td>{{data.metadata.name.split('.').pop()}}</td>
+            <td>{{ data.metadata.uploadedAt | date:'dd/MM/yy; h:mm a' }}</td>
+            <td>
+                <app-button buttonClass="secondary" label="Analyze" *ngIf="data.metadata.status === 0 && isAnalyze" [callbackParam]="data.metadata.id" [myCallback]="analyze"></app-button>
+                <app-button buttonClass="secondary" label="Re analyze" *ngIf="data.metadata.status === 50 && isAnalyze" [callbackParam]="data.metadata.id" [myCallback]="reanalyze"></app-button>
+                <app-button buttonClass="secondary" label="Report" *ngIf="timeperiod>90 && showReport(data.metadata.status, data.metadata.artifactType)" [callbackParam]="data.metadata.id" [myCallback]="popup"></app-button>
+                <app-button buttonClass="secondary" label="Report" *ngIf="timeperiod<=90  && showReport(data.metadata.status, data.metadata.artifactType)" [callbackParam]="data.metadata.id" [myCallback]="report"></app-button>
+                <ng-container *ngIf="data.metadata.status === 10 || data.metadata.status == 90">Analysis in progress</ng-container>
+            </td>
+            <!-- <td>
+                <button
+                    nz-button
+                    nzNoAnimation
+                    nz-tooltip
+                    class="action-trigger"
+                    [nzTooltipTitle]="menu"
+                    nzTooltipOverlayClassName="tableTooltipOverlay"
+                    [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                >
+                    <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
+                </button>
+                <ng-template #menu>
+                    <ul nz-menu>
+                        <li nz-menu-item>
+                            <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                            <span>Edit</span>
+                        </li>
+                        <li nz-menu-item>
+                            <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
+                            <span>Delete</span>
+                        </li>
+                    </ul>
+                </ng-template>
+            </td> -->
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+    <nz-result>
+        <img nz-result-icon src="assets/icons/no-company.svg">
+        <div nz-result-subtitle>
+            No creatives available yet
+        </div>
+    </nz-result>
+</ng-template>

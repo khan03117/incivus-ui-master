@@ -1,0 +1,92 @@
+<!-- <nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-title>Upload Creative(s)</nz-page-header-title>
+</nz-page-header> -->
+
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+
+<div style="margin-bottom:1rem;"></div>
+
+<app-alert [message]="infoMsg" [alertType]="'info'"></app-alert>
+<app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+
+
+<form nz-form nzLayout ="vertical" [formGroup]="uploadCreativeForm">
+    <nz-card class="upload-container">
+        <div class="form-description role-description">Fill in the following information</div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-label nzFor="creativeName" class="input-float-label">Creative name<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control style="text-align: left;">
+                    <nz-input-group nzSearch nzSize="large">
+                        <input nz-input type="text" id="creativeName" class="rounded-input" nz-input placeholder="Creative name" formControlName="creativeName" id="creativeName"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="creativeType" class="input-float-label">Creative type<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Creative type"
+                            formControlName="creativeType"
+                            nzDropdownClassName="custom-radio-dropdown"
+                            nzShowSearch="false"
+                            id="creativeType"
+                            (ngModelChange)="creativeTypeChange($event)"
+                        >
+                            <nz-option *ngIf="isDisplayAd" nzValue="image" nzLabel="Display Ad" ></nz-option>
+                            <nz-option *ngIf="isVideoAd" nzValue="video" nzLabel="Video Ad" ></nz-option>
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-label nzFor="brandName" class="input-float-label">Select brand <span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Select brand "
+                            formControlName="brandName"
+                            nzDropdownClassName="custom-radio-dropdown"
+                            nzShowSearch="false"
+                            id="brandName"
+                        >
+                            <nz-option *ngFor="let brand of brands"
+                                nzValue="{{brand.toLowerCase()}}" nzLabel="{{ brand | titlecase }}" ></nz-option>
+                            
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item style="visibility: hidden;">
+                <!-- <nz-form-label nzFor="Campaign" class="input-float-label">Campaign *</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Campaign"
+                            formControlName="campaign"
+                            nzDropdownClassName="custom-check-dropdown"
+                            nzShowSearch="false"
+                            id="Campaign"
+                        >
+                            <nz-option nzValue="displayAd" nzLabel="Display Ad" ></nz-option>
+                            <nz-option nzValue="videoAd" nzLabel="Video Ad" ></nz-option>
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control> -->
+            </nz-form-item>
+        </div>
+        <nz-form-item>
+            <app-upload [myCallback]="getFile" [fileAccept]="fileAccept" [fileType]="fileType"></app-upload>
+        </nz-form-item>
+        <div class="form-footer">
+            <div class="form-footer-wrapper">
+                <app-button buttonClass="secondary" label="Cancel" [myCallback]="cancel"></app-button>
+                <app-button buttonClass="secondary" *ngIf="isAnalyze" label="Upload and analyze" [myCallback]="uploadAnalyze"></app-button>
+                <app-button buttonClass="primary" label="Upload" [myCallback]="upload"></app-button>
+            </div>
+        </div>
+    </nz-card>
+</form>

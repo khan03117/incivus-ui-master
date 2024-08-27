@@ -1,0 +1,53 @@
+<div class="super_container" id="authContainer">
+  <div class="container maincontainer d-flex justify-content-center flex-column mx-auto">
+    <div class="row">
+      <div class="col-lg-7 col-md-10 col-sm-10 col-10  mx-auto middle-container  text-center">
+        
+        <div class="login-form-container">
+          <div>
+            <img src="assets/incivus new logo.svg" class="logoPH"/>
+          </div>
+          <div class="" style="margin: 0.75rem 0 1rem 0;">
+            <div class="login-text" style="margin-bottom: 0.5rem;">Welcome to Incivus!</div>
+            <div class="login-text">Find your most effective ad quickly and easily. Login now!</div>
+          </div>
+          <div class="col-sm-12 logininput">
+            <form nz-form nzLayout ="vertical" name="login" [formGroup]="loginForm" *ngIf="loginForm">
+              <nz-card class="loginCard">
+                <div class="row-input-container">
+                  <nz-form-item>
+                      <nz-form-label class="input-float-label">Login Id<span style="color:#EF4444">*</span></nz-form-label>
+                      <nz-form-control class="role-form" [nzValidateStatus]="f['username'].errors && (rnBlur || submitted) ? 'error':''"  nzErrorTip="Uh! Oh! login id is mandatory">
+                          <nz-input-group nzSearch nzSize="large">
+                              <input nz-input type="text" class="rounded-input" (blur)="rnBlur=true" (focus)="rnBlur=false" nz-input placeholder="Login id" formControlName="username" id="username"/>
+                          </nz-input-group>
+                      </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div class="row-input-container">
+                  <nz-form-item>
+                      <nz-form-label class="input-float-label">Password<span style="color:#EF4444">*</span></nz-form-label>
+                      <nz-form-control class="role-form" [nzValidateStatus]="f['password'].errors && (pwdBlur || submitted) ? 'error':''"  nzErrorTip="Uh! Oh! password is mandatory">
+                          <nz-input-group nzSearch nzSize="large">
+                              <input nz-input type="password" class="rounded-input" (blur)="pwdBlur=true" (focus)="pwdBlur=false" nz-input placeholder="Password" formControlName="password" id="password"/>
+                          </nz-input-group>
+                      </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </nz-card>
+              
+              <app-button buttonClass="primary" label="Login" (click)="onSubmit()"></app-button>
+            <div class="mb-3 forgetpswd">
+              <div>Forgot password? Click <a href="javascript:void(0)" (click)="forgotPwd()">here</a></div>
+            </div>
+              <!-- <div class="mb-3 do-hav-register">
+                <h3>Don't have an account? <a href="javascript:void(0)" (click)="register()">Register</a></h3>
+              </div> -->
+            </form>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

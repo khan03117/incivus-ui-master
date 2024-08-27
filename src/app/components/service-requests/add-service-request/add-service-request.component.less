@@ -1,0 +1,120 @@
+@import url("../../../common/less/page-sub-header.less");
+@import url("../../../common/less/form-component.less");
+@import url("../../../common/less/custom-component.less");
+
+.label {
+  text-align: start;
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.label-container {
+  display: flex;
+}
+.launch-date-input {
+  border: 0.063rem solid #919EAB !important;
+    padding: 0 1.125rem !important;
+    height: 3.438rem !important;
+    text-align: left;
+    border-radius: 0.5rem !important;
+    align-items: center;
+}
+.rounded-input {
+  border-radius: 0.5rem !important;
+  text-align: left;
+}
+.custom-file-upload {
+  cursor: pointer;
+  color: #fff;
+  width: var(--Icon-icon-large, 1.5rem);
+  height: var(--Icon-icon-large, 1.5rem);
+  border: none;
+}
+input[type="file"] {
+  display: none;
+  cursor: pointer;
+}
+.selected-images {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  .attachment-container {
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    width: max-content;
+
+    .selected-attachment {
+      font-weight: 400;
+      font-size: 0.85rem;
+    }
+    .delete-icon {
+      cursor: pointer;
+      img {
+        width: auto;
+        height: 0.85rem;
+      }
+    }
+  }
+}
+
+.br-selected-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  &.fullWidth {
+    width: 100%;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      position: relative;
+      width: 3.1rem;
+      height: 3.1rem;
+      margin: 0 0.8rem 0.8rem 0;
+      border: 0.06rem solid #9a9a9a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem;
+      &:hover {
+        .close-icon-cont {
+          display: block !important;
+          & + div {
+            display: block !important;
+          }
+        }
+      }
+      .close-icon-cont {
+        position: absolute;
+        box-shadow: -0.06rem 0.3rem 0.37rem #00000024;
+        top: 0;
+        right: 0;
+        background: #fff;
+        border-radius: 50%;
+        width: 0.7rem;
+        height: 0.7rem;
+        cursor: pointer;
+        display: none;
+        img {
+          width: 0.4rem;
+          margin: 0.15rem auto;
+          background: #fff;
+          display: inherit;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.ant-form-item-explain {
+  bottom: -1.5rem;
+}

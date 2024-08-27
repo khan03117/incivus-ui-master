@@ -1,0 +1,52 @@
+.setup-conatainer{
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.875rem;
+    .setup-wrapper{
+        max-width: 43.75rem;
+        width: 43.75rem;
+        padding: 1.563rem !important;
+        background-color: #fff;
+        border-radius: 1rem;
+    }
+  }
+  
+.setup-conatainer {
+    .setup-wrapper {
+        background: transparent;
+        padding: 0 !important;
+    }
+}
+
+::ng-deep .ant-breadcrumb {
+    font-size: 0.87rem !important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: left;
+    .ant-breadcrumb-link,
+    .ant-breadcrumb-separator {
+        color: #1E293B;
+        font-family: Inter;
+        font-size: 0.87rem!important;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+        a {
+            color: #1E293B !important;
+            text-decoration: none !important;
+        }
+        &:hover {
+            color: #1E293B !important;
+        }
+    }
+    nz-breadcrumb-item {
+        &:last-child {
+            span {
+                font-weight: 500;
+            }
+        }
+    }
+}

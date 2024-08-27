@@ -1,0 +1,230 @@
+@import url('../../../common/less/modal.less');
+@import url('../../../common/less/page-sub-header.less');
+@import url('../../../common/less/report-card.less');
+.report-container{
+    .breadcrumb-container{
+        height:auto;
+    }
+    .ant-row{
+        .ant-col{
+            .ant-card, .card-container{
+                background-color: #E7F8FF;
+                border: 1px solid #38B3E4;
+                border-radius: 1rem;
+                display: flex;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .card-container{
+                margin-bottom: 1.5rem;
+                padding: 2rem;
+                .card-title{
+                    font-size: 0.87rem;
+                    font-weight: 600;
+                }
+                & > .ant-card-body{
+                    padding: unset !important;
+                    background: transparent !important;
+                    border: none !important;
+                    .ant-card{
+                        padding: 0 !important;
+                        border:none !important;
+                    }
+                }
+                .report-card-header{
+                    text-align: left;
+                    margin-bottom: 2rem;
+                    .title{
+                        font-size: 0.87rem;
+                        font-weight: 600;
+                    }
+                    .description{
+                        font-size: 0.87rem;
+                        font-weight: 400;
+                    }
+                    &.flex-header{
+                        display: flex;
+                        align-items: center;
+                        gap:1rem;
+                        .icon-wrapper{
+                            width: 3.75rem;
+                            height: 3.75rem;
+                            background: #00549A;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    }
+                }
+                .flex-content{
+                    display: flex;
+                    gap:1rem;
+                    &:not(:last-child){
+                        margin-bottom: 2rem;
+                    }
+                    .count-wrapper{
+                        width: 1.875rem;
+                        height: 1.875rem;
+                        background: #BFD9EB;
+                        color:#00549A;
+                        border-radius: 50%;
+                        border:1px solid#00549A;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 0.87rem;
+                        font-weight: 500;
+                    }
+                    .content-wrapper{
+                        text-align: left;
+                        font-size: 0.87rem;
+                        font-weight: 400;
+                        color: #334155;
+                        line-height: 1rem;
+                        width: calc(100% - 1.875rem);
+                        .title{
+                            line-height: 1.361rem;
+                            font-size: 0.87rem;
+                            font-weight: 600;
+                            color:#1E293B;
+                            display: flex;
+                            justify-content: space-between;
+                            .details-link{
+                                font-size: 0.87rem;
+                                font-weight: 600;
+                                color: #39B3EA;
+                                cursor: pointer;
+                                text-decoration: underline;
+                                line-height: 0.908rem;
+                            }
+                        }
+                    }
+                }
+                .creative-card-header{
+                    font-size: 0.87rem;
+                    margin-bottom: 0rem;
+                    .slider-container {
+                        height: 190px;
+                        margin: auto;
+                    }
+                    
+                    #circle {
+                       position: absolute;
+                       left: 0;
+                       top: 0;
+                    }
+                    
+                    #status {
+                        font-size: 2rem;
+                        font-weight: 500;
+                    }
+                    .sub-title{
+                        font-weight: 500;
+                        margin:1.5rem 0 1rem 0;
+                    }
+                    .card-description{
+                        font-weight: 400;
+                        margin:0 auto;
+                        text-align: center;
+                    }
+                    .cesScore{
+                        font-weight: 600;
+                        color: #000;
+                        font-size: 1.8rem;
+                        &.low{
+                            color: #CD2D2E;
+                        }
+                        &.medium{
+                            color: #FFBD19;
+                        }
+                        &.high{
+                            color: #30D476;
+                        }
+                    }
+                    .ant-btn-primary{
+                        font-weight: 600;
+                        color: #fff;
+                        border: none;
+                        &.ces {
+                            width: 6.7rem;
+                            height: 2.5rem;
+                            font-size: 0.87rem;
+                            
+                        }
+                        &.low{
+                            background: #CD2D2E;
+                        }
+                        &.medium{
+                            background: #FFBD19;
+                        }
+                        &.high{
+                            background: #30D476;
+                        }
+                    }
+                }
+            }
+            .report-header-card{
+                .ant-card-cover{
+                    width:20.625rem;
+                    img{
+                        border-radius: 0.313rem;
+                        max-height: 150px;
+                    }
+                }
+                .ant-card-body{
+                    width: calc(100% - 20.625rem);
+                    text-align: left;
+                    padding: 0;
+                    background: transparent;
+                    border: none;
+                    border-radius: unset;
+                    .ant-card-meta-title{
+                        font-size: 0.87rem;
+                        font-weight: 600;
+                    }
+                    .meta-content{
+                        margin-top: 1rem;
+                        p{
+                            font-size: 0.87rem;
+                            font-weight: 500;
+                            color:#334155;
+                            padding: 0;
+                            margin: 0;
+                        }
+                    }
+                    .btn-container{
+                        display: flex;
+                        gap: 1rem;
+                        margin-top: 1.5rem;
+                    }
+                }
+                .ant-card-actions{
+                    background: none;
+                    border-top:none;
+                    display: flex;
+                    gap: 8px;
+                    li{
+                        padding: 0;
+                        margin: 0;
+                        background: #38B3E4;
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius:0.25rem;
+                        span{
+                            height: 100%;
+                            align-items: center;
+                            justify-content: center;
+                            display: flex;
+                            .anticon{
+                                width: 1rem;
+                                height: 1rem;
+                                color: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,140 @@
+
+.ant-table{
+    table{
+        border-spacing: 0 0.75rem;
+        thead{
+            tr{
+                th{
+                    background: #f1f1f1;
+                    border-top: 0.125rem solid #e1e1e1;
+                    border-bottom: 0.125rem solid #e1e1e1;
+                    padding: 0.625rem;
+                    font-size: 0.87rem;
+                    font-weight: 600;
+                    &:first-child{
+                        border-left:0.125rem solid #e1e1e1;
+                        border-top-left-radius: 0.313rem !important;
+                        border-bottom-left-radius: 0.313rem;
+                    }
+                    &:last-child{
+                        border-right:0.125rem solid #e1e1e1;
+                        border-top-right-radius: 0.313rem !important;
+                        border-bottom-right-radius: 0.313rem;
+                    }
+                    &.ant-table-cell{
+                        &::before{
+                            display: none;
+                        }
+                    }
+                }
+                
+            }
+        }
+        tr{
+            td{
+                background: #F7F4fd;
+                border-bottom: none;
+                padding: 0.625rem;
+                font-size: 0.87rem;
+                font-weight: 400;
+                max-width: 10rem;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                &:hover{
+                    background: #F7F4fd;
+                }
+                &:first-child{
+                    border-top-left-radius: 0.313rem !important;
+                    border-bottom-left-radius: 0.313rem;
+                }
+                &:last-child{
+                    border-top-right-radius: 0.313rem !important;
+                    border-bottom-right-radius: 0.313rem;
+                }
+                &.tags{
+                    .ant-tag{
+                        border: none;
+                        padding: 0.5rem;
+                        border-radius: 0.375rem;
+                        font-weight: 500;
+                        font-size: 0.87rem;
+                        line-height: 0.938rem;
+                        &.ant-tag-success{
+                            background: #54D62C;
+                            color: #229A16;
+                        }
+                        &.ant-tag-success{
+                            background: rgba(84, 214, 44, 0.16);
+                            color: #229A16;
+                        }
+                        &.ant-tag-error{
+                            background: rgba(239, 68, 68, 0.05);
+                            color: #DB1F35;
+                        }
+                    }
+                }
+            }
+        }
+        .ant-checkbox{
+            .ant-checkbox-inner{
+                position: relative;
+                top: 0;
+                left: 0;
+                display: block;
+                width: 1rem;
+                height: 1rem;
+                direction: ltr;
+                border: 0.06rem solid #d9d9d9;
+                border-radius: 0.12rem;
+                border-collapse: separate;
+                transition: all .3s;
+            }
+            &.ant-checkbox-indeterminate{
+                .ant-checkbox-inner{
+                    &:after{
+                        background: unset;
+                    }
+                }
+            }
+            &.ant-checkbox-checked{
+                .ant-checkbox-inner{
+                    &:after{
+                        display: inline;
+                        top: 0.38rem;
+                        left: 0.23rem;
+                        width: 0.3rem;
+                        height: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.ant-pagination-next .ant-pagination-item-link, .ant-pagination-prev .ant-pagination-item-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-list-table{
+    .ant-table{
+        background: unset;
+        table tr td{
+            &:last-child{
+                text-align: right;
+            }
+        }
+        .action-trigger{
+            border: none; 
+            padding: 0;
+            background: unset;
+            color: #94A3B8;
+            &:hover{
+                background: unset;
+            }
+        }
+    }
+    
+}

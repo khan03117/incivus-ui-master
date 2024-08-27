@@ -1,0 +1,337 @@
+<div class="brand-list-container" *ngIf="!isLoading">
+    <div class="product-details">
+        <div>Master brand : {{ brandInQue.masterBrand.name }}</div>
+        <div *ngIf="brandInQue.productBrand && brandInQue.productBrand.name">Product : {{ brandInQue.productBrand.name }}</div>
+    </div>
+    <div class="guideline-title" *ngIf="entityList && entityList.length">Map to selected company entities</div>
+    <div class="brand-guideline-container">
+        <form nz-form nzLayout ="vertical" *ngIf="entityList && entityList.length">
+            <nz-form-item>
+                <nz-form-label nzFor="entity" class="input-float-label">Company entity</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSize="large">
+                        <nz-select [nzMaxTagCount]="3"
+                            [nzMaxTagPlaceholder]="tagPlaceHolder"
+                            nzMode="multiple"
+                            [nzOptionOverflowSize]="8"
+                            nzPlaceHolder="Select company entity" 
+                            id="entityList" class="select-list"
+                            nzDropdownClassName="custom-check-dropdown"
+                            [nzShowArrow]="true" 
+                            [(ngModel)]="entity" 
+                            (ngModelChange)="entityChange()" 
+                            [ngModelOptions]="{standalone: true}">
+                                <nz-option *ngFor="let item of entityList"
+                                    [nzValue]="item"
+                                    [nzLabel]="item"
+                            ></nz-option>
+                        </nz-select>
+                        <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>    
+            <nz-form-item>
+                <nz-form-label nzFor="subEntity" class="input-float-label">Select sub entity</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSize="large">
+                        <nz-select [nzMaxTagCount]="3"
+                            [nzMaxTagPlaceholder]="tagPlaceHolder"
+                            [nzOptionOverflowSize]="8"
+                            nzMode="multiple"
+                            nzPlaceHolder="Select sub entity" 
+                            id="subEntity" 
+                            nzDropdownClassName="custom-check-dropdown"
+                            [nzShowArrow]="true"
+                            [(ngModel)]="subEntity" 
+                            [ngModelOptions]="{standalone: true}"
+                            class="select-list" 
+                            [nzDisabled]="!entity">
+                            <nz-option *ngFor="let item of subEntityList"
+                                    [nzValue]="item"
+                                    [nzLabel]="item"
+                            ></nz-option>
+                        </nz-select>
+                        <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+            <div class="guideline-additional-input">
+                <div nz-row [nzGutter]="8" class="guideline-additional-wrapper">
+                    <div nz-col [nzSpan]="12">
+                        <form nz-form nzLayout ="vertical">
+                        <nz-card nzTitle="Logos">
+                            <div class="br-selected-list fullWidth">
+                                <ul style="display: flex;flex-wrap: wrap;">
+                                    <li class="br-selected-logo" *ngFor="let sLogo of savedLogo; let i = index">
+                                        <img src="{{awsLink}}/{{sLogo}}" style="width: 100%; max-height: 100%;"/>
+                                        <div class="close-icon-cont" (click)="remove_s_logo(i)">
+                                            <img src="assets/icons/Close.svg" alt="">
+                                        </div>
+                                    </li>
+                                    <li class="br-selected-logo" *ngFor="let logo of logoListPreview; let i = index">
+                                        <img [src]=sanitize(logo) style="width: 100%; max-height: 100%;"/>
+                                        <div class="close-icon-cont" (click)="remove_logo(i)">
+                                            <img src="assets/icons/Close.svg" alt="">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <nz-upload [nzAccept]="'image/png, image/jpeg, image/jpg'" [nzBeforeUpload]="beforeUploadLogo" nzMultiple="true" [nzShowUploadList]="uploadInfo">
+                                <button nz-button>
+                                    Drag & Drop here or &nbsp;<span class="browse-file">Browse files</span>
+                                </button>
+                            </nz-upload>
+                        </nz-card>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                        <nz-card nzTitle="Ad copy tone" class="custom-radio-input">
+                            <nz-form-item class="fullWidth">
+                                <nz-form-label>Text sentiment</nz-form-label>
+                                <nz-form-control>
+                                    <nz-radio-group [(ngModel)]="textSentiment" [ngModelOptions]="{standalone: true}" nzButtonStyle="solid" id="sentiment">
+                                        <label nz-radio-button nzValue="negative">Negative</label>
+                                        <label nz-radio-button nzValue="neutral">Neutral</label>
+                                        <label nz-radio-button nzValue="positive">Positive</label>
+                                        <label nz-radio-button nzValue="na">NA</label>
+                                    </nz-radio-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item class="fullWidth">
+                                <nz-form-label>Tone of voice</nz-form-label>
+                                <nz-form-control>
+                                    <nz-radio-group [(ngModel)]="toneOfVoice_1" [ngModelOptions]="{standalone: true}" nzButtonStyle="solid" id="sentiment">
+                                        <label nz-radio-button nzValue="funny">Funny</label>
+                                        <label nz-radio-button nzValue="neutral">Neutral</label>
+                                        <label nz-radio-button nzValue="serious">Serious</label>
+                                        <label nz-radio-button nzValue="na">N/A</label>
+                                    </nz-radio-group>
+                                    <nz-radio-group [(ngModel)]="toneOfVoice_2" [ngModelOptions]="{standalone: true}" nzButtonStyle="solid" id="sentiment">
+                                        <label nz-radio-button nzValue="casual">Casual</label>
+                                        <label nz-radio-button nzValue="neutral">Neutral</label>
+                                        <label nz-radio-button nzValue="formal">Formal</label>
+                                        <label nz-radio-button nzValue="na">N/A</label>
+                                    </nz-radio-group>
+                                    <nz-radio-group [(ngModel)]="toneOfVoice_3" [ngModelOptions]="{standalone: true}" nzButtonStyle="solid" id="sentiment">
+                                        <label nz-radio-button nzValue="irreverant">Irreverant</label>
+                                        <label nz-radio-button nzValue="neutral">Neutral</label>
+                                        <label nz-radio-button nzValue="formal">Respectful</label>
+                                        <label nz-radio-button nzValue="na">N/A</label>
+                                    </nz-radio-group>
+                                    <nz-radio-group [(ngModel)]="toneOfVoice_4" [ngModelOptions]="{standalone: true}" nzButtonStyle="solid" id="sentiment">
+                                        <label nz-radio-button nzValue="enthusiastic">Enthusiastic</label>
+                                        <label nz-radio-button nzValue="neutral">Neutral</label>
+                                        <label nz-radio-button nzValue="matterOfFact">Matter-of-fact</label>
+                                        <label nz-radio-button nzValue="na">N/A</label>
+                                    </nz-radio-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item class="fullWidth">
+                                <nz-form-label>Voice</nz-form-label>
+                                <nz-form-control>
+                                    <nz-radio-group [(ngModel)]="voice" [ngModelOptions]="{standalone: true}" nzButtonStyle="solid" id="sentiment">
+                                        <label nz-radio-button nzValue="active">Active</label>
+                                        <label nz-radio-button nzValue="passive">Passive</label>
+                                    </nz-radio-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </nz-card>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                        <nz-card nzTitle="Keywords">
+                            <div class="keyword-preview" *ngIf="keywordList.length > 0">
+                                <nz-tag nzMode="closeable" (nzOnClose)="handleClose(keyword)" *ngFor="let keyword of keywordList; let i = index">
+                                    <span class="tagName">{{ keyword }}</span>
+                                </nz-tag>
+                            </div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="keyword" class="input-float-label">Add keywords</nz-form-label>
+                                <nz-form-control>
+                                    <nz-input-group  nzSize="large">
+                                        <input nz-input type="text" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}" (keyup.enter)="addKeywordList()" class="rounded-input" nz-input placeholder="Enter keywords" id="keyword" />
+                                    </nz-input-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </nz-card>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                        <nz-card nzTitle="Tagline">
+                            <div class="tagline-preview" *ngIf="taglineList.length > 0">
+                                <nz-tag nzMode="closeable" (nzOnClose)="handleTaglineClose(tagline)" *ngFor="let tagline of taglineList; let i = index">
+                                    <span class="tagName">{{ tagline }}</span>
+                                </nz-tag>
+                            </div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="tagline" class="input-float-label">Add tagline</nz-form-label>
+                                <nz-form-control>
+                                    <nz-input-group nzSize="large">
+                                        <input nz-input type="text" [(ngModel)]="tagline" [ngModelOptions]="{standalone: true}" class="rounded-input" nz-input placeholder="Enter tagline" id="tagline" (keyup.enter)="addTaglineList()"/>
+                                    </nz-input-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </nz-card>
+                        </form>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <form nz-form nzLayout ="vertical">
+                        <nz-card nzTitle="Colors">
+                            <div class="br-selected-list fullWidth" style="margin-bottom: 1.5rem;">
+                                <ul style="display: flex;flex-wrap: wrap;">
+                                    <li *ngFor="let color of colorCodeList; let i = index" class="br-selected-logo" 
+                                    [attr.style]="('background-color:' + color + '!important')"
+                                        [style.background-color]=color>
+                                        <div class="close-icon-cont" (click)="remove_color(i)">
+                                            <img src="assets/icons/Close.svg" alt="">
+                                        </div>
+                                        <div style="position: absolute; bottom: -1.1rem;
+                                                font: normal normal normal 0.75rem/1.1rem Open Sans; display: none;">{{color}}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <nz-form-item>
+                                <nz-form-label nzFor="colorCode" class="input-float-label">Add color</nz-form-label>
+                                <nz-form-control>
+                                    <nz-input-group  nzSize="large">
+                                        <input nz-input type="text" class="rounded-input" [(ngModel)]="colorcode" [ngModelOptions]="{standalone: true}" nz-input placeholder="Enter hex code"  id="colorCode" (keyup.enter)="addColorCodeList()"/>
+                                    </nz-input-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </nz-card>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                            <nz-card nzTitle="Audio branding">
+                                <div class="br-selected-list fullWidth">
+                                    <ul style="display: flex;flex-wrap: wrap;">
+                                        <li class="br-selected-logo" style="border:none;" *ngFor="let sAudio of savedAudio; let i = index">
+                                            <img style="width: 2rem; height: 2rem;" src="assets/icons/audio.svg" alt=""/>
+                                            <div class="close-icon-cont" (click)="remove_s_audio(i)">
+                                                <img src="assets/icons/Close.svg" alt=""/>
+                                            </div>
+                                        </li>
+                                        <li class="br-selected-logo" style="border:none;" *ngFor="let audio of audioFileMeta; let i = index;">
+                                            <img style="width: 2rem; height: 2rem;" src="assets/icons/audio.svg" alt=""/>
+                                            <div class="close-icon-cont" (click)="remove_audio(i)">
+                                                <img src="assets/icons/Close.svg" alt=""/>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <nz-upload [nzAccept]="'audio/mpeg, audio/wav'" [nzBeforeUpload]="beforeUploadAudio" 
+                                    nzMultiple="true" [nzShowUploadList]="uploadInfo">
+                                    <button nz-button>
+                                        Drag & Drop here or &nbsp;<span class="browse-file">Browse files</span>
+                                    </button>
+                                </nz-upload>
+                            </nz-card>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                            <nz-card nzTitle="Emotions" class="emotions-checkbox" [nzExtra]="extraTemplate">
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <nz-checkbox-group [(ngModel)]="emotionOption" (ngModelChange)="checkEmotion(emotionOption)" [ngModelOptions]="{standalone: true}"></nz-checkbox-group>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </nz-card>
+                            <ng-template #extraTemplate>
+                                Select {{emotionSelected}}/3
+                              </ng-template>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                            <nz-card nzTitle="Product form">
+                                <nz-form-item>
+                                    <nz-form-label nzFor="productForm" class="input-float-label">Product form</nz-form-label>
+                                    <nz-form-control>
+                                        <!-- <nz-input-group  nzSize="large">
+                                            <input nz-input type="text" class="rounded-input" [(ngModel)]="productForm" [ngModelOptions]="{standalone: true}" nz-input placeholder="Enter product form"  id="productForm" (keyup.enter)="addProductFormList()"/>
+                                        </nz-input-group> -->
+                                        <nz-form-control>
+                                            <nz-input-group nzSize="large">
+                                                <nz-select [nzMaxTagCount]="0"
+                                                    [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                    nzMode="multiple"
+                                                    nzPlaceHolder="Select product form" 
+                                                    id="productForm" 
+                                                    [nzOptionOverflowSize]="8"
+                                                    [(ngModel)]="productFormList" 
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    nzDropdownClassName="custom-check-dropdown"
+                                                    [nzShowArrow]="true"
+                                                    class="select-list">
+                                                    <nz-option *ngFor="let item of productFormListObj"
+                                                            [nzValue]="item"
+                                                            [nzLabel]="item"
+                                                    ></nz-option>
+                                                </nz-select>
+                                                <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </nz-card>
+                        </form>
+                        <form nz-form nzLayout ="vertical">
+                        <nz-card nzTitle="Signature">
+                            <nz-form-item class="form-input-item fullWidth">
+                                <nz-form-control>
+                                    <nz-radio-group [(ngModel)]="signatureType" [ngModelOptions]="{standalone: true}">
+                                        <label nz-radio nzValue="text">Text signature</label>
+                                        <label nz-radio nzValue="image">Image signature</label>
+                                    </nz-radio-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <ng-container *ngIf="signatureType === 'text'">
+                                <div class="signature-preview" *ngIf="signatureList.length > 0">
+                                    <nz-tag nzMode="closeable" (nzOnClose)="handleSignatureClose(signatureItem)" *ngFor="let signatureItem of signatureList; let i = index">
+                                        <span class="tagName">{{ signatureItem }}</span>
+                                    </nz-tag>
+                                </div>
+                                <nz-form-item>
+                                    <nz-form-label nzFor="signature" class="input-float-label">Add signature</nz-form-label>
+                                    <nz-form-control>
+                                        <nz-input-group  nzSize="large">
+                                            <input nz-input type="text" class="rounded-input" [(ngModel)]="signature" [ngModelOptions]="{standalone: true}" (keyup.enter)="addSignatureList()" nz-input placeholder="Enter brand signature"  id="signature" (blur)="addSignatureList()"/>
+                                        </nz-input-group>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </ng-container>
+                            <ng-container *ngIf="signatureType === 'image'">
+                                <nz-card nzTitle="Signature">
+                                    <div class="br-selected-list fullWidth">
+                                        <ul style="display: flex;flex-wrap: wrap;">
+                                            <li class="br-selected-logo" *ngFor="let sSign of savedSign; let i = index">
+                                                <img src="https://ap-south-1-test-ui-bucket.s3.ap-south-1.amazonaws.com/{{sSign}}" style="width: 100%; max-height: 100%;"/>
+                                                <div class="close-icon-cont" (click)="remove_s_sign(i)">
+                                                    <img src="assets/icons/Close.svg" alt="">
+                                                </div>
+                                            </li>
+                                            <li class="br-selected-logo" *ngFor="let sign of signListPreview; let i = index">
+                                                <img [src]=sanitize(sign) style="width: 100%; max-height: 100%;"/>
+                                                <div class="close-icon-cont" (click)="remove_sign(i)">
+                                                    <img src="assets/icons/Close.svg" alt="">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <nz-upload [nzAccept]="'image/png, image/jpeg, image/jpg'" [nzBeforeUpload]="beforeUploadSign" nzMultiple="true" [nzShowUploadList]="uploadInfo">
+                                        <button nz-button>
+                                            Drag & Drop here or &nbsp;<span class="browse-file">Browse files</span>
+                                        </button>
+                                    </nz-upload>
+                                </nz-card>
+                            </ng-container>
+                        </nz-card>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <div class="form-footer-wrapper">
+                    <app-button buttonClass="primary" label="{{ brandId ? 'Update' : 'Save'}}" [loading]="saving" [myCallback]="buttonCallback"></app-button>
+                </div>
+            </div>
+            <br/>
+            <app-alert [message]="detailsError" [alertType]="'error'" *ngIf="detailsError"></app-alert>
+        <!-- </form> -->
+    </div>
+</div>
+

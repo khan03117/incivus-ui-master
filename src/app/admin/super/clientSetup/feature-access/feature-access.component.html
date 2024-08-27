@@ -1,0 +1,1165 @@
+<app-alert
+  [message]="featureError"
+  [alertType]="'error'"
+  *ngIf="featureError"
+></app-alert>
+<!--  Pre Flight -->
+<div class="feature-access-wrapper">
+  <nz-form-item class="row-switch-container feature-modal-switch">
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large" class="faIG">
+        <nz-switch
+          nzSize="small"
+          [(ngModel)]="features.preFlight.isAvailable"
+        ></nz-switch>
+        <nz-form-label nzFor="featureAccess" class="input-radio-label"
+          >Pre-flight</nz-form-label
+        >
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <div class="pre-flight-wrapper" *ngIf="features.preFlight.isAvailable">
+    <nz-form-item class="row-switch-container feature-modal-switch">
+      <nz-form-control>
+        <nz-input-group nzSearch nzSize="large" class="faIG">
+          <nz-switch
+            nzSize="small"
+            [(ngModel)]="features.imageAd.isAvailable"
+          ></nz-switch>
+          <nz-form-label nzFor="featureAccess" class="input-radio-label"
+            >Display Ad</nz-form-label
+          >
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="features.imageAd.isAvailable" class="collapse-content">
+      <nz-form-item>
+        <nz-form-label nzFor="limit-count" class="input-float-label"
+          >Set limit<span style="color: #ef4444">*</span></nz-form-label
+        >
+        <nz-form-control>
+          <nz-input-group nzSearch nzSize="large">
+            <input
+              type="number"
+              [disabled]="!features.imageAd.isAvailable"
+              [(ngModel)]="features.imageAd.adLimit"
+              [ngModelOptions]="{ standalone: true }"
+              class="rounded-input"
+              nz-input
+              placeholder="Enter a limit for number of Ads"
+              id="imageAd-limit"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="setup-conatainer">
+        <div class="setup-wrapper">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzDisabled]="!features.imageAd.isAvailable"
+              [(nzActive)]="features.imageAd.isAnalyze"
+              [nzHeader]="imageAnalyzePanel"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #imageAnalyzePanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch
+                        [nzId]="'analyze'"
+                        [nzDisabled]="!features.imageAd.isAvailable"
+                        [ngModel]="features.imageAd.isAnalyze"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >Analyse</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.analyze.viewReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.imageAd.isAvailable &&
+                          !features.imageAd.isAnalyze
+                        "
+                        nzValue="viewReport"
+                        >View report</label
+                      >
+                    </div>
+                    <div class="chk-box-label hide-element">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.analyze.downloadReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="true"
+                        nzValue="downLoadReport"
+                        >Download report (PDF)</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        <div class="setup-wrapper">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzDisabled]="!features.imageAd.isAvailable"
+              [nzHeader]="abTestPanel"
+              [(nzActive)]="features.imageAd.isABTest"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #abTestPanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch
+                        [nzId]="'abTest'"
+                        [nzDisabled]="!features.imageAd.isAvailable"
+                        [ngModel]="features.imageAd.isABTest"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >A/B test</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.abTest.viewReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.imageAd.isAvailable &&
+                          !features.imageAd.isABTest
+                        "
+                        nzValue="viewReport"
+                        >View report</label
+                      >
+                    </div>
+                    <div class="chk-box-label hide-element">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.abTest.downloadReport"
+                        [ngModelOptions]="{ standalone: true }"
+                       [nzDisabled]="true"
+                        nzValue="downLoadReport"
+                        >Download report (PDF)</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        <div class="setup-wrapper">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzHeader]="subEditPanel"
+              [nzDisabled]="true"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #subEditPanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch [nzDisabled]="true"></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >Sub edits</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label nz-checkbox nzValue="viewReport"
+                        >View report</label
+                      >
+                    </div>
+                    <div class="chk-box-label hide-element">
+                      <label nz-checkbox nzValue="downLoadReport"
+                      [nzDisabled]="true"
+                        >Download report (PDF)</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        <div class="setup-wrapper hide-element">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzHeader]="aiModelPanel"
+              [nzDisabled]="
+                !(features.imageAd.isAvailable && features.imageAd.isAnalyze)
+              "
+              [(nzActive)]="features.imageAd.isAIModels"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #aiModelPanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch
+                        [nzId]="'aiModels'"
+                        [nzDisabled]="
+                          !(
+                            features.imageAd.isAvailable &&
+                            features.imageAd.isAnalyze
+                          )
+                        "
+                        [ngModel]="features.imageAd.isAIModels"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >AI models</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.aiModels.recall"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.imageAd.isAvailable &&
+                          !features.imageAd.isAIModels
+                        "
+                        nzValue="recall"
+                        >Recall</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.aiModels.attention"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.imageAd.isAvailable &&
+                          !features.imageAd.isAIModels
+                        "
+                        nzValue="attention"
+                        >Attention</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.aiModels.adCopy"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.imageAd.isAvailable &&
+                          !features.imageAd.isAIModels
+                        "
+                        nzValue="adCopy"
+                        >Ad copy</label
+                      >
+                    </div>
+                  <!-- <div class="chk-box-label"><label nz-checkbox [(ngModel)]="features.imageAd.aiModels.music" [ngModelOptions]="{standalone: true}" [nzDisabled]="!features.imageAd.isAvailable && !features.imageAd.isAIModels" nzValue="music">Music</label></div> -->
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.imageAd.aiModels.humanPresence"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.imageAd.isAvailable &&
+                          !features.imageAd.isAIModels
+                        "
+                        nzValue="humanPresence"
+                        >Human presence</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+      </div>
+    </div>
+
+    <nz-form-item class="row-switch-container feature-modal-switch">
+      <nz-form-control>
+        <nz-input-group nzSearch nzSize="large" class="faIG">
+          <nz-switch
+            nzSize="small"
+            [(ngModel)]="features.videoAd.isAvailable"
+          ></nz-switch>
+          <nz-form-label nzFor="featureAccess" class="input-radio-label"
+            >Video Ad</nz-form-label
+          >
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="features.videoAd.isAvailable" class="collapse-content">
+      <nz-form-item>
+        <nz-form-label nzFor="limit-count" class="input-float-label"
+          >Set limit<span style="color: #ef4444">*</span></nz-form-label
+        >
+        <nz-form-control>
+          <nz-input-group nzSearch nzSize="large">
+            <input
+              type="number"
+              [disabled]="!features.videoAd.isAvailable"
+              [(ngModel)]="features.videoAd.adLimit"
+              [ngModelOptions]="{ standalone: true }"
+              class="rounded-input"
+              nz-input
+              placeholder="Enter a limit for number of Ads"
+              id="imageAd-limit"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="setup-conatainer">
+        <div class="setup-wrapper">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzDisabled]="!features.videoAd.isAvailable"
+              [(nzActive)]="features.videoAd.isAnalyze"
+              [nzHeader]="analyzePanel"
+              [nzExpandedIcon]="expandCollapseIconVideo"
+            >
+              <ng-template #analyzePanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch
+                        [nzId]="'analyze'"
+                        [nzDisabled]="!features.videoAd.isAvailable"
+                        [ngModel]="features.videoAd.isAnalyze"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >Analyse</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.analyze.viewReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isAnalyze
+                        "
+                        nzValue="viewReport"
+                        >View report</label
+                      >
+                    </div>
+                    <div class="chk-box-label hide-element">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.analyze.downloadReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="true"
+                        nzValue="downLoadReport"
+                        >Download report (PDF)</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        <div class="setup-wrapper">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzDisabled]="!features.imageAd.isAvailable"
+              [nzHeader]="abTestPanel"
+              [(nzActive)]="features.videoAd.isABTest"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #abTestPanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch
+                        [nzId]="'abTest'"
+                        [nzDisabled]="!features.imageAd.isAvailable"
+                        [ngModel]="features.videoAd.isABTest"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >A/B test</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.abTest.viewReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isABTest
+                        "
+                        nzValue="viewReport"
+                        >View report</label
+                      >
+                    </div>
+                    <div class="chk-box-label hide-element">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.abTest.downloadReport"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="true"
+                        nzValue="downLoadReport"
+                        >Download report (PDF)</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        <div class="setup-wrapper">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzHeader]="subEditPanel"
+              [nzDisabled]="true"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #subEditPanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch [nzDisabled]="true"></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >Sub edits</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label nz-checkbox nzValue="viewReport"
+                        >View report</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label nz-checkbox nzValue="downLoadReport"
+                        >Download report (PDF)</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        <div class="setup-wrapper hide-element">
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzHeader]="aiModelPanel"
+              [nzDisabled]="
+                !(features.videoAd.isAvailable && features.videoAd.isAnalyze)
+              "
+              [(nzActive)]="features.videoAd.isAIModels"
+              [nzExpandedIcon]="expandCollapseIcon"
+            >
+              <ng-template #aiModelPanel let-active>
+                <nz-form-item class="row-switch-container form-feature-switch">
+                  <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                      <nz-switch
+                        [nzId]="'aiModels'"
+                        [nzDisabled]="
+                          !(
+                            features.videoAd.isAvailable &&
+                            features.videoAd.isAnalyze
+                          )
+                        "
+                        [ngModel]="features.videoAd.isAIModels"
+                        [ngModelOptions]="{ standalone: true }"
+                      ></nz-switch>
+                    </nz-input-group>
+                  </nz-form-control>
+                  <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                    >AI models</nz-form-label
+                  >
+                </nz-form-item>
+              </ng-template>
+              <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                  <nz-checkbox-wrapper class="feature-checkbox-selector">
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.aiModels.recall"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isAIModels
+                        "
+                        nzValue="recall"
+                        >Recall</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.aiModels.attention"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isAIModels
+                        "
+                        nzValue="attention"
+                        >Attention</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.aiModels.adCopy"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isAIModels
+                        "
+                        nzValue="adCopy"
+                        >Ad copy</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.aiModels.music"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isAIModels
+                        "
+                        nzValue="music"
+                        >Music</label
+                      >
+                    </div>
+                    <div class="chk-box-label">
+                      <label
+                        nz-checkbox
+                        [(ngModel)]="features.videoAd.aiModels.humanPresence"
+                        [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="
+                          !features.videoAd.isAvailable &&
+                          !features.videoAd.isAIModels
+                        "
+                        nzValue="humanPresence"
+                        >Human presence</label
+                      >
+                    </div>
+                  </nz-checkbox-wrapper>
+                </nz-input-group>
+              </nz-form-control>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- In Flight -->
+<div class="feature-access-wrapper">
+  <!-- In Flight Header Switch -->
+  <nz-form-item class="row-switch-container feature-modal-switch">
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large" class="faIG">
+        <nz-switch
+          nzSize="small"
+          [(ngModel)]="features.inFlight.isAvailable"
+        ></nz-switch>
+        <nz-form-label nzFor="featureAccess" class="input-radio-label"
+          >In-flight</nz-form-label
+        >
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- In Flight Body -->
+  <div *ngIf="features.inFlight.isAvailable" class="collapse-content">
+    <div class="setup-conatainer">
+      <!-- Analyze Toggle  -->
+      <div class="setup-wrapper">
+        <nz-collapse nzExpandIconPosition="right">
+          <nz-collapse-panel
+            [nzActive]="features.inFlight.isAvailable"
+            [nzHeader]="analyzePanel"
+          >
+            <ng-template #analyzePanel let-active>
+              <nz-form-item class="row-switch-container form-feature-switch">
+                <nz-form-label
+                  nzFor="featureAccess"
+                  style="overflow: visible"
+                  class="input-radio-label"
+                >
+                  Analysis
+                </nz-form-label>
+              </nz-form-item>
+            </ng-template>
+
+            <!-- In Flight Image Ad -->
+            <div class="setup-wrapper">
+              <nz-collapse nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  [nzHeader]="analyzeDisplayPanel"
+                  [(nzActive)]="features.inFlight.imageAd.isAnalyze"
+                >
+                  <ng-template #analyzeDisplayPanel let-active>
+                    <nz-form-item
+                      class="row-switch-container form-feature-switch"
+                    >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <nz-switch
+                            [ngModel]="features.inFlight.imageAd.isAnalyze"                            
+                            [ngModelOptions]="{standalone:true}"
+                          ></nz-switch>
+                        </nz-input-group>
+                      </nz-form-control>
+                      <nz-form-label class="input-radio-label"
+                        >Display Ad</nz-form-label
+                      >
+                    </nz-form-item>
+                  </ng-template>
+                  <div style="display: flex">
+                    <nz-form-control>
+                      <nz-input-group nzSearch nzSize="large">
+                        <nz-checkbox-wrapper class="feature-checkbox-selector">
+                          <div class="chk-box-label ">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.inFlight.imageAd.analyze.viewReport
+                              "
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="viewReport"
+                            >
+                              View report
+                            </label>
+                          </div>
+                          <div class="chk-box-label hide-element">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.inFlight.imageAd.analyze.downloadReport
+                              "
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="downloadReport"
+                              [nzDisabled]="true"
+                            >
+                              Download report (PDF)
+                            </label>
+                          </div>
+                        </nz-checkbox-wrapper>
+                      </nz-input-group>
+                    </nz-form-control>
+                    <nz-form-item style="flex-basis: 50%">
+                      <nz-form-label
+                        nzFor="limit-count"
+                        class="input-float-label"
+                        >Set limit<span style="color: #ef4444"
+                          >*</span
+                        ></nz-form-label
+                      >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <input
+                            type="number"
+                            [(ngModel)]="features.inFlight.imageAd.adLimit"
+                            [ngModelOptions]="{ standalone: true }"
+                            class="rounded-input"
+                            nz-input
+                            placeholder="Enter a limit for number of Ads"
+                            id="imageAd-limit"
+                          />
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
+
+            <!-- In Flight Video Ad -->
+            <div class="setup-wrapper">
+              <nz-collapse nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  [nzHeader]="analyzeVideoPanel"
+                  [(nzActive)]="features.inFlight.videoAd.isAnalyze"
+                >
+                  <ng-template #analyzeVideoPanel let-active>
+                    <nz-form-item
+                      class="row-switch-container form-feature-switch"
+                    >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <nz-switch
+                            [nzId]="'analyze'"
+                            [ngModel]="features.inFlight.videoAd.isAnalyze"
+                            [ngModelOptions]="{ standalone: true }"
+                          ></nz-switch>
+                        </nz-input-group>
+                      </nz-form-control>
+                      <nz-form-label class="input-radio-label"
+                        >Video Ad</nz-form-label
+                      >
+                    </nz-form-item>
+                  </ng-template>
+                  <div style="display: flex">
+                    <nz-form-control>
+                      <nz-input-group nzSearch nzSize="large">
+                        <nz-checkbox-wrapper class="feature-checkbox-selector">
+                          <div class="chk-box-label">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.inFlight.videoAd.analyze.viewReport
+                              "
+                              [nzDisabled]="
+                                !features.inFlight.videoAd.isAnalyze
+                              "
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="viewReport"
+                            >
+                              View report
+                            </label>
+                          </div>
+                          <div class="chk-box-label hide-element">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.inFlight.videoAd.analyze.downloadReport
+                              "
+                              [nzDisabled]="true"
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="downloadReport"
+                            >
+                              Download report (PDF)
+                            </label>
+                          </div>
+                        </nz-checkbox-wrapper>
+                      </nz-input-group>
+                    </nz-form-control>
+                    <nz-form-item style="flex-basis: 50%">
+                      <nz-form-label
+                        nzFor="limit-count"
+                        class="input-float-label"
+                        >Set limit<span style="color: #ef4444"
+                          >*</span
+                        ></nz-form-label
+                      >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <input
+                            type="number"
+                            [(ngModel)]="features.inFlight.videoAd.adLimit"
+                            [ngModelOptions]="{ standalone: true }"
+                            class="rounded-input"
+                            nz-input
+                            placeholder="Enter a limit for number of Ads"
+                            id="inflight-videoAd-limit"
+                          />
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+
+      <!-- In-Flight Sub edits -->
+      <div class="setup-wrapper">
+        <nz-collapse nzExpandIconPosition="right">
+          <nz-collapse-panel
+            [nzHeader]="subEditPanel"
+            [nzExpandedIcon]="expandCollapseIcon"
+            [nzDisabled]="true"
+          >
+            <ng-template #subEditPanel let-active>
+              <nz-form-item class="row-switch-container form-feature-switch">
+                <nz-form-control>
+                  <nz-input-group nzSearch nzSize="large">
+                    <nz-switch
+                      nzSize="small"
+                      [nzDisabled]="true"
+                      [(ngModel)]="features.inFlight.subEdits"
+                    ></nz-switch>
+                  </nz-input-group>
+                </nz-form-control>
+                <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                  >Sub edits</nz-form-label
+                >
+              </nz-form-item>
+            </ng-template>
+            <nz-form-control>
+              <nz-input-group nzSearch nzSize="large">
+                <nz-checkbox-wrapper class="feature-checkbox-selector">
+                  <div class="chk-box-label">
+                    <label nz-checkbox nzValue="viewReport">View report</label>
+                  </div>
+                  <div class="chk-box-label">
+                    <label nz-checkbox nzValue="downLoadReport"
+                    [nzDisabled]="true"
+                      >Download report (PDF)</label
+                    >
+                  </div>
+                </nz-checkbox-wrapper>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Post Flight -->
+<div class="feature-access-wrapper">
+  <!-- Post Flight Header Switch -->
+  <nz-form-item class="row-switch-container feature-modal-switch">
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large" class="faIG">
+        <nz-switch
+          nzSize="small"
+          [(ngModel)]="features.postFlight.isAvailable"
+        ></nz-switch>
+        <nz-form-label nzFor="featureAccess" class="input-radio-label"
+          >Post-flight</nz-form-label
+        >
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- Post Flight Body -->
+  <div *ngIf="features.postFlight.isAvailable" class="collapse-content">
+    <div class="setup-conatainer">
+      <!-- Analyze Toggle  -->
+      <div class="setup-wrapper">
+        <nz-collapse nzExpandIconPosition="right">
+          <nz-collapse-panel
+              [nzActive]="features.postFlight.isAvailable"
+              [nzHeader]="analyzePanel"
+            (nzActiveChange)="features.postFlight.isAnalyze = $event"
+          >
+            <ng-template #analyzePanel let-active>
+              <nz-form-item class="row-switch-container form-feature-switch">
+                <nz-form-label
+                  nzFor="featureAccess"
+                  style="overflow: visible"
+                  class="input-radio-label"
+                >
+                  Analysis
+                </nz-form-label>
+              </nz-form-item>
+            </ng-template>
+
+            <!-- Post Flight Image Ad -->
+            <div class="setup-wrapper">
+              <nz-collapse nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  [nzHeader]="analyzeDisplayPanel"
+                  [(nzActive)]="features.postFlight.imageAd.isAnalyze"
+                >
+                  <ng-template #analyzeDisplayPanel let-active>
+                    <nz-form-item
+                      class="row-switch-container form-feature-switch"
+                    >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <nz-switch
+                            [nzId]="'analyze'"
+                            [ngModel]="features.postFlight.imageAd.isAnalyze"
+                            [ngModelOptions]="{ standalone: true }"
+                          ></nz-switch>
+                        </nz-input-group>
+                      </nz-form-control>
+                      <nz-form-label class="input-radio-label"
+                        >Display Ad</nz-form-label
+                      >
+                    </nz-form-item>
+                  </ng-template>
+                  <div style="display: flex">
+                    <nz-form-control>
+                      <nz-input-group nzSearch nzSize="large">
+                        <nz-checkbox-wrapper class="feature-checkbox-selector">
+                          <div class="chk-box-label">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.postFlight.imageAd.analyze.viewReport
+                              "
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="viewReport"
+                            >
+                              View report
+                            </label>
+                          </div>
+                          <div class="chk-box-label hide-element">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.postFlight.imageAd.analyze
+                                  .downloadReport
+                              "
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="downloadReport"
+                              [nzDisabled]="true"
+                            >
+                              Download report (PDF)
+                            </label>
+                          </div>
+                        </nz-checkbox-wrapper>
+                      </nz-input-group>
+                    </nz-form-control>
+                    <nz-form-item style="flex-basis: 50%">
+                      <nz-form-label
+                        nzFor="limit-count"
+                        class="input-float-label"
+                        >Set limit<span style="color: #ef4444"
+                          >*</span
+                        ></nz-form-label
+                      >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <input
+                            type="number"
+                            [(ngModel)]="features.postFlight.imageAd.adLimit"
+                            [ngModelOptions]="{ standalone: true }"
+                            class="rounded-input"
+                            nz-input
+                            placeholder="Enter a limit for number of Ads"
+                            id="imageAd-limit"
+                          />
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
+
+            <!-- Post Flight Video Ad -->
+            <div class="setup-wrapper">
+              <nz-collapse nzExpandIconPosition="right">
+                <nz-collapse-panel
+                  [nzHeader]="analyzeVideoPanel"
+                  [(nzActive)]="features.postFlight.videoAd.isAnalyze"
+                >
+                  <ng-template #analyzeVideoPanel let-active>
+                    <nz-form-item
+                      class="row-switch-container form-feature-switch"
+                    >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <nz-switch
+                            [nzId]="'analyze'"
+                            [ngModel]="features.postFlight.videoAd.isAnalyze"
+                            [ngModelOptions]="{ standalone: true }"
+                          ></nz-switch>
+                        </nz-input-group>
+                      </nz-form-control>
+                      <nz-form-label class="input-radio-label"
+                        >Video Ad</nz-form-label
+                      >
+                    </nz-form-item>
+                  </ng-template>
+                  <div style="display: flex">
+                    <nz-form-control>
+                      <nz-input-group nzSearch nzSize="large">
+                        <nz-checkbox-wrapper class="feature-checkbox-selector">
+                          <div class="chk-box-label">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.postFlight.videoAd.analyze.viewReport
+                              "
+                              [nzDisabled]="
+                                !features.postFlight.videoAd.isAnalyze
+                              "
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="viewReport"
+                            >
+                              View report
+                            </label>
+                          </div>
+                          <div class="chk-box-label hide-element">
+                            <label
+                              nz-checkbox
+                              [(ngModel)]="
+                                features.postFlight.videoAd.analyze
+                                  .downloadReport
+                              "
+                              [nzDisabled]="true"
+                              
+                              [ngModelOptions]="{ standalone: true }"
+                              nzValue="downloadReport"
+                            >
+                              Download report (PDF)
+                            </label>
+                          </div>
+                        </nz-checkbox-wrapper>
+                      </nz-input-group>
+                    </nz-form-control>
+                    <nz-form-item style="flex-basis: 50%">
+                      <nz-form-label
+                        nzFor="limit-count"
+                        class="input-float-label"
+                        >Set limit<span style="color: #ef4444"
+                          >*</span
+                        ></nz-form-label
+                      >
+                      <nz-form-control>
+                        <nz-input-group nzSearch nzSize="large">
+                          <input
+                            type="number"
+                            [(ngModel)]="features.postFlight.videoAd.adLimit"
+                            [ngModelOptions]="{ standalone: true }"
+                            class="rounded-input"
+                            nz-input
+                            placeholder="Enter a limit for number of Ads"
+                            id="post-flight-videoAd-limit"
+                          />
+                        </nz-input-group>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </div>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+
+      <!-- Post-Flight Sub edits -->
+      <div class="setup-wrapper">
+        <nz-collapse nzExpandIconPosition="right">
+          <nz-collapse-panel
+            [nzHeader]="subEditPanel"
+            [nzExpandedIcon]="expandCollapseIcon"
+            [nzDisabled]="true"
+          >
+            <ng-template #subEditPanel let-active>
+              <nz-form-item class="row-switch-container form-feature-switch">
+                <nz-form-control>
+                  <nz-input-group nzSearch nzSize="large">
+                    <nz-switch
+                      nzSize="small"
+                      [nzDisabled]="true"
+                      [(ngModel)]="features.postFlight.subEdits"
+                    ></nz-switch>
+                  </nz-input-group>
+                </nz-form-control>
+                <nz-form-label nzFor="featureAccess" class="input-radio-label"
+                  >Sub edits</nz-form-label
+                >
+              </nz-form-item>
+            </ng-template>
+            <nz-form-control>
+              <nz-input-group nzSearch nzSize="large">
+                <nz-checkbox-wrapper class="feature-checkbox-selector">
+                  <div class="chk-box-label">
+                    <label nz-checkbox nzValue="viewReport">View report</label>
+                  </div>
+                  <div class="chk-box-label hide-element">
+                    <label nz-checkbox nzValue="downLoadReport" [nzDisabled]="true"
+                      >Download report (PDF)</label
+                    >
+                  </div>
+                </nz-checkbox-wrapper>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Service Request -->
+<div class="feature-access-wrapper">
+  <nz-form-item class="row-switch-container feature-modal-switch">
+    <nz-form-control>
+      <nz-input-group nzSearch nzSize="large" class="faIG">
+        <nz-switch
+          nzSize="small"
+          [(ngModel)]="features.serviceRequest"
+        ></nz-switch>
+        <nz-form-label nzFor="featureAccess" class="input-radio-label"
+          >Service Request</nz-form-label
+        >
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div class="form-footer">
+  <div class="form-footer-wrapper">
+    <app-button
+      buttonClass="tertiary"
+      label="Cancel"
+      (click)="handleClose()"
+    ></app-button>
+    <app-button
+      buttonClass="primary"
+      label="Save"
+      (click)="handleSave()"
+    ></app-button>
+  </div>
+</div>
+<ng-template #expandCollapseIcon>
+  <span
+    nz-icon
+    nzType="down"
+    nzTheme="outline"
+    class="expandCollapseIcon"
+  ></span>
+</ng-template>
+<ng-template #expandCollapseIconVideo>
+  <span
+    nz-icon
+    nzType="down"
+    nzTheme="outline"
+    class="expandCollapseIcon"
+  ></span>
+</ng-template>

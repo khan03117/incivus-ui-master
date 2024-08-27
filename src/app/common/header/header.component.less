@@ -1,0 +1,182 @@
+nz-header{
+    background: #fff;
+    border-bottom:0.063rem solid #ccc;
+    position: fixed;
+    top: 0;
+    left: 15.875rem;
+    width: calc(100% - 15.875rem);
+    z-index: 99;
+    height: 5rem;
+    background:transparent;
+    &.ant-layout-header{
+        background: #FDFCFF;
+    }
+}
+
+.header{
+    height:100%;
+    .headerWrapper{
+        gap: 0.938rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+        .ant-dropdown-trigger{
+            padding: 0.5rem 0.75rem;
+        }
+        ::ng-deep span.anticon.anticon-question-circle svg {
+            width: 1rem !important;
+            height: 1rem !important;
+        }
+        ::ng-deep .ant-dropdown-trigger span {
+            font-size: 0.87rem !important;
+        }
+    }
+}
+
+.dropdown{
+    display: flex;
+    align-items: center;
+    ::ng-deep img{
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    ::ng-deep .ant-select-selection-search{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .ant-select-selection-search-input {
+            padding-left: 2.813rem;
+        }
+    }
+    ::ng-deep .ant-dropdown-trigger{
+        height: 2.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 0.75rem;
+        border: 0.063rem solid var(--07-grey-300, #DFE3E8);
+        color:#637381;
+        font-weight: 500;
+        font-size: 0.87rem;
+    }
+    ::ng-deep .ant-select-selector{
+        height: 2.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 0.75rem;
+        border: 0.063rem solid var(--07-grey-300, #DFE3E8);
+        color:#637381;
+        font-weight: 500;
+        min-width: 9.688rem;
+        .ant-select-selection-item{
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            gap:0.5rem;
+        }
+    }
+    .userInfo{
+        width:1.875rem;
+        height: 1.875rem;
+        margin-left: 0.313rem;
+        background-color: #637381;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.userProfile {
+    ::ng-deep .ant-dropdown-menu-item:hover {
+        background-color: transparent;
+    }
+    ::ng-deep .ant-menu-title-content {
+        width: 100%;
+        font-size: 0.87rem;
+        font-weight: 400;
+    }
+}
+
+.notification{
+    width:2.5rem;
+    height: 2.5rem;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+    ::ng-deep .anticon{
+        width: 1.5rem;
+        height: 1.5rem;
+        svg{
+            width:100%;
+            height: 100%;
+        }
+    }
+}
+
+::ng-deep .ant-select-item-option{
+    .ant-select-item-option-content{
+        display: flex;
+        align-items: center;
+    }
+}
+
+::ng-deep .notification-overlay{
+    &.ant-popover{
+        .ant-popover-inner{
+            width: 32.625rem;
+            padding: 1rem;
+            .ant-popover-title{
+                padding: 0;
+                font-size: 0.87rem;
+                font-weight: 500;
+                border: none;
+                margin-bottom:1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .anticon-close{
+                    font-size: 0.87rem;
+                    color: #637381;
+                }
+            }
+            .ant-popover-inner-content{
+                padding: 0;
+                .popover-content-container{
+                    .subtitle{
+                        font-size: 0.87rem;
+                        font-weight: 500;
+                        margin-bottom:1.5rem;
+                    }
+                    .popover-content-wrapper{
+                        max-height: 550px;
+                        overflow: auto;
+                        .ant-row{
+                            padding: 8px 23px;
+                            background: #F7F4FD;
+                            border-radius: 0.25rem;
+                            font-size: 0.87rem;
+                            font-weight: 400;
+                            color: #1E293B;
+                            text-align: left;
+                            line-height: 1rem;
+                            align-items: center;
+                            margin: 0 0 1rem 0 !important;
+                            &:last-child{
+                                margin: 0 0 0rem 0 !important;
+                            }
+                            .ant-col{
+                                padding: 0 !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

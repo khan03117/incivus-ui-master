@@ -1,0 +1,75 @@
+<app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+<form nz-form nzLayout ="vertical" [formGroup]="userForm">
+    <div class="form-description">Fill in the following information to create admin user.</div>
+    <nz-form-item class="row-switch-container" *ngIf="!trialCompany">
+        <nz-form-label nzFor="featureAccess" class="input-radio-label">I'll Administrate this client</nz-form-label>
+        <nz-form-control>
+            <nz-input-group nzSearch nzSize="large">
+                <nz-switch [(ngModel)]="isClientAdmin" [ngModelOptions]="{standalone: true}"></nz-switch>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <ng-container *ngIf="!isClientAdmin">
+    <div class="row-input-container">
+        <nz-form-item>
+            <nz-form-label nzFor="firstName" class="input-float-label">First name<span style="color:#EF4444">*</span></nz-form-label>
+            <nz-form-control [nzValidateStatus]="f['firstName'].errors && blurFN ? 'error':''"  nzErrorTip="First name is a mandatory field and and should be minimum 3 character.">
+                <nz-input-group nzSearch nzSize="large">
+                    <input nz-input type="text" class="rounded-input" (blur)="blurFN = true" (focus)="blurFN=false" formControlName="firstName" nz-input placeholder="First name" formControlName="firstName" id="firstName"/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFor="lastName" class="input-float-label">Last name<span style="color:#EF4444">*</span></nz-form-label>
+            <nz-form-control [nzValidateStatus]="f['lastName'].errors && blurLN ? 'error':''"  nzErrorTip="Last name is a mandatory field and and should be minimum 1 character.">
+                <nz-input-group nzSearch nzSize="large" nzStatus="error">
+                    <input nz-input type="text" class="rounded-input" (blur)="blurLN = true" (focus)="blurLN=false" formControlName="lastName" nz-input placeholder="Last name" formControlName="lastName" id="lastName"/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div class="row-input-container">
+        <nz-form-item>
+            <nz-form-label nzFor="userEmail" class="input-float-label">Email id<span style="color:#EF4444">*</span></nz-form-label>
+            <nz-form-control [nzValidateStatus]="f['emailId'].errors && blurEmail ? 'error':''"  nzErrorTip="Email id is a mandatory field and and should be a valid email.">
+                <nz-input-group nzSearch nzSize="large">
+                    <input type="text" class="rounded-input" (blur)="blurEmail = true" (focus)="blurEmail=false" formControlName="emailId" nz-input placeholder="Email id" id="userEmail"/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label class="input-float-label">Status<span style="color:#EF4444">*</span></nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                    <nz-select nzPlaceHolder="Status" class="select-radio-list" formControlName="status">
+                        <nz-option nzCustomContent nzLabel="Active" nzValue="active">
+                            Active
+                        </nz-option>
+                        <nz-option nzCustomContent nzLabel="Inactive" nzValue="inactive">
+                            Inactive
+                        </nz-option>
+                    </nz-select>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div class="row-input-container" *ngIf="!trialCompany" style="text-align: left;align-items: start;">
+        <nz-form-control>
+            <!-- <nz-input-group> -->
+            <!-- <nz-checkbox-wrapper class="feature-checkbox-selector"> -->
+            <!-- <div class="chk-box-label"> -->
+            <label nz-checkbox [(ngModel)]="isBothAdmin" [ngModelOptions]="{ standalone: true }"
+                style="align-items: center;" nzValue="isBothAdmin">Allow access to Incivus Admin</label>
+            <!-- </div> -->
+            <!-- </nz-checkbox-wrapper> -->
+            <!-- </nz-input-group> -->
+        </nz-form-control>
+    </div>
+    </ng-container>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="secondary" [label]="user && user.id ? 'Delete' : 'Cancel'" (click)="cancel()"></app-button>
+            <app-button buttonClass="primary" [label]="trialCompany ? 'Create trial user' : isClientAdmin ? ( isServiceRequest ? 'Continue' : 'Complete setup') : ( user && user.id) ? 'Update user' : 'Create admin user'" (click)="saveUser()"></app-button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,45 @@
+<div class="card-details-container">
+    <div class="card-details-wrapper" style="justify-content: center;">
+        <nz-card class="report-details-card" [nzBordered]="false" *ngFor="let brand of brandCues.logoAttr; let i = index">
+            <div class="details-card-wrapper">
+                <div class="title">Brand recognition logo {{i+1}}</div>
+                <div class="brand-logo" style="text-align: center;">
+                    <img *ngIf="modalData.isVideoReport"  style="width:100%" nz-icon src="{{brand.image}}"> 
+                    <img *ngIf="!modalData.isVideoReport" style="width:100%" nz-icon src="{{brand.image}}"> 
+                </div>
+                <div class="score-details">
+                    <div class="score-info">{{brand.brandRecognition ? (brand.brandRecognition*100).toFixed(2) : "NA"}}</div>
+                    <div class="score-rank">Score: <span [ngClass]="brand.brandRecogLabel">{{brand.brandRecogLabel | titlecase}}</span></div>
+                </div>
+                <div class="description">
+                    <div class="range-details">Recommended: <span>Above 50</span></div>
+                </div>
+            </div>
+        </nz-card>
+        <!-- <nz-card class="report-details-card" [nzBordered]="false">
+            <div class="details-card-wrapper">
+                <div class="title">Brand recognition logo 2</div>
+                <div class="brand-logo">
+                    <img nz-icon src="assets/icons/image-logo-2.svg"> 
+                </div>
+                <div class="score-details">
+                    <div class="score-info">87.66</div>
+                    <div class="score-rank">Score: <span [ngClass]="">Medium</span></div>
+                </div>
+                <div class="description">
+                    Text about Brand recognition will be written here as a placeholder.
+                    <div class="range-details">Recommended: <span>Less than 40%</span></div>
+                </div>
+            </div>
+        </nz-card> -->
+    </div>
+    <div class="description-container">
+        <div class="description-text">
+            <img nz-icon src="assets/icons/idea-light.svg"> 
+            <p>
+                A brand is a name, logo, mark, tagline or any other identifying characteristic that separates the company's product or service from others on the mark. 
+                This score allows you to understand whether the audience identifies the brand displayed in the ad.
+            </p>
+        </div>
+    </div>
+</div>

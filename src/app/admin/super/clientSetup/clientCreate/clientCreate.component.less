@@ -1,0 +1,194 @@
+@import url('../../../../common/less/form-component.less');
+
+input[type='radio'] {
+    accent-color: #39B;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.75rem;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:active, input:-webkit-autofill:focus, input:-webkit-autofill:hover {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.clientCreateAdmin label,
+.featureAccess label {
+    font-size: 0.87rem;
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.featureAccess label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #475569;
+}
+
+input::placeholder,
+nz-select-top-control {
+    font-size: 0.87rem;
+}
+
+.ant-form-item-explain-error {
+    text-align: left;
+}
+
+.ant-modal-header {
+    padding: 0 1.5rem;
+    margin-bottom: 0 !important;
+}
+
+.featureAccess .ant-radio-group label:not(.ant-checkbox-wrapper) {
+    width: 12.5rem;
+    height: 5.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 3rem;
+    border-radius: 1rem;
+    border: 0.06rem solid #2B95FF;
+    /* Shadow XS */
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
+    color: #000;
+    background: #FFF;
+}
+
+.ant-radio-button-wrapper input[type=checkbox] {
+    width: 1rem;
+    height: 1rem;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.ant-checkbox {
+    top: 0;
+}
+.ant-checkbox-wrapper {
+    width: auto;
+    margin-right: 0.75rem;
+}
+.ant-checkbox-wrapper.ant-checkbox-wrapper-in-form-item input[type=checkbox] {
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    border-radius: 1rem;
+    border: 0.06rem solid #2B95FF;
+    /* Shadow XS */
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
+    color: #000;
+    background: #EAF4FE;
+    &:hover, &:active {
+        background: #EAF4FE;
+        color: #000;
+    }
+}
+
+.ant-radio-button-wrapper:not(:first-child)::before {
+    display: none;
+}
+
+.ant-input[disabled] {
+    background-color: #FFF;
+}
+
+.ant-form-item-label>label::after {
+    content: '';
+}
+
+.featureAccess {
+    max-width: 47.25rem;
+    .ant-modal-content{
+        background: #fefefe;
+        .ant-modal-header{
+            background: transparent;
+            padding: 0 0.25rem;
+            .ant-modal-title{
+                font-size: 1.25rem;
+            }
+        }
+        .ant-modal-body{
+            padding: 1.5rem 0.25rem 0.25rem;
+            .feature-access-wrapper{
+                padding:1.5rem;
+                background: #fff;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+                border-radius: 1rem;
+                box-shadow: 5px 10px 10px 10px rgba(145, 158, 171, 0.2);
+                &:not(:last-child){
+                    margin-bottom: 1.5rem;
+                }
+                .feature-modal-switch{
+                    width:100%;
+                    margin:0;
+                    padding: 1rem;
+                    background: #F4F6F8;
+                    border-radius: 0.75rem;
+                    border: 0.063rem solid rgba(145,158,171,0.32);
+                    .faIG {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                    }
+                }
+                .collapse-content{
+                    margin-top:1.5rem;
+                    .setup-wrapper{
+                        border: 0.063rem solid rgba(145, 158, 171, 0.32);
+                        .ant-collapse-item{
+                            &.ant-collapse-item-active{
+                                .expandCollapseIcon{
+                                    transform: rotateZ(180deg);
+                                }
+                            }
+                        }
+                        .ant-collapse-header{
+                            padding: 1rem 1.25rem;
+                            .input-radio-label label{
+                                font-size: 1rem;
+                                font-weight: 400;
+                                color:#475569;
+                            }
+                            .expandCollapseIcon{
+                                position: absolute;
+                                right: 1.5rem;
+                                top: 1.55rem;
+                                transition: all 0.5s ease;
+                                color: #637381;
+                            }
+                        }
+                        .feature-checkbox-selector{
+                            margin-left:3.75rem;
+                            .ant-checkbox-wrapper{
+                                display: flex;
+                                align-items: center;
+                                .ant-checkbox{
+                                    &.ant-checkbox-checked{
+                                        .ant-checkbox-inner{
+                                            background: #39B3EA;
+                                            border-color: #39B3EA;
+                                        } 
+                                    }
+                                    .ant-checkbox-inner{
+                                        width: 1rem;
+                                        height: 1rem;
+                                        border-color: #637381;
+                                    }
+                                    &+span{
+                                        font-size: 1rem;
+                                        font-weight: 400;
+                                        color:#475569;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+<div class="card-details-container slider-container">
+    <nz-card [nzBordered]="false" [nzTitle]="slider.title" class="slider-card" *ngFor="let slider of sliderCardData">
+        <div class="slider-wrapper">
+            <ngx-slider [class]="slider.type" [(value)]="slider.score" [options]="sliderOptions(slider)"></ngx-slider>
+        </div>
+        <div class="score-details">
+            <div class="score-wrapper">
+                <div class="score-dot low">
+                    <span>Low</span>
+                </div>
+                <div class="score-dot medium">
+                    <span>Medium</span>
+                </div>
+                <div class="score-dot high">
+                    <span>High</span>
+                </div>
+            </div>
+        </div>
+    </nz-card>
+</div>

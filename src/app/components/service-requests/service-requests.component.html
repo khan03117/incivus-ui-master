@@ -1,0 +1,161 @@
+<!-- user -->
+<app-breadcrumb [labels]="breadcrumb" fullBC="{{ true }}"></app-breadcrumb>
+<nz-page-header class="breadcrumb-container heading">
+  <nz-page-header-extra>
+    <nz-space>
+      <ng-container *ngIf="type == 'all' && !isServiceManager && !isSuperAdmin">
+        <button
+          buttonClass="primary"
+          nz-button
+          *nzSpaceItem
+          (click)="openCreatePage()"
+        >
+          + New request
+        </button>
+      </ng-container>
+    </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<nz-page-header class="page-header-container heading">
+  <nz-page-header-title>{{isServiceManager || isSuperAdmin ? 'Tasks' : 'Requests'}} ({{ srList?.length }})</nz-page-header-title>
+  <nz-page-header-extra>
+    <nz-space>
+      <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+        <input
+          type="text"
+          nz-input
+          [(ngModel)]="searchText"
+          (keyup)="filter()"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Search..."
+        />
+      </nz-input-group>
+      <ng-template #prefixIconSearch>
+        <span
+          nz-icon
+          nzType="search"
+          nzTheme="outline"
+          class="search-extra"
+        ></span>
+      </ng-template>
+    </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+  #serviceRequestsTable
+  [nzData]="srListFiltered"
+  [nzNoResult]="adminCustomerListEmpty"
+  class="admin-list-table"
+  [nzShowPagination]="true"
+>
+  <thead>
+    <tr>
+      <th
+        [(nzChecked)]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"
+      ></th>
+      <th [nzShowSort]="false">{{isServiceManager || isSuperAdmin ? 'Task' : 'Request'}}</th>
+      <th [nzShowSort]="false" style="text-align: center;">Status</th>
+      <th *ngIf="isServiceManager || isSuperAdmin" [nzShowSort]="false">
+        Company
+      </th>
+      <th [nzShowSort]="false">Brand</th>
+      <th *ngIf="isServiceManager || isSuperAdmin" [nzShowSort]="false">
+        Submitted by
+      </th>
+      <th [nzShowSort]="false">Submitted on</th>
+      <th [nzShowSort]="false" *ngIf="isServiceManager || isSuperAdmin">
+        Assigned to
+      </th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let data of serviceRequestsTable.data"
+      (click)="viewServiceRequest(data.id, data.status)"
+    >
+      <td
+        [nzChecked]="setOfCheckedId.has(data.id)"
+        (nzCheckedChange)="onItemChecked(data.id, $event)"
+      ></td>
+      <td>
+        <div
+          style="
+            display: flex;
+            width: max-content;
+            align-items: center;
+            gap: 4px;
+          "
+        >
+          {{ data.srNo }}
+          <img
+            *ngIf="
+              data?.status?.toLowerCase() == 'open' 
+              || (data?.status?.toLowerCase() == 'in progress' &&
+              data?.assignedTo == null)
+            "
+            src="assets/icons/new-flag.svg"
+            alt="New"
+          />
+        </div>
+      </td>
+      <td>
+        <div
+          class="status-tile"
+          [ngClass]="{
+            green: 
+            (data?.status?.toLowerCase() == 'in progress' ||
+            data?.status?.toLowerCase() == 'completed'),
+            yellow:
+              data?.status?.toLowerCase() == 'on-hold',
+            blue:
+              data?.status?.toLowerCase() == 'open'
+          }"
+        >
+          {{ data.status | titlecase }}
+        </div>
+      </td>
+      <td *ngIf="isServiceManager || isSuperAdmin">
+        {{ data.client?.companyName }}
+      </td>
+      <td>{{ data.brand }}</td>
+      <td *ngIf="isServiceManager || isSuperAdmin">
+        {{ data.submittedBy?.firstName + " " + data.submittedBy?.lastName }}
+      </td>
+      <td>{{ data.submittedAt | date : "dd-MM-yyyy; hh:mm:ss a" }}</td>
+
+      <td *ngIf="isServiceManager || isSuperAdmin">
+        {{
+          data?.assignedTo != null
+            ? data?.assignedTo?.firstName + " " + data?.assignedTo?.lastName
+            : ""
+        }}
+      </td>
+      <td>
+        <img
+          class="status-icon"
+          *ngIf="data?.status?.toLowerCase() == 'completed'"
+          nz-icon
+          src="assets/icons/green-circle-tick.svg"
+        />
+        <img
+          class="status-icon"
+          *ngIf="data?.status?.toLowerCase() == 'on-hold'"
+          nz-icon
+          src="assets/icons/hold.svg"
+        />
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+  <nz-result>
+    <img nz-result-icon src="assets/icons/no-company.svg" />
+    <div nz-result-subtitle>No Service requests added yet</div>
+  </nz-result>
+</ng-template>

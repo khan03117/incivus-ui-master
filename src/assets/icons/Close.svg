@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12.199" height="12.2" viewBox="0 0 12.199 12.2">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #9a9a9a;
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="Close_Cancel_Remove_Icon" data-name="Close/Cancel/Remove Icon" transform="translate(-542.086 -377.086)">
+    <line id="Line_40" data-name="Line 40" class="cls-1" x2="9.371" y2="9.371" transform="translate(543.5 378.5)"/>
+    <line id="Line_41" data-name="Line 41" class="cls-1" y1="9.371" x2="9.371" transform="translate(543.5 378.5)"/>
+  </g>
+</svg>

@@ -1,0 +1,42 @@
+<nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-title>Create new role and permissions</nz-page-header-title>
+</nz-page-header>
+
+<form nz-form nzLayout ="vertical" [formGroup]="assignPermissionsForm">
+    <div class="form-description role-description">Add permissions to the role : {{ roleName }}</div>
+    <div class="form-wrapper">
+        <nz-card nzTitle="Manage Creatives" class="custom-checkbox-wrapper">
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-checkbox-group
+                        formControlName="manageCreatives"
+                    ></nz-checkbox-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-card>
+        <nz-card nzTitle="Metrics" class="custom-checkbox-wrapper">
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-checkbox-group
+                        formControlName="metrics"
+                    ></nz-checkbox-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-card>
+        <nz-card nzTitle="Report" class="custom-checkbox-wrapper">
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-checkbox-group
+                        formControlName="report"
+                    ></nz-checkbox-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-card>
+        <div class="form-footer">
+            <div class="form-footer-wrapper">
+                <app-button buttonClass="secondary" label="Save"></app-button>
+                <app-button buttonClass="primary" label="Create permission"></app-button>
+            </div>
+        </div>
+    </div>
+</form>

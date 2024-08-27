@@ -1,0 +1,81 @@
+<div class="campaign-container">
+  <app-breadcrumb [labels]="breadcrumb" fullBC="{{ true }}" myCallback="/client/list"></app-breadcrumb>
+  <app-alert class="app-alert" [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+
+  <nz-page-header class="page-header-container heading">
+    <nz-page-header-title>{{ flightType }} campaign</nz-page-header-title>
+    <nz-page-header-extra>
+      <nz-space>
+        <ng-container *ngIf="listOfData.length">
+          <button *nzSpaceItem nz-button>
+            <img nz-icon src="assets/icons/edit-icon.svg" />
+            Edit
+          </button>
+        </ng-container>
+        <ng-container *ngIf="listOfData.length">
+          <button *nzSpaceItem nz-button>
+            <img nz-icon src="assets/icons/delete.svg" />
+            Delete
+          </button>
+        </ng-container>
+        <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+          <input type="text" nz-input [(ngModel)]="searchText" (keyup)="filter()" [ngModelOptions]="{ standalone: true }"
+            placeholder="Search..." />
+        </nz-input-group>
+        <ng-template #prefixIconSearch>
+          <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+        </ng-template>
+      </nz-space>
+    </nz-page-header-extra>
+  </nz-page-header>
+  <nz-content>
+    <div class="ant-layout-content-list">
+      <div class="campaign-wrapper" *ngIf="campaignData">
+        <div *ngFor="let campaign of campaignData">
+          <div class="campaign-data">
+            <nz-card [nzCover]="coverTemplate" class="campaignCard" (click)="openEditCampaignModal(campaign)">
+              <ng-container [ngTemplateOutlet]="actionEllipsis" class="">
+                <nz-card-meta class="status-activity" nzTitle="{{ campaign.status | titlecase }}"></nz-card-meta>
+                <nz-card-meta nzTitle="{{ campaign.name | titlecase }}"></nz-card-meta>
+                <!-- <span style="text-align: start;display: block;">{{campaign.adsCount ?? 0 }} {{ campaign.adsCount == 1 ? 'ad': 'ads'
+                                  }}</span> -->
+                <div class="media-icon-bar">
+                  <!-- <div *ngFor="let item of campaign.channels">
+                    <img class="media-icon" [src]="getChannelIconPath(item)" *ngIf="getChannelIconPath(item)" />
+                  </div> -->
+                  <img class="media-icon" [src]="getChannelIconPath(campaign.type)" *ngIf="getChannelIconPath(campaign.type)" />
+                </div>
+              </ng-container>
+              <div class="hover-text"> {{ campaign.name }} </div>
+              </nz-card>
+              <ng-template #coverTemplate>
+                <img alt="example" src="assets/icons/campaign-phone.svg" />
+              </ng-template>
+              <ng-template #actionEllipsis>
+              <button nz-button nzNoAnimation nz-tooltip class="action-trigger" [nzTooltipTitle]="menu"
+                nzTooltipOverlayClassName="tableTooltipOverlay" [nzTooltipPlacement]="['bottomRight', 'topRight']">
+                <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top"></span>
+              </button>
+              </ng-template>
+              
+              <ng-template #menu>
+                <ul nz-menu>
+                <li nz-menu-item *ngIf="campaign.campaignCount > 0" (click)="openShareCampaignModal(campaign)">
+                  <span nz-icon><img nz-icon src="assets/icons/share-campaign.svg" /></span>
+                  <span>Share campaign</span>
+                </li>
+                <li nz-menu-item (click)="openEditCampaignModal(campaign)">
+                  <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg" /></span>
+                  <span>Show campaign</span>
+                </li>
+                </ul>
+                </ng-template>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </nz-content>
+</div>

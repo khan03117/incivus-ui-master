@@ -1,0 +1,89 @@
+<nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-title>All creatives</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <!-- <button *nzSpaceItem nz-button>
+                Filter
+            </button> -->
+            <ng-container *ngIf="!isIncAdmin && !isTrialUser">
+                <button *nzSpaceItem nz-button (click)="openCreateCampaignModal()">
+                    Create campaign
+                </button>
+            </ng-container>
+            <ng-container *ngIf="!isIncAdmin">
+                <button class="primary" *nzSpaceItem nz-button (click)="createCreatives()">
+                    + Upload creatives
+                </button>
+            </ng-container>
+            <!-- <nz-dropdown-menu #menu>
+                <ul nz-menu>
+                    <li nz-menu-item>
+                        <span nz-icon><img nz-icon src="assets/icons/upload-local-drive.svg"></span>
+                        <span>Local Drive</span>
+                    </li>
+                    <li nz-menu-item>
+                        <span nz-icon><img nz-icon src="assets/icons/upload-bynder.svg"></span>
+                        <span>Bynder</span>
+                    </li>
+                    <li nz-menu-item>
+                        <span nz-icon><img nz-icon src="assets/icons/upload-dropbox.svg"></span>
+                        <span>Drop Box</span>
+                    </li>
+                    <li nz-menu-item>
+                        <span nz-icon><img nz-icon src="assets/icons/upload-google-drive.svg"></span>
+                        <span>Google Drive</span>
+                    </li>
+                </ul>
+            </nz-dropdown-menu> -->
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Creatives</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space *ngIf="isIncAdmin">
+            <nz-form-item class="creativesFilter">
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Select client"
+                            nzDropdownClassName="custom-check-dropdown"
+                            [ngModel] = "clientId"
+                            nzShowSearch="true"
+                            id="clientSelect"
+                            (ngModelChange)="loadClientCreatives($event)"
+                        >
+                            <nz-option *ngFor="let client of clientList" [nzValue]="client.id" [nzLabel]="client.companyName"></nz-option>
+
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-space>
+        <nz-space *ngIf="isIncAdmin" style="margin:0 0.25rem;"></nz-space>
+        <nz-space>
+            <nz-form-item class="creativesFilter">
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <nz-select
+                            nzPlaceHolder="Creative type"
+                            nzDropdownClassName="custom-check-dropdown"
+                            [ngModel] = "filterList"
+                            nzShowSearch="false"
+                            id="creativeType"
+                            (ngModelChange)="filterCreatives($event)"
+                        >
+                            <nz-option nzValue="all" nzLabel="All"></nz-option>
+                            <nz-option nzValue="image" nzLabel="Display Ad" ></nz-option>
+                            <nz-option nzValue="video" nzLabel="Video Ad" ></nz-option>
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+<nz-content>
+    <app-creative-list [creativeData]="creatives" [flightType]="flightType" [filterList]="filterList"></app-creative-list>
+</nz-content>

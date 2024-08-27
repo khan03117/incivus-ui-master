@@ -1,0 +1,108 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}" myCallback="/client/list"></app-breadcrumb>
+<nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-extra>
+        <nz-space>
+            <!-- <button *nzSpaceItem nz-button>
+                Filter
+            </button> -->
+            <button class="primary" *nzSpaceItem nz-button (click)="addNewPermissions()">
+                + Add new permissions
+            </button>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Permissions({{rolesCount}})</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <ng-container *ngIf="listOfData.length && setOfCheckedId.size === 1">
+                <button *nzSpaceItem nz-button (click)="edit()">
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Edit
+                </button>
+            </ng-container>
+            <ng-container *ngIf="listOfData.length && setOfCheckedId.size > 0">
+                <button *nzSpaceItem nz-button (click)="delete()">
+                    <img nz-icon src="assets/icons/delete.svg">
+                    Delete
+                </button>
+            </ng-container>
+            <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+                <input type="text" nz-input [(ngModel)]="searchText" (keyup)="filter()" [ngModelOptions]="{standalone: true}" placeholder="Search permission name" />
+            </nz-input-group>
+            <ng-template #prefixIconSearch>
+                <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+            </ng-template>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+    #permissionSelectionTable
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    [nzNoResult]="adminCustomerListEmpty"
+    class="admin-list-table"
+    [nzShowPagination]="true"
+>
+    <thead>
+        <tr>
+            <th
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th [nzShowSort]="false" >Permission name</th>
+            <th [nzShowSort]="false">Role(s)</th>
+            <th [nzShowSort]="false">Created by</th>
+            <th [nzShowSort]="false">Created on</th>
+            <th [nzShowSort]="false">Company</th>
+            <th [nzShowSort]="false"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of permissionSelectionTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ data.name | titlecase}}</td>
+            <td>{{ data.roleCount < 10 && data.roleCount >=1 ? '0'+data.roleCount : "-" }}</td>
+            <td>{{ data.createdBy }}</td>
+            <td>{{ data.createdOn | date:'dd/MM/yy; h:mm a' }}</td>
+            <td>{{companyName | titlecase }}</td>
+            <td>
+                <button
+                    nz-button
+                    nzNoAnimation
+                    nz-tooltip
+                    class="action-trigger"
+                    [nzTooltipTitle]="menu"
+                    nzTooltipOverlayClassName="tableTooltipOverlay"
+                    [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                >
+                    <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
+                </button>
+                <ng-template #menu>
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="editClient(data.id)">
+                            <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                            <span>Edit</span>
+                        </li>
+                        <li nz-menu-item (click)="confirmDeleteAll(data.id)">
+                            <img nz-icon src="assets/icons/delete.svg">
+                            <span>Delete</span>
+                        </li>
+                    </ul>
+                </ng-template>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+    <nz-result>
+        <img nz-result-icon src="assets/icons/no-company.svg">
+        <div nz-result-subtitle>
+            No permissions added yet
+        </div>
+    </nz-result>
+</ng-template>

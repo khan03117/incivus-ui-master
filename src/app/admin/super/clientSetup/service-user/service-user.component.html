@@ -1,0 +1,147 @@
+<nz-modal
+  [nzVisible]="serviceUser != null"
+  [nzMaskClosable]="false"
+  [nzKeyboard]="false"
+  [nzFooter]="null"
+  nzClassName="sr-modal"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  (nzOnCancel)="handleClose()"
+>
+  <ng-template #modalTitle>{{
+    serviceUser?.id == null ? "Add new user" : "Update user"
+  }}</ng-template>
+
+  <ng-template #modalContent>
+    <app-alert
+      [message]="errorMsg"
+      [alertType]="'error'"
+      *ngIf="errorMsg"
+    ></app-alert>
+    <form nz-form nzLayout="vertical" [formGroup]="userForm">
+      <div class="form-description">
+        Fill in the following information to create management users.
+      </div>
+      <ng-container>
+        <div class="row-input-container">
+          <nz-form-item>
+            <nz-form-label nzFor="firstName" class="input-float-label"
+              >First name<span style="color: #ef4444">*</span></nz-form-label
+            >
+            <nz-form-control
+              [nzValidateStatus]="
+                f['firstName'].errors && blurFN ? 'error' : ''
+              "
+              nzErrorTip="First name is a mandatory field and and should be minimum 3 character."
+            >
+              <nz-input-group nzSearch nzSize="large">
+                <input
+                  nz-input
+                  type="text"
+                  class="rounded-input"
+                  (blur)="blurFN = true"
+                  (focus)="blurFN = false"
+                  formControlName="firstName"
+                  nz-input
+                  placeholder="First name"
+                  formControlName="firstName"
+                  id="firstName"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzFor="lastName" class="input-float-label"
+              >Last name<span style="color: #ef4444">*</span></nz-form-label
+            >
+            <nz-form-control
+              [nzValidateStatus]="f['lastName'].errors && blurLN ? 'error' : ''"
+              nzErrorTip="Last name is a mandatory field and and should be minimum 1 character."
+            >
+              <nz-input-group nzSearch nzSize="large" nzStatus="error">
+                <input
+                  nz-input
+                  type="text"
+                  class="rounded-input"
+                  (blur)="blurLN = true"
+                  (focus)="blurLN = false"
+                  formControlName="lastName"
+                  nz-input
+                  placeholder="Last name"
+                  formControlName="lastName"
+                  id="lastName"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="row-input-container">
+          <nz-form-item>
+            <nz-form-label nzFor="userEmail" class="input-float-label"
+              >Email id<span style="color: #ef4444">*</span></nz-form-label
+            >
+            <nz-form-control
+              [nzValidateStatus]="f['email'].errors && blurEmail ? 'error' : ''"
+              nzErrorTip="Email id is a mandatory field and and should be a valid email."
+            >
+              <nz-input-group nzSearch nzSize="large">
+                <input
+                  type="text"
+                  class="rounded-input"
+                  (blur)="blurEmail = true"
+                  (focus)="blurEmail = false"
+                  [readOnly]="serviceUser?.id != null"
+                  formControlName="email"
+                  nz-input
+                  placeholder="Email id"
+                  id="userEmail"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label class="input-float-label"
+              >Status<span style="color: #ef4444">*</span></nz-form-label
+            >
+            <nz-form-control>
+              <nz-input-group nzSearch nzSize="large">
+                <nz-select
+                  nzPlaceHolder="Status"
+                  class="select-radio-list"
+                  formControlName="status"
+                >
+                  <nz-option nzCustomContent nzLabel="Active" nzValue="active">
+                    Active
+                  </nz-option>
+                  <nz-option
+                    nzCustomContent
+                    nzLabel="Inactive"
+                    nzValue="inactive"
+                  >
+                    Inactive
+                  </nz-option>
+                </nz-select>
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </ng-container>
+      <div class="form-footer">
+        <div class="form-footer-wrapper">
+          <app-button
+            buttonClass="secondary"
+            label="Cancel"
+            (click)="onCancelClicked()"
+          ></app-button>
+          <app-button
+            buttonClass="primary"
+            label="{{
+              serviceUser && serviceUser.id ? 'Update user' : 'Create user'
+            }}"
+            (click)="serviceUser && serviceUser.id ? updateUser() : saveUser()"
+          ></app-button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,558 @@
+<!-- permission -->
+<app-breadcrumb [labels]="breadcrumb" fullBC="{{ true }}"></app-breadcrumb>
+<form nz-form nzLayout="vertical" [formGroup]="form" *ngIf="formOptions">
+  <nz-card>
+    <div class="form-description role-description">
+      Fill in the following information
+    </div>
+    <div *ngIf="page == 1">
+      <div class="row-input-container">
+        <nz-form-item>
+          <span class="label">Summary<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['summary'].touched && f['summary'].errors ? 'error' : ''
+            "
+            nzErrorTip="Please enter a summary"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <input
+                nz-input
+                type="text"
+                class="rounded-input"
+                (blur)="blurPN = true"
+                (focus)="blurPN = false"
+                nz-input
+                placeholder="Type here"
+                formControlName="summary"
+                id="summary"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <span class="label">Request type<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['requestType'].touched && f['requestType'].errors ? 'error' : ''
+            "
+            nzErrorTip="Uh! Oh! Please select a Request Type"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="requestTypePlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzPlaceHolder="Select"
+                formControlName="requestType"
+                id="requestType"
+                nzDropdownClassName="custom-radio-dropdown"
+                nzShowSearch="false"
+              >
+                <ng-container
+                  *ngIf="
+                    formOptions &&
+                    formOptions.requestTypes &&
+                    formOptions.requestTypes.length > 0
+                  "
+                >
+                  <nz-option
+                    *ngFor="let requestType of formOptions.requestTypes"
+                    [nzValue]="requestType"
+                    [nzLabel]="requestType"
+                  >
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+              <ng-template #requestTypePlaceHolder let-selectedList
+                >+ {{ selectedList.length }}</ng-template
+              >
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="row-input-container">
+        <nz-form-item>
+          <span class="label">Select brand<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['brand'].touched && f['brand'].errors ? 'error' : ''
+            "
+            nzErrorTip="Uh! Oh! Please select a brand or product"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzPlaceHolder="Select"
+                formControlName="brand"
+                id="brand"
+                nzDropdownClassName="custom-radio-dropdown"
+                nzShowSearch="false"
+              >
+                <ng-container *ngFor="let brand of user.brands">
+                  <nz-option [nzValue]="brand" [nzLabel]="brand"></nz-option>
+                </ng-container>
+              </nz-select>
+              <ng-template #tagPlaceHolder let-selectedList
+                >+ {{ selectedList.length }}</ng-template
+              >
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <span class="label">Creative type<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            *ngIf="formOptions?.creativeTypes != null"
+            [nzValidateStatus]="
+              f['creativeType'].touched && f['creativeType'].errors
+                ? 'error'
+                : ''
+            "
+            nzErrorTip="Uh! Oh! Please select a creative Type"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzPlaceHolder="Select"
+                formControlName="creativeType"
+                id="creativeType"
+                nzMode="multiple"
+                nzDropdownClassName="custom-check-dropdown"
+                nzShowSearch="false"
+              >
+                <!-- Move ng-container here -->
+                <ng-container *ngFor="let type of formOptions.creativeTypes">
+                  <nz-option [nzValue]="type" [nzLabel]="type"></nz-option>
+                </ng-container>
+              </nz-select>
+            </nz-input-group>
+            <!-- Move ng-template outside the nz-input-group -->
+            <ng-template #tagPlaceHolder let-selectedList>
+              + {{ selectedList.length }}
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="row-input-container" style="align-items: start;">
+        <div style="flex:1">
+          <!-- <nz-form-item nzAutosize> -->
+          <div
+            nz-row
+            nzJustify="space-between"
+            nzAlign="middle"
+            class="label-container"
+          >
+            <span class="label">Ad brief</span>
+            <input
+              type="file"
+              id="adBriefFileInput"
+              (change)="onFileChange($event)"
+              multiple
+              #adBriefFileInput
+              hidden
+            />
+            <label
+              for="adBriefFileInput"
+              class="custom-file-upload"
+              *ngIf="documents && documents.length < 5"
+            >
+              <img src="../../../../assets/icons/attach-pin.svg" />
+            </label>
+          </div>
+          <nz-form-control
+            class="role-form"
+            nzAutosize
+            [nzValidateStatus]="
+              f['adBrief'].touched && f['adBrief'].errors ? 'error' : ''
+            "
+            [nzErrorTip]="
+              form.get('adBrief')?.hasError('wordLimitExceeded')
+                ? 'The input exceeds the ' +
+                  (adBriefWordLimit | number) +
+                  ' word limit.'
+                : ''
+            "
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <textarea
+                nz-input
+                style="padding: 8px;text-align: start; border: 0.063rem solid #919EAB; border-radius: .5rem;"
+                formControlName="adBrief"
+                id="adBrief"
+                placeholder="Enter Ad Brief"
+                rows="7"
+              ></textarea>
+            </nz-input-group>
+          </nz-form-control>
+        </div>
+        <!-- </nz-form-item> -->
+        <nz-form-item>
+          <span class="label">Channels<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['channels'].touched && f['channels'].errors ? 'error' : ''
+            "
+            nzErrorTip="Uh! Oh! Please select at least 1 channel"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzMode="multiple"
+                nzPlaceHolder="Select"
+                formControlName="channels"
+                id="channels"
+                nzDropdownClassName="custom-check-dropdown"
+                nzShowSearch="false"
+              >
+                <ng-container
+                  *ngIf="
+                    formOptions &&
+                    formOptions.channels &&
+                    formOptions.channels.length > 0
+                  "
+                >
+                  <nz-option
+                    *ngFor="let channel of formOptions.channels"
+                    [nzValue]="channel"
+                    [nzLabel]="channel"
+                  >
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+              <ng-template #tagPlaceHolder let-selectedList
+                >+ {{ selectedList.length }}</ng-template
+              >
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="selected-images">
+        <div *ngFor="let url of serviceRequest?.documents; let i = index">
+          <div class="attachment-container">
+            <span class="selected-attachment">{{ getFileName(url) }} </span>
+            <div (click)="removeExistingFile(i)" class="delete-icon">
+              <img src="assets/icons/delete.svg" alt="" />
+            </div>
+          </div>
+        </div>
+        <div *ngFor="let file of documents; let i = index">
+          <div class="attachment-container">
+            <span class="selected-attachment">{{ file.name }} </span>
+            <div (click)="removeFile(i)" class="delete-icon">
+              <img src="assets/icons/delete.svg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="page == 2">
+      <div class="row-input-container">
+        <nz-form-item>
+          <span class="label">Service team<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['serviceTeam'].touched && f['serviceTeam'].errors ? 'error' : ''
+            "
+            nzErrorTip="Please select the service team"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzPlaceHolder="Select"
+                formControlName="serviceTeam"
+                id="serviceTeam"
+                nzDropdownClassName="custom-radio-dropdown"
+                nzShowSearch="false"
+              >
+                <ng-container
+                  *ngIf="
+                    formOptions &&
+                    formOptions.serviceTeams &&
+                    formOptions.serviceTeams.length > 0
+                  "
+                >
+                  <nz-option
+                    *ngFor="let team of formOptions.serviceTeams"
+                    [nzValue]="team"
+                    [nzLabel]="team"                    
+                  >
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <span class="label">Launch date</span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['launchDate'].touched && f['launchDate'].errors ? 'error' : ''
+            "
+            nzErrorTip="Launch date cannot be of the past."
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <input
+                nz-input
+                type="date"
+                class="rounded-input launch-date-input"
+                (blur)="blurPN = true"
+                (focus)="blurPN = false"
+                nz-input
+                placeholder="Type here"
+                formControlName="launchDate"
+                id="launchDate"
+                [min]="today | date : 'yyyy-MM-dd'"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="row-input-container" style="align-items: start;">
+        <nz-form-item>
+          <div style="display: flex; justify-content: space-between">
+            <span class="label">Brand assets</span>
+            <input
+              type="file"
+              id="brandAssetFileInput"
+              (change)="onBrandAssetFileChange($event)"
+              multiple
+              hidden
+              #brandAssetFileInput
+            />
+            <label for="brandAssetFileInput" class="custom-file-upload">
+              <img src="../../../../assets/icons/attach-pin.svg" />
+            </label>
+          </div>
+          <nz-form-control class="role-form">
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzMode="multiple"
+                nzPlaceHolder="Select"
+                formControlName="brandAssets"
+                id="brandAssets"
+                nzDropdownClassName="custom-check-dropdown"
+                nzShowSearch="false"
+              >
+                <ng-container *ngIf="brandAssetOptions?.logo != null">
+                  <nz-option
+                    *ngFor="let asset of brandAssetOptions.logo"
+                    [nzValue]="asset"
+                    [nzLabel]="'Logo: ' + getFileName(asset)"
+                  >
+                  </nz-option>
+                </ng-container>
+                <ng-container *ngIf="brandAssetOptions?.audio != null">
+                  <nz-option
+                    *ngFor="let asset of brandAssetOptions.audio"
+                    [nzValue]="asset"
+                    [nzLabel]="'Audio: ' + getFileName(asset)"
+                  >
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+              <ng-template #tagPlaceHolder let-selectedList
+                >+ {{ selectedList.length }}</ng-template
+              >
+            </nz-input-group>
+          </nz-form-control>
+          <div class="selected-images" style="margin-top: 1rem">
+            <div
+              *ngFor="
+                let url of serviceRequest?.brandAssetDocuments;
+                let i = index
+              "
+            >
+              <div class="attachment-container">
+                <span class="selected-attachment">{{ getFileName(url) }} </span>
+                <div
+                  (click)="removeExistingBrandAssetFile(i)"
+                  class="delete-icon"
+                >
+                  <img src="assets/icons/delete.svg" alt="" />
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let file of brandAssetDocuments; let i = index">
+              <div class="attachment-container">
+                <span class="selected-attachment">{{ file.name }} </span>
+                <div (click)="removeBrandAssetFile(i)" class="delete-icon">
+                  <img src="assets/icons/delete.svg" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </nz-form-item>
+        <nz-form-item>
+          <form nz-form nzLayout="vertical">
+            <nz-form-item>
+              <span class="label">Colors<span style="color: #ef4444">*</span></span>
+              <nz-form-control
+                style="text-align: start"
+                [nzValidateStatus]="
+                  f['colors'].touched && (f['colors'].errors || !testHex())
+                    ? 'error'
+                    : ''
+                "
+                [nzErrorTip]="
+                  !testHex()
+                    ? 'Invalid Hex Value'
+                    : 'Please add at least 1 color.'
+                "
+              >
+                <nz-input-group nzSize="large">
+                  <input
+                    nz-input
+                    type="text"
+                    class="rounded-input"
+                    [(ngModel)]="colorcode"
+                    [ngModelOptions]="{ standalone: true }"
+                    nz-input
+                    placeholder="Enter hex code"
+                    id="colorCode"
+                    maxlength="6"
+                    [pattern]="hexPattern"
+                    (keyup.enter)="addColorCodeList()"
+                  />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <div
+              class="br-selected-list fullWidth"
+              style="margin-bottom: 1.5rem"
+            >
+              <ul style="display: flex; flex-wrap: wrap">
+                <li
+                  *ngFor="let color of colorCodeList; let i = index"
+                  class="br-selected-logo"
+                  [attr.style]="'background-color:' + color + '!important'"
+                  [style.background-color]="color"
+                >
+                  <div class="close-icon-cont" (click)="remove_color(i)">
+                    <img src="assets/icons/Close.svg" alt="" />
+                  </div>
+                  <div
+                    style="
+                      position: absolute;
+                      bottom: -1.1rem;
+                      font: normal normal normal 0.75rem/1.1rem Open Sans;
+                      display: none;
+                    "
+                  >
+                    {{ color }}
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </form>
+        </nz-form-item>
+      </div>
+      <div class="row-input-container" style="align-items: start;">
+        <div style="flex:1; text-align: start;" >
+          <span class="label">Additional details</span>
+          <nz-form-control class="role-form">
+            <nz-input-group nzSearch nzSize="large">
+              <textarea
+                nz-input
+                 style="padding: 8px;text-align: start; border: 0.063rem solid #919EAB; border-radius: .5rem;"
+                formControlName="additionalDetails"
+                id="additionalDetails"
+                id="roles"
+                rows="7"
+                placeholder=""
+              ></textarea>
+            </nz-input-group>
+          </nz-form-control>
+        </div>
+        <nz-form-item>
+          <span class="label">Emotions<span style="color: #ef4444">*</span></span>
+          <nz-form-control
+            class="role-form"
+            [nzValidateStatus]="
+              f['emotions'].touched && f['emotions'].errors ? 'error' : ''
+            "
+            nzErrorTip="Please select at least 1 emotion"
+          >
+            <nz-input-group nzSearch nzSize="large">
+              <nz-select
+                [nzMaxTagCount]="2"
+                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                [nzShowArrow]="true"
+                [nzOptionOverflowSize]="8"
+                nzMode="multiple"
+                nzPlaceHolder="Select"
+                formControlName="emotions"
+                id="emotions"
+                nzDropdownClassName="custom-check-dropdown"
+                nzShowSearch="false"
+              >
+                <ng-container>
+                  <nz-option
+                    *ngFor="let emotion of emotionOptions"
+                    [nzValue]="emotion.value"
+                    [nzLabel]="emotion.label"
+                  >
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+              <ng-template #tagPlaceHolder let-selectedList
+                >+ {{ selectedList.length }}</ng-template
+              >
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </nz-card>
+  <div class="form-footer" *ngIf="page == 1">
+    <div class="form-footer-wrapper">
+      <app-button
+        buttonClass="secondary"
+        (click)="saveProgress()"
+        label="Save Progress"
+      ></app-button>
+      <app-button
+        buttonClass="primary"
+        label="Continue"
+        (click)="OnContinueClicked()"
+      ></app-button>
+    </div>
+  </div>
+  <div class="form-footer" *ngIf="page == 2">
+    <div class="form-footer-wrapper">
+      <app-button
+        buttonClass="secondary"
+        [myCallback]="goBack"
+        label="Go back"
+      ></app-button>
+      <app-button
+        buttonClass="primary"
+        label="Submit"
+        [myCallback]="submitForm"
+      ></app-button>
+    </div>
+  </div>
+</form>

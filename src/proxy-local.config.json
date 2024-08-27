@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "http://192.168.29.200:1121/incivus/",
+    "secure": false
+  }
+}

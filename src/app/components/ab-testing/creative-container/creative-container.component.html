@@ -1,0 +1,191 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<nz-page-header class="breadcrumb-container heading" style="margin-top: -2rem;">
+    <nz-page-header-extra>
+        <nz-space>
+            <ng-container *ngIf="timeperiod<=90">
+                <button class="primary primary-btn" (click)="createCompare()" *nzSpaceItem nz-button>
+                    Compare
+                </button>
+            </ng-container>
+            <ng-container *ngIf="timeperiod>90">
+                <button  class="primary primary-btn" (click)="createCompare()" *nzSpaceItem nz-button>
+                    Compare
+                </button>
+             </ng-container>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+ 
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Creatives</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <nz-form-item class="creativesFilter">
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large" class="select-radio-container">
+                        <nz-select style="width: 48%;"
+                        nzPlaceHolder="Brand(s)"
+                        nzDropdownClassName="custom-radio-dropdown"
+                        [ngModel] = "brandSelected"
+                        nzShowSearch="false"
+                        id="brand"
+                        (ngModelChange)="filterBrands($event)"
+                        [nzMenuItemSelectedIcon]="selectedIcon"
+                        >
+                        <nz-option nzValue="all" nzLabel="All"></nz-option>
+
+                        <nz-option id="selected" *ngFor="let brand of brands"
+                            nzValue="{{brand.toLowerCase()}}" nzLabel="{{ brand | titlecase }}" ></nz-option>
+                        </nz-select> &nbsp;
+                        
+                        <nz-select style="width: 50%"
+                            nzPlaceHolder="Creative type"
+                            nzDropdownClassName="custom-radio-dropdown"
+                            [ngModel] = "filterList"
+                            nzShowSearch="false"
+                            id="creativeType"
+                            (ngModelChange)="filterCreatives($event)"
+                            [nzMenuItemSelectedIcon]="selectedIcon"
+                        >
+                      
+                            <nz-option nzValue="video" *ngIf="isVideoAllowed" nzLabel="Video(s)"></nz-option>
+                            <nz-option nzValue="image" *ngIf="isImageAllowed" nzLabel="Image(s)"></nz-option>
+                        </nz-select>
+                        <ng-template #selectedIcon>
+                            <span nz-icon nzType="align-center" nzTheme="outline"></span>
+                        </ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+<nz-content>
+    <div style="margin-top: 1rem;"></div>
+    <app-alert [message]="warningMsg" [alertType]="'warning'" *ngIf="warningMsg"></app-alert> 
+    <app-creative-list-abtest  [myCallback]="reset" [createAction]="createAction" [creativeData]="brandCreatives" [filterList]="filterList"></app-creative-list-abtest>
+</nz-content>
+<nz-content>
+    <nz-page-header class="page-header-container heading">
+        <nz-page-header-title>A/B test report</nz-page-header-title>
+        <nz-page-header-extra>
+            <nz-space>
+                <!-- <ng-container *ngIf="listOfData.length && setOfCheckedId.size === 1">
+                    <button *nzSpaceItem nz-button (click)="edit()">
+                        <img nz-icon src="assets/icons/edit-icon.svg">
+                        Edit
+                    </button>
+                </ng-container> -->
+                <ng-container *ngIf="listOfData.length && setOfCheckedId.size > 0">
+                    <button *nzSpaceItem nz-button (click)="delete()">
+                        <img nz-icon src="assets/icons/delete.svg">
+                        Delete
+                    </button>
+                </ng-container>
+                <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+                    <input type="text" nz-input [(ngModel)]="searchText" (keyup)="filter()" [ngModelOptions]="{standalone: true}" placeholder="Search report name" />
+                </nz-input-group>
+                <ng-template #prefixIconSearch>
+                    <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+                </ng-template>
+            </nz-space>
+        </nz-page-header-extra>
+    </nz-page-header>
+    <nz-table
+        #permissionSelectionTable
+        [nzData]="listOfData"
+        (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+        [nzNoResult]="adminCustomerListEmpty"
+        class="admin-list-table"
+        [nzShowPagination]="true"
+    >
+        <thead>
+            <tr>
+                <th
+                [(nzChecked)]="checked"
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)"
+                ></th>
+                <th [nzShowSort]="false">Report name</th>
+                <th [nzShowSort]="false">Brands</th>
+                <th [nzShowSort]="false">Creative type</th>
+                <th [nzShowSort]="false">Created by</th>
+                <th [nzShowSort]="false">Created at</th>
+             
+                <th [nzShowSort]="false"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of permissionSelectionTable.data">
+                <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+                <td>{{ data.title | titlecase}}</td>
+                <td> 
+                    <div class="dropdown">
+                        <div class="userInfo" nz-dropdown [nzDropdownMenu]="userInfo">
+                            <span *ngFor="let bd of data.adIds.slice(0, 2); let last = last">
+                                {{ bd.brand | titlecase }}{{ !last ? ', ' : '' }}
+                              </span>
+                              <span *ngIf="data.adIds.length > 2">...</span>
+                        </div>
+                        <nz-dropdown-menu #userInfo="nzDropdownMenu">
+                            <ul nz-menu class="userProfile" style="width:10rem; padding: 0.2rem; font-size: 1rem;  -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto ;hyphens :auto; ">
+                                <li nz-menu-item style="cursor: default;">
+                                    <div class="user-profile">
+                                      <div class="user-title" >
+                                        <p style="font-size: 0.83rem; line-height: 2;"><span *ngFor="let bd of data.adIds let last = last">   {{ bd.brand | titlecase}}{{ !last ? ', ' : '' }}</span></p>
+                                      </div>
+                                     
+                                    </div>
+                                </li>
+                            </ul>
+                        </nz-dropdown-menu>
+                    </div>
+                </td>
+                <td>{{data.compareType === 'video' ? "Video Ad" : "Display Ad"}}</td>
+                <td>{{ data.createdBy }}</td>
+                <td>{{ data.createdOn | date:'dd/MM/yy; h:mm a' }}</td>
+             
+                <td>
+                    <button
+                        nz-button
+                        nzNoAnimation
+                        nz-tooltip
+                        class="action-trigger"
+                        [nzTooltipTitle]="menu"
+                        nzTooltipOverlayClassName="tableTooltipOverlay"
+                        [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                    >
+                        <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top;"></span>
+                    </button>
+                    <ng-template #menu>
+                        <ul nz-menu>
+                            <ng-container *ngIf="data.compareType === 'video' && isVideoReportAllowed || 
+                            data.compareType === 'image' && isImageReportAllowed">
+                        <li nz-menu-item (click)="viewReport(data)" *ngIf="timeperiod<=90" >
+                            <span nz-icon><img nz-icon src="assets/icons/report.svg"></span>
+                            <span>View Report</span>
+                        </li>
+                        <li nz-menu-item (click)="popup(data)" *ngIf="timeperiod>90">
+                            <span nz-icon><img nz-icon src="assets/icons/report.svg"></span>
+                            <span>View Report</span>
+                        </li>
+                    </ng-container>
+                            <li nz-menu-item (click)="confirmDeleteAll(data.id)">
+                                <img nz-icon src="assets/icons/delete.svg">
+                                <span>Delete</span>
+                            </li>
+                        </ul>
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <ng-template #adminCustomerListEmpty class="customer-empty">
+        <nz-result>
+            <img nz-result-icon src="assets/icons/no-company.svg">
+            <div nz-result-subtitle>
+                No reports added yet
+            </div>
+        </nz-result>
+    </ng-template>
+</nz-content>

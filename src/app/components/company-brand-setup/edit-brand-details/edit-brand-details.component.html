@@ -1,0 +1,41 @@
+<div class="brand-list-container">
+    <div class="list-title">{{brandDetails?.masterBrand?.name}}</div>
+    <div class="row-input-container">
+        <nz-form-item>
+            <nz-form-label class="input-float-label">Product</nz-form-label>
+            <nz-form-control>
+                <nz-input-group nzSearch nzSize="large">
+                    <nz-select
+                        [nzShowArrow]="true"
+                        nzPlaceHolder="Select product"
+                        [(ngModel)]="productSelected"
+                        [ngModelOptions]="{standalone: true}"
+                        nzDropdownClassName="custom-radio-dropdown"
+                        nzShowSearch="false"
+                    >
+                        <ng-container *ngIf="brandDetails && brandDetails.productBrand && brandDetails.productBrand.length > 0">
+                            <nz-option class="test" *ngFor="let brand of brandDetails.productBrand"
+                                [nzValue]="brand.name"
+                                [nzLabel]="brand.name"
+                            >
+                            </nz-option>
+                        </ng-container>
+                    </nz-select>
+                    <!-- <nz-select nzPlaceHolder="Product" class="select-radio-list" [(ngModel)]="productSelected">
+                        <nz-option *ngFor="" nzCustomContent nzLabel="{{brand.name}}" nzValue="{{brand.name}}">
+                            {{brand.name | titlecase}}
+                        </nz-option>
+                    </nz-select> -->
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="secondary" label="Cancel" [myCallback]="renderEditBrandDetails"></app-button>
+            <app-button buttonClass="primary" label="Continue" [myCallback]="renderAddBrandGuildeline"></app-button>
+        </div>
+    </div>
+</div>
+

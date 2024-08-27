@@ -1,0 +1,17 @@
+<div class="card-details-container" *ngIf="!isLoading">
+    <nz-breadcrumb nzSeparator=">">
+        <nz-breadcrumb-item>Creativeness effectiveness</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+        <a>Recall score</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngIf="showRecall">Recall</nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngIf="!showRecall">Attention</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    
+    <div class="tab-button-list">
+        <app-button *ngIf="showAttentionFt && showRecallFt" buttonClass="{{ showRecall && 'default-btn active' || 'default-btn' }}" label="Recall" [myCallback]="switchBtnClick"></app-button>
+        <app-button *ngIf="showAttentionFt && showRecallFt" buttonClass="{{ !showRecall && 'default-btn active' || 'default-btn' }}" label="Attention" [myCallback]="switchBtnClick"></app-button>
+    </div>
+    <app-recall-card *ngIf="showRecall"  [url]="modalData.url" [recallData]="modalData.data" [isVideoReport]="modalData.isVideoReport"></app-recall-card>
+    <app-attention-card *ngIf="!showRecall" [url]="modalData.url" [recallData]="modalData.data" [isVideoReport]="modalData.isVideoReport"></app-attention-card>
+</div>

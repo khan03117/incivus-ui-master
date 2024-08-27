@@ -1,0 +1,34 @@
+<app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+<form nz-form nzLayout ="vertical" [formGroup]="shareCampaignForm" class="shareCampaignForm">
+    <div class="form-description" style="padding-bottom: 1rem;">Share campaign with user(s)</div>
+    <nz-form-item>
+        <nz-form-label nzFor="campaignName" class="input-float-label">Select user(s)<span style="color:#EF4444">*</span></nz-form-label>
+        <nz-form-control >
+            <nz-input-group nzSize="large">
+                <nz-select
+                    [nzMaxTagCount]="2"
+                    [nzMaxTagPlaceholder]="tagPlaceHolder"
+                    nzMode="multiple"
+                    nzPlaceHolder="Select user(s)"
+                    formControlName="userIds"
+                    nzDropdownClassName="custom-check-dropdown"
+                    nzShowSearch="false"
+                    [nzShowArrow]="true"
+                >
+                    <nz-option *ngFor="let user of userList"
+                        [nzValue]="user"
+                        [nzLabel]="user"
+                    >
+                    </nz-option>
+
+                </nz-select>
+                <ng-template  #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="primary" [loading]="saving" label="Done" class="full-width-btn" [myCallback]="continue"></app-button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,337 @@
+<div class="report-container" *ngIf="!isLoading">
+    <app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+    <div style="margin-bottom: 1rem;"></div>
+    <div nz-row [nzGutter]="[24, 24]">
+        <div nz-col nzSpan="24">
+            <!-- [nzActions]="[actionDownload, actionViewReport]" -->
+            <nz-card [nzCover]="coverTemplate" class="report-header-card">
+                <nz-card-meta nzTitle="{{creative?.metadata?.title | titlecase}}"></nz-card-meta>
+                <div class="meta-content" *ngIf="isVideoReport">
+                    <table>
+                        <tr>
+                            <td style="width:30%;">
+                                <p>{{runTime}}sec, {{creative?.metadata?.uploadedAt | date:'dd MMM, yyyy'}}</p>
+                            </td>
+                            <td>
+                                <p>Brand: {{capitalizeFirstLetter(creative.metadata.brand)}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Status: {{ creative?.metadata?.phase ?? 'Pre-flight'}}</p>
+                            </td>
+                            <td>
+                                <p><span *ngIf="creative.metadata.groupName">Campaign:
+                                        {{capitalizeFirstLetter(creative.metadata.groupName)}}</span></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="meta-content" *ngIf="!isVideoReport">
+                    <table>
+                        <tr>
+                            <td style="width:30%;">
+                                <p>{{creative?.metadata?.uploadedAt | date:'dd MMM, yyyy'}}</p>
+                            </td>
+                            <td>
+                                <p>Brand: {{capitalizeFirstLetter(creative.metadata.brand)}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Status: {{ creative?.metadata?.phase ?? 'Pre-flight' | capitalize}}</p>
+                            </td>
+                            <td>
+                                <p><span *ngIf="creative.metadata.groupName">Campaign:
+                                        {{capitalizeFirstLetter(creative.metadata.groupName)}}</span></p>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="btn-container">
+                    <app-button buttonClass="primary default-btn" label="Report"></app-button>
+                </div>
+                <div class="btn-container" *ngIf="isIncAdmin && !isLoading">
+                    <app-button buttonClass="default-btn" label="Copy link" [myCallback]="getCopyLink"></app-button>
+                    <app-button buttonClass="default-btn"
+                        *ngIf="reportStatus === 'UNCHANGED' || reportStatus === 'PUBLISHED'" label="Preview"
+                        [myCallback]="preview"></app-button>
+                    <app-button buttonClass="default-btn" *ngIf="reportStatus === 'PREVIEW_CREATED'"
+                        label="Cancel preview" [myCallback]="cancel"></app-button>
+                    <app-button buttonClass="default-btn" *ngIf="reportStatus === 'PREVIEW_CREATED'" label="Publish"
+                        [myCallback]="publish"></app-button>
+                    <app-button buttonClass="default-btn" *ngIf="reportStatus === 'PUBLISHED'" label="Revert"
+                        [myCallback]="revert"></app-button>
+                    <app-button buttonClass="default-btn" *ngIf="creative?.metadata?.status === 90" label="Release"
+                        [myCallback]="releaseReport"></app-button>
+                </div>
+            </nz-card>
+            <ng-template #avatarTemplate>
+                <img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            </ng-template>
+            <ng-template #coverTemplate>
+                <ng-container *ngIf="isVideoReport && !isLoading">
+                    <video data-html2canvas-ignore="true" *ngIf="isVideoReport && !isLoading" controls playsinline
+                        controlslist="nodownload" class="video-width-70" style="width: 100%; max-height: 12rem;"
+                        (loadedmetadata)="onMetadata($event)">
+                        <source *ngIf="creative.url" src="{{creative?.url}}" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                </ng-container>
+                <ng-container *ngIf="!isVideoReport && !isLoading">
+                    <img style="width: 100%; max-height: 12rem;" src="{{summary.imageLink}}" />
+                </ng-container>
+            </ng-template>
+            <!-- <ng-template #actionDownload>
+                <img nz-icon src="assets/icons/download.svg">
+            </ng-template>
+            <ng-template #actionViewReport>
+                <img nz-icon src="assets/icons/view-details.svg">
+            </ng-template> -->
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-card class="card-container">
+                <div class="creative-card-header">
+                    <div class="card-title">Creative effectiveness</div>
+                    <div class="slider-container">
+                        <svg height="200" width="300">
+                            <path id="arc1" fill="none" stroke-linecap="round" />
+                            <path id="arc2" fill="none" stroke-linecap="round" />
+                            <path id="arc3" fill="none" stroke-linecap="round" />
+                            <path id="arc4" fill="none" stroke-linecap="round" />
+                            <circle id="circle" cx="150" cy="150" stroke="orange" fill="white" />
+                            <text id="status" x="50%" y="78%" fill="#525252" dominant-baseline="start"
+                                text-anchor="middle"></text>
+                        </svg>
+                    </div>
+                    <!-- <button nz-button style="cursor: default;" nzType="primary" nzShape="round" class="ces" [ngClass]="scoreClass">
+                      <span class="score_text" [ngClass]="scoreClass" >{{scoreText}}</span>
+                    </button> -->
+                    <div style="cursor: default;" class="cesScore ces" [ngClass]="scoreClass">{{scoreClass | uppercase
+                        }}</div>
+                    <div class="sub-title">
+                        <b>Indicates short-term sales potential. Score below 55 is considered LOW, 75-55 is considered
+                            MEDIUM and above 75 is considered HIGH</b>
+                    </div>
+                    <div *ngIf="scoreClass === 'high'" class="card-description"><b>The ad is memorable and ranks high on
+                            most evaluation parameters thereby delivering a high ROAS.</b></div>
+                    <div *ngIf="scoreClass === 'medium'" class="card-description"><b>The ad ranks well on certain
+                            parameters and we recommend making modifications. Refer to the individual score section to
+                            improve ROAS.</b></div>
+                    <div *ngIf="scoreClass === 'low'" class="card-description"><b>The ad ranks lower in most evaluation
+                            parameters. We recommend not launching this ad.</b></div>
+
+                </div>
+                <nz-divider *ngIf="showRecall || showCognitive || showAdCopy || showAttention"></nz-divider>
+                <app-report-card *ngIf="!isLoading && showRecall" title="Recall score"
+                    description="High Recall score leads to Ad being highly memorable therefore enabling you to meet your Ad goals effectively."
+                    [score]="summary.videoScore" [scoreDisplay]="summary.videoScore" rangeInfo="Above 75"
+                    [showDetails]="showFullReport" [myCallback]="openReportDetailsModal" callbackParam="RECALL"
+                    metric="RECALL"></app-report-card>
+                <app-report-card *ngIf="!isLoading && !showRecall && showAttention" title="Attention"
+                    description="High Recall score leads to Ad being highly memorable therefore enabling you to meet your Ad goals effectively."
+                    [score]="summary.videoScore" [scoreDisplay]="summary.videoScore" rangeInfo="Above 75"
+                    [showDetails]="showFullReport" [myCallback]="openReportDetailsModal" callbackParam="RECALL"
+                    metric="RECALL"></app-report-card>
+                <!-- <nz-card class="report-card" [nzBordered]="false" *ngIf="!isLoading && !showRecall && !showAttention">
+                    <div nz-row>
+                        <div class="title">
+                            <img nz-icon src="assets/icons/computer.svg">
+                            <span>Recall score</span> 
+                        </div>
+                    </div>
+                    <div class="description" style="color:#DB1F35;">You do not have permission to view this metrics. Please contact your admin.</div>
+                </nz-card> -->
+                <nz-divider
+                    *ngIf="showAttention &&(showAdCopy || showCognitive) || showRecall &&(showAdCopy || showCognitive)"></nz-divider>
+                <app-report-card *ngIf="!isLoading && showCognitive" title="Cognitive load"
+                    description="Low complexity leads to lower cognitive load and higher engagement."
+                    [score]="summary.cognitiveLoad" [scoreDisplay]="summary.clDisplay" rangeInfo="Range 40-80"
+                    [showDetails]="showFullReport" [myCallback]="openReportDetailsModal" callbackParam="COGNITIVE_LOAD"
+                    metric="COGNITIVE"></app-report-card>
+                <!-- <nz-card class="report-card" [nzBordered]="false" *ngIf="!isLoading && !showCognitive">
+                    <div nz-row>
+                        <div class="title">
+                            <img nz-icon src="assets/icons/computer.svg">
+                            <span>Cognitive load</span> 
+                        </div>
+                    </div>
+                    <div class="description" style="color:#DB1F35;">You do not have permission to view this metrics. Please contact your admin.</div>
+                </nz-card> -->
+                <nz-divider *ngIf="showCognitive && showAdCopy"></nz-divider>
+                <app-report-card *ngIf="!isLoading && showAdCopy" title="Ad copy effectiveness"
+                    description="You have a relatively low Ad copy effectiveness."
+                    [score]="summary.adCopyEffectivnessScore" [scoreDisplay]="summary.adCopyEffectivnessScore"
+                    rangeInfo="Above 75" [showDetails]="showFullReport" [myCallback]="openReportDetailsModal"
+                    callbackParam="EFFECTIVENESS" metric="EFFECTIVE"></app-report-card>
+                <!-- <nz-card class="report-card" [nzBordered]="false" *ngIf="!isLoading && !showAdCopy">
+                    <div nz-row>
+                        <div class="title">
+                            <img nz-icon src="assets/icons/computer.svg">
+                            <span>Ad copy effectiveness</span> 
+                        </div>
+                    </div>
+                    <div class="description" style="color:#DB1F35;">You do not have permission to view this metrics. Please contact your admin.</div>
+                </nz-card> -->
+            </nz-card>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-card class="card-container" *ngIf="(recallScore !== 'high' && showRecall) || 
+            (recallScore !== 'high' && !showRecall && showAttention) || (cognitiveScore === 'high' && showCognitive) || 
+            (cognitiveScore === 'low' && showCognitive) || (adcopyEffScore !== 'high' && showAdCopy)">
+                <div class="report-card-header flex-header">
+                    <div class="icon-wrapper">
+                        <img nz-icon src="assets/icons/statistics.svg">
+                    </div>
+                    <div class="header-wrapper">
+                        <div class="title">Growth opportunities</div>
+                        <div class="description">Meeting the objectives of marketing</div>
+                    </div>
+                </div>
+                <div class="flex-content" *ngIf="recallScore !== 'high' && showRecall">
+                    <div class="content-wrapper">
+                        <div class="title">
+                            <span>{{recallIndex}}. Improve recall</span>
+                            <span class="details-link" *ngIf="showFullReport"
+                                (click)="openReportDetailsModal('RECALL')">Details</span>
+                        </div>
+                        <div class="description">Visual impact and emotional appeal improves the overall recall</div>
+                    </div>
+                </div>
+                <div class="flex-content" *ngIf="recallScore !== 'high' && !showRecall && showAttention">
+                    <div class="content-wrapper">
+                        <div class="title">
+                            <span>{{recallIndex}}. Improve attention</span>
+                            <span class="details-link" *ngIf="showFullReport"
+                                (click)="openReportDetailsModal('RECALL')">Details</span>
+                        </div>
+                        <div class="description">Visual impact and emotional appeal improves the overall recall</div>
+                    </div>
+                </div>
+                <div class="flex-content" *ngIf="cognitiveScore === 'high' && showCognitive">
+                    <div class="content-wrapper">
+                        <div class="title">
+                            <span>{{cognitiveIndex}}. Reduce cognitive load</span>
+                            <span class="details-link" *ngIf="showFullReport"
+                                (click)="openReportDetailsModal('COGNITIVE_LOAD')">Details</span>
+                        </div>
+                        <div class="description">Ads with high levels of engagement can generate negative emotion and
+                            low recall levels if the cognitive load is high.</div>
+                    </div>
+                </div>
+                <div class="flex-content" *ngIf="cognitiveScore === 'low' && showCognitive">
+                    <div class="content-wrapper">
+                        <div class="title">
+                            <span>{{cognitiveIndex}}. Balance cognitive load</span>
+                            <span class="details-link" *ngIf="showFullReport"
+                                (click)="openReportDetailsModal('COGNITIVE_LOAD')">Details</span>
+                        </div>
+                        <div class="description">Effective creative needs to be divergent, but it also needs to have a
+                            low cognitive load and therein lies the challenge for finding that sweet spot.</div>
+                    </div>
+                </div>
+                <div class="flex-content" *ngIf="adcopyEffScore !== 'high' && showAdCopy">
+                    <!-- <div class="count-wrapper">3</div> -->
+                    <div class="content-wrapper">
+                        <div class="title">
+                            <span>{{adCopyIndex}}. Improve ad copy effectiveness</span>
+                            <span class="details-link" *ngIf="showFullReport"
+                                (click)="openReportDetailsModal('EFFECTIVENESS')">Details</span>
+                        </div>
+                        <div class="description">The ad copy is more than just words and require considering various
+                            factors such as text readability and attention.</div>
+                    </div>
+                </div>
+            </nz-card>
+            <nz-card class="card-container" *ngIf="showBrandCues || showEmotion || showDigitalAcc">
+                <div class="report-card-header">
+                    <div class="title">Other key metrics</div>
+                    <div class="description">Meeting the objectives of marketing</div>
+                </div>
+                <app-report-card *ngIf="!isLoading && showBrandCues" title="Brand compliance"
+                    description="In a crowded marketplace, brand consistency helps a company stand out from competitors."
+                    [score]="summary.brand_compliance" [scoreDisplay]="summary.brand_compliance" rangeInfo="Above 86"
+                    [showDetails]="showFullReport" [myCallback]="openReportDetailsModal"
+                    callbackParam="BRAND_COMPLIANCE" metric="BRANDC"></app-report-card>
+                <!-- <nz-card class="report-card" [nzBordered]="false" *ngIf="!isLoading && !showBrandCues">
+                    <div nz-row>
+                        <div class="title">
+                            <img nz-icon src="assets/icons/computer.svg">
+                            <span>Brand compliance</span> 
+                        </div>
+                    </div>
+                    <div class="description" *ngIf="!isTrialUser" style="color:#DB1F35;">You do not have permission to view this metrics. Please contact your admin.</div>
+                    <div class="description" *ngIf="isTrialUser" style="color:#DB1F35;">This feature requires brand guideline setup and therefore, available when you sign-up with us.</div>
+                </nz-card> -->
+                <nz-divider *ngIf="showBrandCues && (showEmotion || showDigitalAcc)"></nz-divider>
+                <div class="creative-card-header"
+                    *ngIf="!isLoading && isVideoReport && showEmotion &&(!showDigitalAcc || !showBrandCues)">
+                    <div class="card-title">Emotional Intensity</div>
+                    <div class="slider-container">
+                        <svg height="200" width="300">
+                            <path id="arc1" fill="none" stroke-linecap="round" />
+                            <path id="arc2" fill="none" stroke-linecap="round" />
+                            <path id="arc3" fill="none" stroke-linecap="round" />
+                            <path id="arc4" fill="none" stroke-linecap="round" />
+                            <circle id="circle" cx="150" cy="150" stroke="orange" fill="white" />
+                            <text id="status" x="50%" y="78%" fill="#525252" dominant-baseline="start"
+                                text-anchor="middle"></text>
+                        </svg>
+                    </div>
+                    <!-- <button nz-button style="cursor: default;" nzType="primary" nzShape="round" class="ces" [ngClass]="scoreClass2"> -->
+                    <!-- <span class="score_text" [ngClass]="scoreClass2" >{{scoreText2}}</span> -->
+
+                    <!-- </button> -->
+                    <div style="cursor: default;" class="cesScore ces" [ngClass]="scoreClass2">{{scoreClass2 | uppercase
+                        }}</div>
+                    <div class="sub-title">
+                        <b>Indicates emotional impact on audience.</b>
+                    </div>
+                    <app-report-card
+                        *ngIf="!isLoading && isVideoReport && showEmotion &&(!showDigitalAcc || !showBrandCues)"
+                        title="" description="Emotional intensity in advertising grabs attention and engages viewers."
+                        [score]="summary.emotionalIntensity" [scoreDisplay]="" [showDetails]="showFullReport"
+                        rangeInfo="Above 75" [myCallback]="openReportDetailsModal" callbackParam="EMOTIONAL_INTENSITY"
+                        metric="EMOTION" [videoReport]="true"></app-report-card>
+                </div>
+                <app-report-card *ngIf="!isLoading && isVideoReport && showEmotion && showDigitalAcc && showBrandCues"
+                    title="Emotions"
+                    description="Emotional intensity in advertising grabs attention and engages viewers."
+                    [score]="summary.emotionalIntensity" [scoreDisplay]="summary.emotionalIntensity"
+                    [showDetails]="showFullReport" rangeInfo="Above 75" [myCallback]="openReportDetailsModal"
+                    callbackParam="EMOTIONAL_INTENSITY" metric="EMOTION"></app-report-card>
+                <app-report-card *ngIf="!isLoading && !isVideoReport && showEmotion" title="Emotions"
+                    [description]="emotionDescription" [score]="" [scoreDisplay]="" [showDetails]="showFullReport"
+                    rangeInfo="" [myCallback]="openReportDetailsModal" callbackParam="EMOTIONS" metric="EMOTION"
+                    [show]="showDigitalAcc || showBrandCues"></app-report-card>
+                <!-- <nz-card class="report-card" [nzBorder ed]="false" *ngIf="!isLoading && !showEmotion">
+                    <div nz-row>
+                        <div class="title">
+                            <img nz-icon src="assets/icons/computer.svg">
+                            <span>Emotions</span> 
+                        </div>
+                    </div>
+                    <div class="description" style="color:#DB1F35;">You do not have permission to view this metrics. Please contact your admin.</div>
+                </nz-card>
+                -->
+                <nz-divider *ngIf="showEmotion && showDigitalAcc"></nz-divider>
+
+                <app-report-card *ngIf="!isLoading && showDigitalAcc" title="Digital accessibility"
+                    description="Captions or transcript of the Ad should be in clear and readable fonts ensuring the text color and background colors are high in contrast"
+                    [score]="digitalAccScore" [scoreDisplay]="" [rangeInfo]="100" [showDetails]="showFullReport"
+                    [myCallback]="openReportDetailsModal" callbackParam="DIGITAL_ACCESSIBILITY"
+                    metric="DIGITAL"></app-report-card>
+                <!-- <nz-card class="report-card" [nzBordered]="false" *ngIf="!isLoading && !showDigitalAcc">
+                    <div nz-row>
+                        <div class="title">
+                            <img nz-icon src="assets/icons/computer.svg">
+                            <span>Digital accessibility</span> 
+                        </div>
+                    </div>
+                    <div class="description" style="color:#DB1F35;">You do not have permission to view this metrics. Please contact your admin.</div>
+                </nz-card> -->
+            </nz-card>
+        </div>
+    </div>
+</div>

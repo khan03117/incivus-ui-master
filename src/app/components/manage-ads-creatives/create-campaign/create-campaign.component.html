@@ -1,0 +1,67 @@
+<app-alert [message]="errorMsg" [alertType]="'error'" *ngIf="errorMsg"></app-alert>
+<form nz-form nzLayout ="vertical" [formGroup]="createCampaignForm">
+    <nz-form-item *ngIf="data.type === 'LINK_CAMPAIGN'">
+        <nz-form-control>
+            <nz-input-group nzSearch nzSize="large" >
+                <nz-select
+                    nzPlaceHolder="Campaign name"
+                    formControlName="campaignName"
+                    nzDropdownClassName="custom-check-dropdown"
+                    nzShowSearch="false" 
+                    style="max-width:400px; overflow-x: scroll;"
+                >
+                    <nz-option *ngFor="let campaign of campaigns" nzValue="{{campaign.campaignName}}" nzLabel="{{campaign.campaignName | titlecase}}" ></nz-option>
+                </nz-select>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="data.type == 'EDIT_CAMPAIGN'">
+        <nz-form-label nzFor="campaignName" class="input-float-label">Campaign name<span style="color:#EF4444">*</span></nz-form-label>
+        <nz-form-control style="text-align: left;" [nzValidateStatus]="f['campaignName'].errors && blurCN ? 'error':''"  nzErrorTip="
+            {{ blurCN && f['campaignName'].errors && f['campaignName'].errors['required'] ? 'Uh! Oh! campaign name cannot be empty.' : 
+            blurCN && f['campaignName'].errors && f['campaignName'].errors['minlength'] ? 'Uh! Oh! campaign name has to have minimum of three characters' :
+            blurCN && f['campaignName'].errors && f['campaignName'].errors['maxlength'] ? 'Uh! Oh! campaign name can not exceed 256 characters' : 
+            blurCN && f['campaignName'].errors && f['campaignName'].errors['pattern'] ? 'Uh! Oh! campaign name cannot contain special characters.' : ''}}">
+            <nz-input-group nzSearch nzSize="large">
+                <input nz-input type="text" class="rounded-input" nz-input (blur)="blurCN = true" (focus)="blurCN=false" placeholder="Enter a campaign name" formControlName="campaignName" id="campaignName"/>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <div *ngIf="data.type === 'CREATE_CAMPAIGN'">
+        <nz-form-item>
+            <nz-form-label nzFor="campaignName" class="input-float-label">Campaign name<span style="color:#EF4444">*</span></nz-form-label>
+            <nz-form-control style="text-align: left;" [nzValidateStatus]="f['campaignName'].errors && blurCN ? 'error':''"  nzErrorTip="
+                {{ blurCN && f['campaignName'].errors && f['campaignName'].errors['required'] ? 'Uh! Oh! campaign name cannot be empty.' : 
+                blurCN && f['campaignName'].errors && f['campaignName'].errors['minlength'] ? 'Uh! Oh! campaign name has to have minimum of three characters' :
+                blurCN && f['campaignName'].errors && f['campaignName'].errors['maxlength'] ? 'Uh! Oh! campaign name can not exceed 256 characters' : 
+                blurCN && f['campaignName'].errors && f['campaignName'].errors['pattern'] ? 'Uh! Oh! campaign name cannot contain special characters.' : ''}}">
+                <nz-input-group nzSearch nzSize="large">
+                    <input nz-input type="text" class="rounded-input" nz-input (blur)="blurCN = true" (focus)="blurCN=false" placeholder="Enter a campaign name" formControlName="campaignName" id="campaignName"/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFor="campaignName" class="input-float-label">Brand<span style="color:#EF4444">*</span></nz-form-label>
+            <nz-form-control [nzValidateStatus]="f['brand'].errors && submitted ? 'error':''"  nzErrorTip="Brand is mandatory">
+                <nz-input-group nzSearch nzSize="large">
+                    <nz-select
+                        nzPlaceHolder="Select a brand"
+                        formControlName="brand"
+                        nzDropdownClassName="custom-radio-dropdown"
+                        nzShowSearch="false"
+                    >
+                        <nz-option *ngFor="let brand of brandList" nzValue="{{brand}}" nzLabel="{{brand | titlecase}}" ></nz-option>
+                    </nz-select>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="secondary" label="Cancel" [myCallback]="cancel"></app-button>
+            <app-button buttonClass="primary" [loading]="saving" label="Done" *ngIf="data.type === 'LINK_CAMPAIGN'" [myCallback]="link"></app-button>
+            <app-button buttonClass="primary" [loading]="saving" label="Create" *ngIf="data.type === 'CREATE_CAMPAIGN'" [myCallback]="create"></app-button>
+            <app-button buttonClass="primary" [loading]="saving" label="Save" *ngIf="data.type === 'EDIT_CAMPAIGN'" [myCallback]="edit"></app-button>
+        </div>
+    </div>
+</form>

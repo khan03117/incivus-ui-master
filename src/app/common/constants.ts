@@ -1,0 +1,8 @@
+export const CONSTANTS = {
+  ROLES: {
+    INC_ADMIN: "INCIVUS_ADMIN",
+    CL_ADMIN: "CL_ADMIN",
+    SERVICE_MANAGER: "SERVICE_MANAGER",
+    TRIAL_USER: "TRIAL_USER",
+  },
+};

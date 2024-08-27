@@ -1,0 +1,30 @@
+<div class="setup-conatainer">
+  <div class="setup-wrapper">
+    <nz-collapse nzAccordion nzExpandIconPosition="right">
+      <nz-collapse-panel
+        [nzHeader]="collapseHeader"
+        [nzActive]="panel.isExpanded"
+        [nzDisabled]="panel.disabled"
+        [ngClass]="panel.isValid ? 'valid-accordion-content' : ''"
+        [nzExpandedIcon]="expandCollapseIcon"
+        nzExpandIconPosition="right"
+      >
+        <ng-template appDynamicTemplate> </ng-template>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+</div>
+<ng-template #collapseHeader>
+  <span class="main-title"
+    >{{ index != null ? index + ". " : "" }}{{ panel.name }}</span
+  ><span *ngIf="panel.subTitle" class="sub-title">{{ panel.subTitle }}</span>
+</ng-template>
+
+<ng-template #expandCollapseIcon>
+  <span
+    nz-icon
+    nzType="down"
+    nzTheme="outline"
+    class="expandCollapseIcon"
+  ></span>
+</ng-template>

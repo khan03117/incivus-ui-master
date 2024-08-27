@@ -1,0 +1,32 @@
+<form nz-form nzLayout ="vertical" [formGroup]="assignBrandForm" *ngIf="!isLoading">
+    <div class="form-description">Edit the brands user has access to</div>
+    <nz-form-item>
+        <nz-form-control class="role-form" [nzValidateStatus]="f['brands'].errors && suberror ? 'error':''"  nzErrorTip="Brands is mandatory">
+            <nz-input-group nzSize="large">
+                <nz-select
+                    nzPlaceHolder="*Master brands and products" 
+                    nzDropdownClassName="custom-check-dropdown"
+                    formControlName="brands"
+                    [nzMaxTagCount]="2"
+                    [nzMaxTagPlaceholder]="tagPlaceHolder"
+                    nzMode="multiple"
+                >
+                    <ng-container *ngFor="let brand of brandDetails">
+                        <nz-option [nzValue]="brand.masterBrand.name" [nzLabel]="brand.masterBrand.name"></nz-option>
+                        <nz-option *ngFor="let pb of brand.productBrand"
+                            [nzValue]="pb.name"
+                            [nzLabel]="pb.name"
+                        >
+                        </nz-option>
+                    </ng-container>
+                </nz-select>
+                <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="primary" label="Done" [loading]="submitted" [myCallback]="update" class="full-width-btn"></app-button>
+        </div>
+    </div>
+</form>

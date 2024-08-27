@@ -1,0 +1,50 @@
+<nz-card class="report-card" [nzBordered]="false">
+    <div nz-row>
+        <div *ngIf="metric !== 'DIGITAL'" class="title">
+            <img nz-icon src="assets/icons/computer.svg" *ngIf="!videoReport">
+            <span>{{title}}</span> 
+        </div>
+        <div *ngIf="metric === 'DIGITAL'" class="title" style="display: flex; width: 100%; justify-content: space-between;">
+            <div>
+                <img nz-icon src="assets/icons/computer.svg">
+                <span style="margin-left: 0.5rem;">{{title}}</span> 
+            </div>
+            <div class="target-title" style="display: flex;align-items: center;">
+                <!-- <span *ngIf="rangeInfo"style="margin-right:5px;color:#16A34A" nz-icon nzType="check-circle" nzTheme="fill"></span> -->
+                <!-- <span *ngIf="rangeInfo && rangeInfo === 'Yes'">Yes</span>
+                <span *ngIf="rangeInfo && rangeInfo === 'No'">No</span> -->
+                <span *ngIf="rangeInfo">{{score}}</span>
+                <span *ngIf="!rangeInfo">NA</span>
+            </div>
+        </div>
+        <div *ngIf="scoreDisplay" class="progress-value">{{scoreDisplay}}</div>
+    </div>
+    <nz-progress *ngIf="scoreDisplay && metric !== 'COGNITIVE'" [nzPercent]="scoreDisplay" [nzShowInfo]="false" [nzStrokeColor]="strokeColor"></nz-progress>
+    <div *ngIf="scoreDisplay && metric === 'COGNITIVE'">
+        <div class="progress p-0" style="width: 100%; height: 0.6rem; background-color: #FFF;">
+            <div class="progress-bar progressbarCL low" role="progressbar"></div>
+            <div class="progress-bar progressbarCL med" role="progressbar"></div>
+            <div class="progress-bar progressbarCL high" role="progressbar"></div>
+            <div [style.left.%] = "scoreDisplay" class="pointerCL"></div>
+        </div>
+    </div>
+    <div *ngIf="scoreDisplay" class="description">{{description}}</div>
+    <div *ngIf="!scoreDisplay && metric === 'DIGITAL'" class="description" [innerHTML]="description"></div>
+    <div *ngIf="!scoreDisplay && metric !== 'DIGITAL'" class="description" [innerHTML]="description" style="text-transform: capitalize;"></div>
+    <div nz-row *ngIf="scoreDisplay">
+        <div class="range-details" *ngIf="rangeInfo">Recommended: <span>{{ rangeInfo }}</span></div>
+        <app-button *ngIf="showDetails" buttonClass="primary" label="Details" [myCallback]="myCallback" [callbackParam]="callbackParam"></app-button>
+    </div>
+    <div nz-row *ngIf="!scoreDisplay && metric!=='EMOTION'"  [ngStyle]="{'justify-content': !rangeInfo ? 'flex-end' : ''  }  " >
+        <div class="range-details" *ngIf="rangeInfo">Recommended: <span>{{ rangeInfo }}</span></div>
+        <app-button *ngIf="showDetails" buttonClass="primary" label="Details" [myCallback]="myCallback" [callbackParam]="callbackParam"></app-button>
+    </div> 
+    <div nz-row *ngIf="!scoreDisplay && metric==='EMOTION' && !show" class='detail' [ngStyle]="{'justify-content': !rangeInfo ? 'flex-end' : ''  }  " >
+        <div class="range-details" *ngIf="rangeInfo">Recommended: <span>{{ rangeInfo }}</span></div>
+        <app-button *ngIf="showDetails" buttonClass="primary" label="Details" [myCallback]="myCallback" [callbackParam]="callbackParam"></app-button>
+    </div> 
+    <div nz-row *ngIf="!scoreDisplay && metric==='EMOTION' && show" [ngStyle]="{'justify-content': !rangeInfo ? 'flex-end' : ''  }  " >
+        <div class="range-details" *ngIf="rangeInfo">Recommended: <span>{{ rangeInfo }}</span></div>
+        <app-button *ngIf="showDetails" buttonClass="primary" label="Details" [myCallback]="myCallback" [callbackParam]="callbackParam"></app-button>
+    </div> 
+</nz-card>

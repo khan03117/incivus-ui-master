@@ -1,0 +1,129 @@
+<nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-title>Customer setup</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <button *nzSpaceItem nz-button (click)="downloadReport()">
+                Export to XL
+            </button>
+            <button class="primary" *nzSpaceItem nz-button (click)="addNewCompany()">
+                + Add new company
+            </button>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Customer list</nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space>
+            <!-- <ng-container *ngIf="listOfData.length && setOfCheckedId.size === 1">
+                <button *nzSpaceItem nz-button nz-type="primary" (click)="edit()">
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Status
+                </button>
+            </ng-container> -->
+            <!-- <ng-container *ngIf="listOfData.length && setOfCheckedId.size === 1">
+                <button *nzSpaceItem nz-button (click)="edit()">
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Edit
+                </button>
+            </ng-container> -->
+            <ng-container *ngIf="listOfData.length && setOfCheckedId.size === 1">
+                <button *nzSpaceItem nz-button (click)="delete()">
+                    <img nz-icon src="assets/icons/delete.svg"> 
+                    Delete
+                </button>
+            </ng-container>
+            <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+                <input type="text" nz-input [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (keyup)="filter()" placeholder="Search company name" />
+            </nz-input-group>
+            <ng-template #prefixIconSearch>
+                <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+            </ng-template>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+    #rowSelectionTable
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    [nzNoResult]="adminCustomerListEmpty"
+    class="admin-list-table"
+    [nzShowPagination]="true"
+>
+    <thead>
+        <tr>
+            <th
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th>Company name</th>
+            <th>Created by</th>
+            <th>Created on</th>
+            <th>Status</th>
+            <th>Feature access</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ data.companyName}}</td>
+            <td>{{ data.createdBy }}</td>
+            <td>{{ data.createdOn | date:'dd/MM/yy; h:mm a' }}</td>
+            <td>{{ data.status | titlecase }}</td>
+      <td class="feature-td">
+        <div class="feature-name">{{ data.features }}</div>
+        <div class="feature-desc">{{ data.features }}</div>
+      </td>
+            <td>
+                <button
+                    nz-button
+                    nzNoAnimation
+                    nz-tooltip
+                    class="action-trigger"
+                    [nzTooltipTitle]="menu"
+                    nzTooltipOverlayClassName="tableTooltipOverlay"
+                    [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                >
+                    <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top;"></span>
+                </button>
+                <ng-template #menu>
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="editClient(data.id)">
+                            <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                            <span>Edit</span>
+                        </li>
+                        <li nz-menu-item *ngIf="data.isClientAdmin || data.isBothAdmin" (click)="clientSetup(data.id, data.companyName)">
+                            <span nz-icon nzType="setting" nzTheme="outline"></span>
+                            <span>Client Setup</span>
+                        </li>
+                        <li nz-menu-item *ngIf="data.isClientAdmin || data.isBothAdmin" (click)="AddPermission(data.id, data.companyName)">
+                            <span nz-icon nzType="tool" nzTheme="outline"></span>
+                            <span>Permissions</span>
+                        </li>
+                        <li nz-menu-item *ngIf="data.isClientAdmin || data.isBothAdmin" (click)="addRoles(data.id, data.companyName)">
+                            <span nz-icon nzType="tool" nzTheme="outline"></span>
+                            <span>Roles</span>
+                        </li>
+                        <li nz-menu-item *ngIf="data.isClientAdmin || data.isBothAdmin" (click)="addUser(data.id, data.companyName)">
+                            <span nz-icon nzType="user-add" nzTheme="outline"></span>
+                            <span>Users</span>
+                        </li>
+                    </ul>
+                </ng-template>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+    <nz-result>
+        <img nz-result-icon src="assets/icons/no-company.svg">
+        <div nz-result-subtitle>
+            No Companies added yet
+        </div>
+    </nz-result>
+</ng-template>

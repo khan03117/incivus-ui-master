@@ -1,0 +1,20 @@
+<svg id="Legend" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="213.429" height="49.6" viewBox="0 0 213.429 49.6">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="0.5" x2="0" y2="0.519" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="red"/>
+      <stop offset="0.389" stop-color="#ffe63a"/>
+      <stop offset="1" stop-color="#6aff14"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" y2="0.481" xlink:href="#linear-gradient"/>
+  </defs>
+  <path id="Path_1438" data-name="Path 1438" d="M2251.337,15011.865c144.064-10.081,213.265-15.963,213.265-15.963v41.053s-46.491-16.311-213.265-15.494h0C2251.494,15021.6,2251.337,15011.865,2251.337,15011.865Z" transform="translate(-2251.173 -14995.902)" fill="url(#linear-gradient)"/>
+  <path id="Path_1439" data-name="Path 1439" d="M2251.337,15020.991c144.064,10.081,213.265,15.964,213.265,15.964V14995.9s-46.491,16.311-213.265,15.494h0C2251.494,15011.256,2251.337,15020.991,2251.337,15020.991Z" transform="translate(-2251.173 -14987.355)" fill="url(#linear-gradient-2)"/>
+  <g id="Low" transform="translate(11.854 17.797)">
+    <rect id="Rectangle_1927" data-name="Rectangle 1927" width="36" height="15" rx="5" fill="#fff" opacity="0.51"/>
+    <text id="Low-2" data-name="Low" transform="translate(8 11)" fill="#231f20" font-size="10" font-family="Montserrat-SemiBold, Montserrat" font-weight="600"><tspan x="0" y="0">Low</tspan></text>
+  </g>
+  <g id="High" transform="translate(173.854 17.797)">
+    <rect id="Rectangle_1927-2" data-name="Rectangle 1927" width="36" height="15" rx="5" fill="#fff" opacity="0.51"/>
+    <text id="High-2" data-name="High" transform="translate(6 11)" fill="#231f20" font-size="10" font-family="Montserrat-SemiBold, Montserrat" font-weight="600"><tspan x="0" y="0">High</tspan></text>
+  </g>
+</svg>

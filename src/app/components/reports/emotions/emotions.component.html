@@ -1,0 +1,53 @@
+<div class="card-details-container imageEmotion">
+    <nz-breadcrumb nzSeparator=">">
+        <nz-breadcrumb-item>{{data.title | titlecase}}</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+        <a>Emotions</a>
+        </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <div class="card-details-wrapper flex-emotions">
+        <nz-card class="report-details-card" [nzBordered]="false">
+            <div class="details-card-wrapper">
+                <div class="title">Color mood board</div>
+                <div class="emotion-information">
+                    <app-color [data]="data.data.colorAppearances"></app-color>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card class="report-details-card" [nzBordered]="false">
+            <div class="details-card-wrapper">
+                <div class="title">Human emotion</div>
+                <div class="emotion-information" *ngIf="data.data.humanEmotions && data.data.humanEmotions.length">
+                    <div class="emtions-card" *ngFor="let emotion of data.data.humanEmotions | slice:0:3">
+                        <div class="emation-icon">
+                            <img *ngIf="emotion == 'Sad'" nz-icon src="assets/icons/Icon_Sad.svg">
+                            <img *ngIf="emotion == 'Fear'" nz-icon src="assets/icons/Icon_Neutral.svg">
+                            <img *ngIf="emotion == 'Surprised'" nz-icon src="assets/icons/Icon_Surprised.svg">
+                            <img *ngIf="emotion == 'Angry'" nz-icon src="assets/icons/Icon_Angry.svg">
+                            <img *ngIf="emotion == 'Happy'" nz-icon src="assets/icons/Icon_Happiness.svg">
+                            <img *ngIf="emotion == 'Neutral'" nz-icon src="assets/icons/Icon_Neutral.svg">
+                            <img *ngIf="emotion == 'Disgust'" nz-icon src="assets/icons/Icon_Disgust.svg">
+                        </div>
+                        <div class="emation-name" style="text-transform: capitalize;">
+                            {{emotion}}
+                        </div>
+                    </div>
+                </div>
+                <div class="emotion-information" *ngIf="!(data.data.humanEmotions && data.data.humanEmotions.length)">
+                    <div class="description" style="text-transform: capitalize;">NA</div>
+                </div>
+                <div class="title" style="margin-top: 1rem;">Ad copy emotion</div>
+                <div class="description" *ngIf="data.data.adCopyEmotion && data.data.adCopyEmotion.length">{{data.data.adCopyEmotion.join(", ") | titlecase}}</div>
+                <div class="description" *ngIf="!(data.data.adCopyEmotion && data.data.adCopyEmotion.length)">NA</div>
+            </div>
+        </nz-card>
+    </div>
+    <div class="description-container">
+        <div class="description-text">
+            <img nz-icon src="assets/icons/idea-light.svg"> 
+            <div>
+                Emotional intensity in advertising grabs attention and engages viewers. Brands can connect with their target audience by building an emotional connection with their product.
+            </div>
+        </div>
+    </div>
+</div>

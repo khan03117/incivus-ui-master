@@ -1,0 +1,68 @@
+<!-- <nz-page-header class="breadcrumb-container heading">
+    <nz-page-header-title>
+        My ad
+    </nz-page-header-title>
+</nz-page-header> -->
+
+<ng-container *ngIf="!loading">
+    <app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+    <div style="margin-bottom: 1rem;"></div>
+    <nz-page-header class="page-header-container heading">
+        <nz-page-header-title>Creative details</nz-page-header-title>
+    </nz-page-header>
+    <nz-content>
+        <app-alert [message]="warningMsg" [alertType]="alertType" *ngIf="warningMsg"></app-alert>
+        <div class="details-wrapper">
+            <div class="flex-row">
+                <div class="title">Creative name</div>
+                <div class="value">{{creatives.metadata.title | titlecase}}</div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Creative type</div>
+                <div class="value">{{creatives.metadata.artifactType === 'video' ? "Video Ad" : "Display Ad"}}</div>
+            </div>
+            <div class="flex-row">
+                <div class="title">File type</div>
+                <div class="value">{{creatives.metadata.name.split('.').slice(-1)[0]}}</div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Created by</div>
+                <div class="value">{{creatives.metadata.createdBy}}</div>
+            </div>
+            <div class="flex-row">
+                <div class="title">Brand</div>
+                <div class="value">{{capitalizeFirstLetter(creatives.metadata.brand)}}</div>
+            </div>
+            <!-- <div class="flex-row">
+                <div class="title">Aspect Ratio</div>
+                <div class="value">9:16</div>
+            </div>
+            <div class="flex-row">
+                <div class="title">File size</div>
+                <div class="value">80 MB</div>
+            </div> -->
+            <div class="flex-image-row">
+                <!-- <img src="assets/icons/creative-image.svg"> -->
+                <ng-container *ngIf="creatives.metadata.artifactType === 'video'">
+                    <video style="width: 33.5rem; max-height: 18rem;" data-html2canvas-ignore="true" #videoPlayerTE controls=""
+                        disablepictureinpicture="" controlslist="nodownload">
+                        <source src="{{creatives.url}}" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                </ng-container>
+                <ng-container *ngIf="creatives.metadata.artifactType === 'image'">
+                    <img style="width: 33.5rem; max-height: 18rem;" src="{{creatives.url}}" />
+                </ng-container>
+            </div>
+        </div>
+        <div class="form-footer">
+            <div class="form-footer-wrapper">
+                <app-button buttonClass="secondary" label="Cancel" [myCallback]="cancel"></app-button>
+                <app-button buttonClass="primary" *ngIf="primaryButton && primaryButton === 'analyze' && isAnalyze" label="Analyze" [myCallback]="analyze"></app-button>
+                <app-button buttonClass="primary" *ngIf="primaryButton && primaryButton === 'reanalyze' && isAnalyze" label="Re analyze" [myCallback]="reanalyze"></app-button>
+                <app-button buttonClass="primary" *ngIf="primaryButton && primaryButton === 'report' && (isIncAdmin || timeperiod<=90) && isReport" label="View report" [myCallback]="viewReport" [callbackParam]="creatives.metadata.id"></app-button>
+                <app-button buttonClass="primary" *ngIf="primaryButton && primaryButton === 'report' && !isIncAdmin && timeperiod>90 && isReport" label="View report" [myCallback]="popup" [callbackParam]="creatives.metadata.id"></app-button>
+            </div>
+        </div>
+    </nz-content>
+</ng-container>

@@ -1,0 +1,49 @@
+.carousel-container{
+    width:100%;
+    margin:2rem auto;
+    .title {
+        margin: 1.5rem;
+        font-size: 0.87rem;
+        text-align: left;
+    }
+    .owl-item {
+        max-width: 220.8px;
+        cursor: pointer;
+    }
+
+    .owl-nav{
+        text-align: right;
+        background: unset;
+        .owl-prev, .owl-next{
+            padding: 0;
+            margin: 0;
+            background: unset;
+            &:hover{
+                background: none;
+            }
+            &.disabled{
+                .arrow-left, .arrow-right{
+                    border-top: 3px solid #979797;
+                    border-left: 3px solid #979797;
+                }
+            }
+        }
+        .arrow-right,
+        .arrow-left{
+            display: block;
+            margin: 30px auto;
+            width: 15px;
+            height: 15px;
+            border-top: 3px solid #39B3EA;
+            border-left: 3px solid #39B3EA;
+        }
+        .arrow-right{
+            transform: rotate(135deg);
+        }
+
+        .arrow-left{
+            transform: rotate(-45deg);
+        }
+    }
+
+}

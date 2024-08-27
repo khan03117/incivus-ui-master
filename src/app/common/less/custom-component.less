@@ -1,0 +1,153 @@
+.custom-radio-dropdown{
+    .ant-select-item-option-content{
+        &:before{
+            border-radius: 50% !important;
+            width:20px !important;
+            height: 20px !important;
+        }
+    }
+    .ant-select-item-option-selected{
+        background: transparent;
+        .ant-select-item-option-content{
+            &:after{
+                width: 10px !important;
+                height: 10px !important;
+                border: none !important;
+                border-radius: 50%;
+                background-color: #39B3EA;
+                left: 5px !important;
+                bottom: 6px !important;
+            }
+            &:before{
+                background-color: transparent !important;
+            }
+        }
+    }
+}
+
+.custom-check-dropdown, .custom-radio-dropdown{
+    margin-top:0.5rem;
+    .ant-select-dropdown{
+        padding: 0;
+        margin: 0;
+        .cdk-virtual-scroll-viewport{
+            max-height: unset !important;
+            height: 100%;
+            max-height: 250px !important;
+            min-height: 130px !important;
+            contain: unset;
+            overflow-x: auto;
+            .ant-select-item-option-content{
+                padding: 0 0 0 1.5rem;
+                &:before{
+                    position: absolute;
+                    top: 1px;
+                    left: 0;
+                }
+            }
+
+        }
+        .ant-select-item{
+            padding: 10px 20px;
+            &.ant-select-item-option-selected{
+                background: transparent;
+                .ant-select-item-option-content{
+                    &:after{
+                        width: 10px;
+                        height: 5px;
+                        border-left: 2px solid #fff;
+                        border-bottom: 2px solid #fff;
+                        content: '';
+                        position: absolute;
+                        transform: rotateZ(315deg);
+                        left: 4px;
+                        bottom: 10px;
+                    }
+                    &::before{
+                        background-color: #39B3EA;
+                        border: 2px solid #39B3EA;
+                    }
+                }
+            }
+            .ant-select-item-option-content{
+                font-weight: 400;
+                font-size: 0.87rem;
+                color:#475569;
+                position: relative;
+                &:before{
+                    width:18px;
+                    height: 18px;
+                    border:2px solid #637381;
+                    border-radius: 3px;
+                    content: "";
+                    margin-right: 15px;
+                    padding: 0 7px;
+                }
+            }
+            .ant-select-item-option-state{
+                display: none;
+            }
+
+            &.ant-select-item-group{
+                font-size: 0.87rem;
+                font-weight: 400;
+            }
+        }
+    }
+}
+
+.custom-checkbox-wrapper{
+    margin-top:2rem;
+    .ant-card-body{
+        background: transparent;
+        background: transparent;
+        border: none;
+        padding: 0;
+        .ant-form-item-control-input-content{
+            flex: unset;
+            .ant-checkbox-group{
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                font-size: 0.87rem;
+                font-weight: 400;
+                margin-left: 33px;
+                color:#475569;
+                .ant-checkbox-wrapper{
+                    margin-right: 0;
+                    display: flex;
+                    align-items: center;
+                    .ant-checkbox{
+                        border:2px solid #212B36;
+                        border-radius: 3px;
+                        top:unset;
+                        .ant-checkbox-inner{
+                            width: 18px;
+                            height: 18px;
+                            border: none;
+                            border-radius: unset;
+                        }
+                        &.ant-checkbox-checked{
+                            border:2px solid #39B3EA;
+                            .ant-checkbox-inner{
+                                background: #39B3EA;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.ant-select-selection-placeholder{
+    font-size: 0.87rem !important;
+    font-weight: 400;
+    line-height: 1.25rem;
+}
+
+.ant-select-selection-item{
+    font-size: 0.87rem;
+    font-weight: 400;
+    color:#475569;
+}

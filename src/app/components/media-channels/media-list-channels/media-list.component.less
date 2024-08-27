@@ -1,0 +1,49 @@
+@import url("../../../common/less/table-component.less");
+@import url("../../../common/less/page-sub-header.less");
+@import url("../../../common/less/dropdown-menu.less");
+
+:host {
+  text-align: center;
+}
+
+.main-layout {
+  display: flex;
+}
+
+.right-layout {
+  width: calc(100% - 15.875rem);
+}
+
+.empty-image {
+  margin-top: 2rem;
+  background: #919eab;
+  margin-bottom: 0.5rem;
+  height: 100%;
+  background: #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.status {
+  display: block;
+  padding: 0.35rem 0.5rem;
+  line-height: 0.75rem;
+  font-size: 0.75rem;
+  align-items: center;
+  text-align: center;
+  border-radius: 0.25rem;
+  border: 1px solid #999;
+  color: #999;
+  background: transparent;
+
+  &.active {
+    border: 1px solid #15803d;
+    background: #f0fdfa;
+    color: #15803d;
+  }
+  &.inactive {
+    border-color: #f59e0b;
+    color: #f59e0b;
+    background: #fffbeb;
+  }
+}

@@ -1,0 +1,138 @@
+<div class="button-wrapper">
+  <button
+    class="add-user-btn"
+    buttonClass="primary"
+    nz-button
+    (click)="onAddUserClicked()"
+  >
+    + Add User
+  </button>
+</div>
+<nz-page-header class="page-header-container heading">
+  <nz-page-header-title>
+    <span>Users({{ listOfData.length }})</span>
+    <span
+      *ngIf="originalData?.length === listOfData?.length"
+      class="result-label"
+      >(Showing All)</span
+    >
+  </nz-page-header-title>
+  <nz-page-header-extra>
+    <nz-space>
+      <ng-container *ngIf="setOfCheckedId.size > 0">
+        <button *nzSpaceItem nz-button (click)="deleteUserBulk()">
+          <img nz-icon src="assets/icons/delete.svg" />
+          Delete
+        </button>
+      </ng-container>
+      <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+        <input
+          type="text"
+          nz-input
+          [(ngModel)]="searchText"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup)="filter()"
+          placeholder="Search..."
+        />
+      </nz-input-group>
+      <ng-template #prefixIconSearch>
+        <span
+          nz-icon
+          nzType="search"
+          nzTheme="outline"
+          class="search-extra"
+        ></span>
+      </ng-template>
+    </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+  #rowSelectionTable
+  [nzData]="listOfData"
+  (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+  [nzNoResult]="adminCustomerListEmpty"
+  class="admin-list-table"
+  [nzShowPagination]="true"
+>
+  <thead>
+    <tr>
+      <th
+        [(nzChecked)]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"
+      ></th>
+      <th>First name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of listOfData">
+      <td
+        [nzChecked]="setOfCheckedId.has(data.id)"
+        (nzCheckedChange)="onItemChecked(data.id, $event)"
+      ></td>
+      <td>{{ data["firstName"] }}</td>
+      <td>{{ data["lastName"] }}</td>
+      <td>{{ data["email"] }}</td>
+      <!-- <td>
+        <div class="status-container">
+          {{ data["status"] ?? "Active" }}
+        </div>
+      </td> -->
+ <td class="tags">
+                <!-- change tag nzColor [active: success, NotActive : error] -->
+                <nz-tag nzColor="{{data.status.toLowerCase() === 'active' ? 'success' : 'error'}}">{{ data.status | titlecase}}</nz-tag> 
+            </td>
+      <td>
+        <button
+          nz-button
+          nzNoAnimation
+          nz-tooltip
+          class="action-trigger"
+          [nzTooltipTitle]="menu"
+          nzTooltipOverlayClassName="tableTooltipOverlay"
+          [nzTooltipPlacement]="['bottomRight', 'topRight']"
+        >
+          <span
+            nz-icon
+            nzType="more"
+            nzTheme="outline"
+            style="font-size: 0.87rem; vertical-align: top"
+          ></span>
+        </button>
+        <ng-template #menu>
+          <ul nz-menu>
+            <li nz-menu-item (click)="editUser(data)">
+              <span nz-icon
+                ><img nz-icon src="assets/icons/edit-icon.svg"
+              /></span>
+              <span>Edit</span>
+            </li>
+            <li nz-menu-item (click)="deleteUser(data.id)">
+              <img nz-icon src="assets/icons/delete.svg" />
+              <span>Delete</span>
+            </li>
+          </ul>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+  <nz-result>
+    <img nz-result-icon src="assets/icons/no-company.svg" />
+    <div nz-result-subtitle>No service managers added yet</div>
+  </nz-result>
+</ng-template>
+
+<div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="secondary" [label]="'Cancel'" (click)="cancelClicked()"></app-button>
+            <app-button buttonClass="primary" [label]="'Complete setup'" (click)="completeClicked()"></app-button>
+        </div>
+    </div>

@@ -1,0 +1,111 @@
+<!-- <div class="header" [ngClass]="hideMenu ? 'expand-header' : ''">Header Component</div> -->
+<nz-header class="main-header">
+    <div class="header">
+        <div class="headerWrapper">
+            <!-- <div class="dropdown">
+                <nz-select nzShowSearch nzAllowClear [(ngModel)]="selectedLanguage" [nzCustomTemplate]="countryTemplate" (ngModelChange)="changeLanguage()" [nzAllowClear]="false">
+                    <nz-option nzCustomContent nzLabel="English" nzValue="en-US">
+                        <img nz-icon src="assets/icons/en-US.svg">
+                        English
+                    </nz-option>
+                    <nz-option nzCustomContent nzLabel="Danish" nzValue="da-DK">
+                        <img nz-icon src="assets/icons/en-US.svg">
+                        Danish
+                    </nz-option>
+                    <nz-option nzCustomContent nzLabel="UK English" nzValue="en_UK">
+                        <img nz-icon src="assets/icons/en-US.svg">
+                        Russian
+                    </nz-option>
+                </nz-select>
+                <ng-template #countryTemplate let-selected>
+                    <img [src]="'assets/icons/'+selected.nzValue+'.svg'">
+                    {{ selected.nzLabel }}
+                </ng-template>
+            </div> -->
+        
+            <div class="dropdown">
+                <button nz-button nz-dropdown (click)="openHelp()">
+                    <span nz-icon nzType="question-circle" nzTheme="fill"></span>
+                    Help
+                </button>
+            </div>
+
+            <div class="notification" *ngIf="!isClAdmin">
+                <nz-badge 
+                    [nzCount]="messageItems?.length" 
+                    nzShowZero
+                    nz-popover
+                    [nzPopoverTitle]="titleTemplate"
+                    nzPopoverTrigger="click"
+                    [nzPopoverContent]="contentTemplate"
+                    nzPopoverOverlayClassName="notification-overlay"
+                    nzPopoverPlacement="bottomRight"
+                    [(nzPopoverVisible)]="showNotification"
+                >
+                    <span nz-icon nzType="bell" nzTheme="outline"></span>
+                </nz-badge>
+                <ng-template #titleTemplate>
+                    <span>Notifications</span>
+                    <span nz-icon nzType="close" nzTheme="outline" (click)="hideNotification()"></span>
+                </ng-template>
+                <ng-template #contentTemplate>
+                    <div class="popover-content-container">
+                        <div class="subtitle">Latest on top</div>
+                        <div class="popover-content-wrapper">
+                            <div nz-row [nzGutter]="16" *ngFor="let message of messageItems">
+                                <div nz-col class="gutter-row" [nzSpan]="6">
+                                    {{message.timeStamp | date:'dd/MM/yyyy h:mm a'}}
+                                </div>
+                                <div nz-col class="gutter-row" [nzSpan]="14">
+                                    {{message.projectName}}
+                                </div>
+                                <div nz-col class="gutter-row" [nzSpan]="4">
+                                    <app-badge *ngIf="!message.failedAIServices || message.failedAIServices.length === 0" [status]="'100'" [label]="'Completed'"></app-badge>
+                                    <app-badge *ngIf="message.failedAIServices && message.failedAIServices.length > 1" [status]="'50'" [label]="'Failed'"></app-badge>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="dropdown">
+                <div class="userInfo" nz-dropdown [nzDropdownMenu]="userInfo">
+                    <!-- <span nz-icon nzType="bell" nzTheme="outline"></span> -->
+                    <img nz-icon src="assets/icons/user.svg">
+                </div>
+                <nz-dropdown-menu #userInfo="nzDropdownMenu">
+                    <ul nz-menu class="userProfile" style="width:20rem; padding: 1rem;">
+                        <li nz-menu-item style="cursor: default;">
+                            <div class="user-profile">
+                              <div class="user-title">
+                                <p>Profile</p>
+                              </div>
+                              <div class="user-name" *ngIf="userDetails">
+                                <p class="userDetails" title="{{userDetails.name | titlecase}}" style="margin-bottom: 0; width: 100%;text-overflow: ellipsis;overflow: hidden;">
+                                    {{userDetails.name | titlecase}}
+                                </p>
+                                <p class="userDetails" title="{{userDetails.email }}" style="margin-bottom: 0.5rem; width: 100%;text-overflow: ellipsis;overflow: hidden;">
+                                    {{userDetails.email }}
+                                </p>
+                                <p class="userDetails" *ngIf="!isIncAdmin && !isServiceManager" title="{{userDetails.client?.companyName | titlecase }}" style="margin-bottom: 0; width: 100%;text-overflow: ellipsis;overflow: hidden;">
+                                    Company: {{ userDetails.client?.companyName | titlecase }}
+                                </p>
+                                <p class="userDetails" *ngIf="isServiceManager" title="{{userDetails.client?.companyName | titlecase }}" style="margin-bottom: 0; width: 100%;text-overflow: ellipsis;overflow: hidden;">
+                                   Service Company: {{ userDetails?.serviceClient?.companyName | titlecase }}
+                                </p>
+                                <p class="userDetails" *ngIf="!isIncAdmin && !isClAdmin && !isServiceManager" title="{{userDetails.brands?.join(', ') | titlecase}}" style="margin-bottom: 0; width: 100%;text-overflow: ellipsis;overflow: hidden; white-space: nowrap">
+                                    Brands: {{userDetails.brands?.join(', ') | titlecase }}
+                                </p>
+                              </div>
+                              <div class="user-out" style="float: right;">
+                                <p style="cursor: pointer; margin: 1rem 0 0 0;" class="signout" (click)="logout()">Sign Out</p>
+                              </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+            </div>
+            
+        </div>
+    </div>
+</nz-header>

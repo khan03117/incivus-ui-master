@@ -1,0 +1,158 @@
+@import url('../common/less/form-component.less');
+
+.login-form-container {
+    background: no-repeat padding-box #fff;
+    box-shadow: 0 0.06rem 1.03rem #0000001c;
+    border: 0.18rem solid #fff;
+    border-radius: 0.6rem;
+    opacity: 1;
+    padding: 1.2rem 3.6rem;
+    flex-basis: 38rem;
+    min-height: 478px;
+}
+
+.container {
+    max-width: 100%!important;
+}
+
+::ng-deep .ant-card  {
+    &.loginCard {
+        margin-bottom: 0 !important;
+        .ant-card-body {
+            border: none !important;
+        }
+    }
+}
+
+::ng-deep .ant-form-item {
+    .input-float-label label {
+        font-size: 0.87rem;
+        color: #64748B;
+        margin-bottom: 0;
+        height: 1.5rem;
+    }
+}
+
+.maincontainer {
+    overflow: hidden;
+    background: no-repeat padding-box hsla(0,0%,100%,1);
+    border: 0.06rem solid hsla(0,0%,100%,1);
+    border-radius: 0.6rem;
+    opacity: 1;
+    backdrop-filter: blur(3rem);
+    -webkit-backdrop-filter: blur(3rem);
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.middle-container {
+    display: flex;
+    justify-content: center;
+}
+
+.super_container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+    opacity: 1;
+    padding: 1.8rem 2.4rem;
+}
+
+.login-form-container .logoPH {
+    width: 5rem;
+}
+
+.login-text {
+    color: var(--neutral-7475569, #475569);
+    text-align: center;
+    font-family: Inter;
+    font-size: 0.87rem;
+    font-style: normal;
+    font-weight: 500;
+}
+
+
+input:-webkit-autofill, input:-webkit-autofill:active, input:-webkit-autofill:focus, input:-webkit-autofill:hover {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.logininput .form-control:focus {
+    background-color: #fff;
+    border: 0.06rem solid #70707000;
+    border-bottom: 0.06rem solid #707070;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0);
+}
+
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+}
+
+.login-registerbtn {
+    background: no-repeat padding-box #00549a;
+    box-shadow: 0.24rem 0.3rem 0.9rem #00000059;
+    border-radius: 1rem;
+    opacity: 1;
+    padding: 0.3rem;
+    width: 13.3rem;
+    margin-top: 0.6rem;
+    text-align: center;
+    border-color: #00549a;
+    font: 500 1.05rem Montserrat;
+    letter-spacing: 0;
+    color: #fff;
+    opacity: 1;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #00549a;
+    border-color: #00549a;
+    border: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0rem rgba(38, 143, 255, 0.5);
+}
+
+.errorField {
+    border-bottom-color: red!important;
+}
+
+
+
+.forgetpswd {
+    font-size: 0.87rem;
+    margin-top: 2rem;
+}
+
+.forgetpswd a {
+    font-size: 0.87rem;
+    letter-spacing: 0;
+    color: #00549a;
+    margin-top: 1.5rem;
+    opacity: 1;
+}
+
+a, a:active, a:hover, a:link, a:visited {
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-shadow: rgba(0,0,0,.01) 0 0 .06rem;
+    text-shadow: rgba(0,0,0,.01) 0 0 0.06rem;
+}
+
+.err_message {
+    position: absolute;
+    color: red;
+    font-size: .87rem;
+}
+
+@media (min-width: 1920px) {
+    .super_container {
+        padding: 2.4rem;
+    }
+}

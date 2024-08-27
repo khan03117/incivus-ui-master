@@ -1,0 +1,205 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<div class="card-details-container">
+    <div class="card-details-wrapper flex-compliance">
+        <div class="card-wrapper">
+            <nz-card class="compliance-card help-card" [nzBordered]="false">
+                <div class="details-card-wrapper">
+                    <div class="title">Account setup</div>
+                    <div class="description">
+                        <div class="secBody">
+                            <div style="margin: 0 0 0.7rem 0;">Account setup is divided into two parts:</div>
+                            <ol>
+                                <li>Setting up the company details</li>
+                                <li>Creating users, roles and permissions</li>
+                            </ol>
+                            <div>
+                                Setting up your company details, brand and brand guidelines is a primary functionality for the assigned admin which is to be carried out along with Incivus client representative.
+                            </div>
+                            <ul style="list-style-type: none;">
+                                <li>- As soon as you login as the Admin, <b>“Settings”</b> menu option is visible to you on the left hand-navigation schema </li>
+                                <li>- Click on it to expand the settings section to see you have other menu items such as: Company setup, permissions, roles and users</li>
+                                <li>- Click on Company setup to add the following details about your company
+                                    <ul style="list-style-type: none;">
+                                        <li>- Company details such as Business Unit, Market, Product category and customer segment</li>
+                                        <li>- Master Brand</li>
+                                        <li>- Brand Guidelines</li>
+                                    </ul>
+                                </li>
+                            
+                            </ul>
+                            
+                        </div>
+                    </div>
+
+                    <div class="details-card-wrapper">
+                        <div class="title" style="margin-top: 1rem">Company details</div>
+                        <div class="description">
+                                <div class="secBody">
+                                    <div >
+                                        The admin assigned would need to collect the required information from the Marketing team to ensure business units, markets, product categories, and customer segments are correctly created.
+                                        These values can also be edited later.
+                                        <div class="title" style="margin-top: 1rem">Master Brand</div>
+                                        <div>
+                                            <b>Pre-requisite: </b> The Admin must ensure that all the master brands for which the brand managers and marketers need to analyze the Ads for are included in the master brand list.
+                                        </div>
+                                        <div>
+                                            Steps:
+                                        </div>
+                                        <ol>
+                                            <li>Type in the master brand name and click on “Add” button to add the master brand.</li>
+                                            <li>You can add more than 1 master brand.</li>
+                                            <li>Please ensure the master brand names are correctly spelled since once added, you cannot delete these brands.</li>
+                                        </ol>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="details-card-wrapper">
+                        <div class="title" style="margin-top: 1rem">Brand Guidelines</div>
+                        <div class="description">
+                                <div class="secBody">
+                                    <div >
+                                        <b>Pre-requisite:</b> For each master brand added, you must collect the brand guidelines from your Marketing team before you begin this setup. You can always come back to this setup and edit.
+                                        <div class="title" style="margin-top: 1rem">Steps:</div>
+                                        
+                                        <ol>
+                                            <li>For the master brands added, just click on “add guidelines” button.</li>
+                                            <li>A pop-up window is presented to you where you must map this brand with company entities such as business unit, market, product category and customer segment.</li>
+                                            <li>Select the company entity values that you had provided against business unit, market, product category and customer segment under the section “Select sub entity”.</li>
+                                            <li>Logo for the brand should be uploaded in jpg format.</li>
+                                            <li>Tone of voice as well as Text sentiment and voice (active/passive) values must be selected.</li>
+                                            <li>Brand color hex codes to be entered one at a time</li>
+                                            <li>Emotions expected to be depicted by human characters in the Ad should be selected under “emotions” section. Please note, you can select upto 3 emotions only.</li>
+                                            <li>“Product form” is to be selected carefully for your Brand to ensure our AI models can clearly and successfully identify the products depicted in your Ads.</li>
+                                            <li>Keywords, Tagline and Signatures are not mandatory but can be added.</li>
+                                        </ol>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="details-card-wrapper">
+                        <div class="title" style="margin-top: 1rem">Creating permissions</div>
+                        <div class="description">
+                                <div class="secBody">
+                                    <div >
+                                        As the assigned Admin of the Company, you must create relevant permissions to ensure users in your organization have access to features on Incivus platform that allows them to assess and analyze the Ads efficiently.
+                                        <div class="title" style="margin-top: 1rem">Some rules to remember about permissions:</div>
+                                        
+                                        <ul>
+                                            <li>- Multiple permissions can be created and assigned to 1 role.</li>
+                                            <li>- 1 user can have only 1 role but that may contain multiple permissions and therefore, a total of those permissions will get applied to that user when they login to the platform.</li>
+                                            <li>- Permissions should be carefully crafted to ensure specific roles in the organization are able to conduct and complete their required tasks on the Incivus platform.</li>
+                                            <li>- The permission to creative effectiveness score is dependent on having other permissions such as: Recall, attention, cognitive load and Ad copy effectiveness. Therefore, these should be switched on or enabled together.</li>
+                                            <li>- The permission to service request feature allows the user to raise a service request and get the required service from Incivus Analyst Team.</li>
+                                            <li>- The permission to upload the Ad vs. analyze the Ad is specifically designed for roles where the user might just be involved in administrative task of uploading the Ads while the Brand Manager or Marketer would initiate the analysis on the platform. Please note, here that in such a case, Ads must be uploaded within a Campaign and then shared with a user who has access to analyzing the Ads.</li>
+                                            <li>- A/B testing feature permission will allow the user to conduct A/B testing of different versions of the Ad. Please note, the Ads compared must already be analyzed on the Incivus Platform. Therefore, it is always safe to ensure that the user also has permission to analyze the ad</li>
+                                        </ul>
+
+                                        <div class="title" style="margin-top: 1rem">Steps of creating permissions:</div>
+                                        
+                                        <ol>
+                                            <li>As the Admin after you login, go to Settings and click on “Permissions</li>
+                                            <li>Click on “+Add new permission” on the top-left corner of the screen</li>
+                                            <li>A form is displayed where the following information should be added:
+                                                <ol type="a">
+                                                    <li>Permission name</li>
+                                                    <li>Description</li>
+                                                    <li>Select role: The roles are listed here only if you have already created the role. You can always map it later once the roles are created.</li>
+                                                    <li>Click on “continue” to select permissions and save them</li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="details-card-wrapper">
+                        <div class="title" style="margin-top: 1rem">Brand Guidelines</div>
+                        <div class="description">
+                                <div class="secBody">
+                                    <div >
+                                        <p>As the assigned Admin of the Company, you must create relevant roles to ensure users in your organization have access to features on Incivus platform that allows them to assess and analyze the Ads efficiently.</p>
+                                        <p>
+                                            While user roles focus on group capabilities, permissions determine the specific actions individual users are allowed—or disallowed—to take when interacting with the platform. Roles group users according to their job functions, streamlining permission management.
+                                        </p>
+                                        <div class="title" style="margin-top: 1rem">Some rules to remember about role:</div>
+                                        
+                                        <ul style="list-style-type: none;">
+                                            <li>- 1 role can be mapped to multiple permissions</li>
+                                            <li>- 1 user can have only 1 role</li>
+                                            <li>- Please ensure role names are unique and as a best practice always provide a description of the role to ensure there is no confusion in future when assigning to a user.</li>
+                                        </ul>
+                                        <div class="title" style="margin-top: 1rem">Steps of creating a role:</div>
+                                        
+                                        <ol>
+                                            <li>As the Admin after you login, go to Settings and click on “Roles”</li>
+                                            <li>Click on “+Add new role” on the top-left corner of the screen</li>
+                                            <li>Enter the following information:
+                                                <ol type="a">
+                                                    <li>Role name</li>
+                                                    <li>Description</li>
+                                                    <li>User: You can select more than 1 user. In case you have not created the users yet, you can assign a role to the user when creating a user and the same will reflect here.</li>
+                                                    <li>Select permissions: You can select more than 1 permissions for a role</li>
+                                                </ol>
+                                            </li>
+                                            <li>Click on “Create role” to finish creating the role.</li>
+                                        </ol>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="details-card-wrapper">
+                        <div class="title" style="margin-top: 1rem">Creating users</div>
+                        <div class="description">
+                                <div class="secBody">
+                                    <div >
+                                        As the assigned Admin of the Company, you must create users so your teams can successfully access the platform for evaluating ads.
+                                        <div class="title" style="margin-top: 1rem">Some rules to remember about user creation:</div>
+                                        
+                                        <ul style="list-style-type: none;">
+                                            <li>- 1 user can be mapped only to 1 role</li>
+                                            <li>- 1 user can be mapped to multiple brands</li>
+                                            <li>- A user must be set as “active” for them to be able to access the platform</li>
+                                        </ul>
+
+                                        <div class="title" style="margin-top: 1rem">Steps of creating a user:</div>
+                                        
+                                        <ol>
+                                            <li>As the Admin after you login, go to Settings and click on “users”</li>
+                                            <li>Click on “+Add new user” on the top-left corner of the screen</li>
+                                            <li>A form is presented to you where you must enter the following fields:
+                                                <ol type="a">
+                                                    <li>First name</li>
+                                                    <li>Last name</li>
+                                                    <li>Email id: Ensure official email address is used here</li>
+                                                    <li>Select status: Active / Inactive</li>
+                                                    <li>Role: You can select only 1 role for a user at a time.</li>
+                                                    <li>Master brands: Select the brands that the user should have access to on the platform.</li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                        <div>
+                                            <b>Note: </b>Once you make the user inactive, they can no longer access the platform. However, when they are made active, they receive an email to set password to access their account on Incivus Platform.
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </nz-card>
+        </div>
+    </div>
+</div>

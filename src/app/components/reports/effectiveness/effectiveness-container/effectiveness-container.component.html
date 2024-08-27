@@ -1,0 +1,20 @@
+<div class="card-details-container">
+    <nz-breadcrumb nzSeparator=">">
+        <nz-breadcrumb-item>Creativeness effectiveness</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+        <a>Ad copy effectiveness</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngIf="showPersuasiveness && !modalData.isVideoReport">Persuasiveness</nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngIf="showTextReadability">Text readability </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    
+    <div class="tab-button-list">
+        <app-button *ngIf="modalData.isVideoReport" buttonClass="{{showPersuasiveness && 'default-btn active' || 'default-btn' }}" label="Ad copy effectiveness" [myCallback]="switchBtnClick" callbackParam="persuasiveness"></app-button>
+        <app-button *ngIf="!modalData.isVideoReport" buttonClass="{{showPersuasiveness && 'default-btn active' || 'default-btn' }}" label="Persuasiveness" [myCallback]="switchBtnClick" callbackParam="persuasiveness"></app-button>
+        <app-button buttonClass="{{showTextReadability && 'default-btn active' || 'default-btn' }}" label="Text readability" [myCallback]="switchBtnClick" callbackParam="textReadability"></app-button>
+        <!-- <app-button buttonClass="{{showAdCopyAttention && 'default-btn active' || 'default-btn' }}" label="Ad Copy Attention" [myCallback]="switchBtnClick" callbackParam="adCopyAttention"></app-button> -->
+    </div>
+    <app-persuasiveness-card [data]="adCopyData" *ngIf="showPersuasiveness"></app-persuasiveness-card>
+    <app-text-readability-card [data]="adCopyData" *ngIf="showTextReadability"></app-text-readability-card>
+    <!-- <app-ad-copy-attention-card *ngIf="showAdCopyAttention"></app-ad-copy-attention-card> -->
+</div>

@@ -1,0 +1,79 @@
+.breadcrumb-container {
+    height: 2.5rem;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    .ant-page-header-heading{
+        height: 100%;
+        display: flex;
+        align-items: center; 
+        justify-content: space-between;
+        padding: 0 !important;
+    }
+}
+
+.page-header-container{
+    height: 3.125rem;
+    background: #f1f1f1;
+    border-radius: 0.25rem;
+    border:0.125rem solid #ccc;
+    padding: 0;
+}
+
+.delete-icon{
+    color: #FF4842;
+}
+
+.heading {    
+    .ant-page-header-heading{
+        height: 100%;
+        display: flex;
+        align-items: center; 
+        justify-content: space-between;
+        padding: 0 0.313rem 0 1.563rem;
+        .ant-page-header-heading-title{
+            color: #1E293B;
+            font-size: 0.87rem;
+            font-weight: 600;
+            .showAll{
+                font-size: 0.87rem;
+                margin-left: 0.75rem;
+                margin-left: 0.25rem;
+            }
+        }
+        .ant-page-header-heading-extra{
+            margin:0;
+            .ant-space {
+                .ant-space-item {
+                    height: 2.188rem;
+                    button, nz-input-group{
+                        height: 100%;
+                        background: #FDFCFF;
+                        border:0.063rem solid #ccc;
+                        border-radius: 0.5rem;
+                        padding: 0 0.938rem;
+                        font-size: 0.87rem;
+                        font-weight: 400;
+                        line-height: 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        &.primary {
+                            background-color: #39B3EA;
+                            color: #FFFFFF;
+                            border: 1px solid #39B3EA;
+                            &:hover, &:focus, &:active {
+                                color: #FFFFFF;
+                            }
+                        }
+                        &:hover, &:focus, &:active {
+                            color: #212B36;
+                        }
+                        .search-extra{
+                            color: #919EAB;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,113 @@
+<app-breadcrumb [labels]="breadcrumb" fullBC="{{ true }}" myCallback="/client/list"></app-breadcrumb>
+<nz-page-header class="breadcrumb-container heading">
+  <nz-page-header-extra>
+    <nz-space>
+      <button *nzSpaceItem class="primary" nz-button (click)="addAccount()">
+        + Add account
+      </button>
+    </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<nz-page-header class="page-header-container heading">
+  <nz-page-header-title>Ad accounts({{ adAccountList.length }})</nz-page-header-title>
+  <nz-page-header-extra>
+    <nz-space>
+      <!-- <ng-container *ngIf="showMenu">
+                                <button *nzSpaceItem nz-button (click)="editMultiple()">
+          <img nz-icon src="assets/icons/edit-icon.svg" />
+          Edit
+        </button>
+      </ng-container> -->
+      <!-- <ng-container *ngIf="showMenu">
+                    <button *nzSpaceItem nz-button (click)="deleteMultiple()">
+          <img nz-icon src="assets/icons/delete.svg" />
+          Delete
+        </button>
+      </ng-container> -->
+      <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+        <input type="text" nz-input [(ngModel)]="searchText" (keyup)="filter()" [ngModelOptions]="{ standalone: true }"
+          placeholder="Search account" />
+      </nz-input-group>
+      <ng-template #prefixIconSearch>
+        <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+      </ng-template>
+    </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table #permissionSelectionTable [nzData]="filteredList" class="admin-list-table" [nzShowPagination]="true"
+  [nzNoResult]="mediaAccountListEmpty">
+  <thead>
+    <tr>
+      <!-- <th>
+        <label nz-checkbox [(nzChecked)]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)">
+        </label>
+      </th> -->
+      <th [nzShowSort]="false">Platform</th>
+      <th [nzShowSort]="false">Account Name</th>
+      <th [nzShowSort]="false">Account Id</th>
+      <th [nzShowSort]="false">Brand</th>
+      <th [nzShowSort]="false">Market</th>
+      <th [nzShowSort]="false">Status</th>
+      <th [nzShowSort]="false">Created at</th>
+      <th [nzShowSort]="false"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of filteredList">
+      <!-- <td [(nzChecked)]="account.checked" (change)="handleCheckChanged()"></td> -->
+      <td>{{ account.type }}</td>
+      <td>{{ account.name }}</td>
+      <td>{{ account.id ?? account.account_id }}</td>
+      <td>{{ account.brand }}</td>
+      <td>{{ account.markets.join(", ") }}</td>
+      <td>
+        <div class="status" [class.active]="account.status == 'active'" [class.inactive]="account.status != 'active'">
+          {{ account.status ?? "" | titlecase }}
+        </div>
+      </td>
+      <td>{{ account.createdAt | date : "dd/MM/yy; h:mm a" }}</td>
+      <td>
+        <button nz-button nzNoAnimation nz-tooltip class="action-trigger" [nzTooltipTitle]="menu"
+          nzTooltipOverlayClassName="tableTooltipOverlay" [nzTooltipPlacement]="['bottomRight', 'topRight']">
+          <span nz-icon nzType="more" nzTheme="outline" style="font-size: 20px; vertical-align: top"></span>
+        </button>
+        <ng-template #menu>
+          <ul nz-menu>
+            <li nz-menu-item (click)="onEditAdAccountClicked(account)">
+              <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg" /></span>
+              <span>Edit</span>
+            </li>
+            <!-- <li nz-menu-item (click)="onDeleteAdAccountClicked(account)">
+              <img nz-icon src="assets/icons/delete.svg" />
+              <span>Delete</span>
+            </li> -->
+          </ul>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<!-- <ng-container *ngIf="mediaAccountList.length === 0">
+  <img class="empty-image" src="assets/no-creatives.svg" />
+  <h4>Let's get started!</h4>
+  <p>There are no media accounts connected yet.</p>
+</ng-container> -->
+
+<ng-template #mediaAccountListEmpty class="customer-empty">
+  <nz-result>
+    <img class="empty-image" nz-result-icon src="assets/no-creatives.svg" />
+    <div nz-result-subtitle>There are no media accounts connected yet.</div>
+  </nz-result>
+</ng-template>
+
+<nz-modal [(nzVisible)]="showAddMediaModal" [nzMaskClosable]="false" [nzKeyboard]="false" [nzFooter]="null"
+  [nzContent]="modalContent" (nzOnCancel)="onModalClose()" [nzWidth]="addMediaAccountStep < 3  ? '50%': '80%'">
+  <!-- <ng-template #modalTitle>Feature access</ng-template> -->
+
+  <ng-template #modalContent>
+    <app-add-media-account (onAddSuccess)="onAddSuccess($event)" (onStepChange)="onAddStepChange($event)"
+      [editAccount]="editAccount"></app-add-media-account>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,93 @@
+<app-report-card
+    title="Ad copy effectiveness"
+    description="You have a relatively low Ad copy effectiveness."
+    [score]="adCopy.adCopyEffectivnessScore"
+    [scoreDisplay]="adCopy.adCopyEffectivnessScore ? adCopy.adCopyEffectivnessScore.toFixed(2) : 'NA'"
+    rangeInfo="Above 75"
+    metric="EFFECTIVE"
+></app-report-card>
+<nz-divider></nz-divider>
+<div class="card-details-wrapper persuasive-card-details" style="justify-content: space-evenly;">
+        <nz-card  class="report-details-card persuasive" [nzBordered]="false">
+            <div class="details-card-wrapper perCardHt">
+                <div class="title">Persuasiveness</div>
+                <div class="score-details">
+                    <div class="score-info">{{adCopy.persuasive_score}}</div>
+                    <div class="score-rank" *ngIf="!adCopy.persuasive_score"> <span [ngClass]="adCopy.persuasive_score_cls">{{adCopy.persuasive_score_cls | uppercase}}</span></div>
+                    <div class="score-rank" *ngIf="adCopy.persuasive_score">Score: <span [ngClass]="adCopy.persuasive_score_cls">{{adCopy.persuasive_score_cls | uppercase}}</span></div>
+                </div>
+                <div class="description">
+                    {{adCopy.persuasive_score_desc}}
+                    <div class="range-details">Recommended: 3</div>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card class="report-details-card persuasive" [nzBordered]="false">
+            <div class="details-card-wrapper perCardHt">
+                <div nz-row style="justify-content: space-between;">
+                    <div nz-col><div class="title">Text readability</div></div>
+                    <div nz-col><app-button buttonClass="primary reportDetailsBtn" label="Details" [myCallback]="myCallback"></app-button></div>
+                </div>
+                <div class="score-details">
+                    <div class="score-info">{{adCopy.textRedability ? adCopy.textRedability.toFixed(2) : 'NA'}}</div>
+                    <div class="score-rank" *ngIf="adCopy.textRedability">Score: <span [ngClass]="adCopy.textRedability_cls">{{adCopy.textRedability_cls | titlecase}}</span></div>
+                </div>
+                <div class="description">
+                    {{adCopy.textRedability_desc}}
+                    <div class="range-details">Recommended: Above 85</div>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card class="report-details-card persuasive" [nzBordered]="false">
+            <div class="details-card-wrapper perCardHt">
+                <div class="title">Attention</div>
+                <ng-container *ngIf="adCopy.attention_score">
+                    <div class="score-details">
+                        <div class="score-info">{{adCopy.attention_value ? adCopy.attention_value.toFixed(2) : 'NA'}}</div>
+                        <div class="score-rank" >Score: <span [ngClass]="adCopy.attention_score_cls">{{adCopy.attention_score_cls | titlecase}}</span></div>
+                    </div>
+                    <div class="description">
+                        {{adCopy.attention_score_desc}}
+                        <div class="range-details">Recommended: Above 86</div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!adCopy.attention_score">
+                    <div class="score-details" style="width: 270px;">
+                        <div class="score-info">NA</div>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-card>
+</div>
+<div class="card-details-wrapper persuasive-card-info" style="justify-content: space-evenly;">
+    <nz-card *ngIf="!data.isVideoReport" class="report-details-card persuasive" [nzBordered]="false">
+        <div class="description-container">
+            <div class="description-text">
+                <img nz-icon src="assets/icons/idea-light.svg"> 
+                <div>
+                    Elements of persuasive Ad Copy include authenticity, simplicity, credibility through proof, question in the first line of Ad copy, answer right after (solving the problem) and effective use of emotion.
+                </div>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card class="report-details-card persuasive" [nzBordered]="false">
+        <div class="description-container">
+            <div class="description-text">
+                <img nz-icon src="assets/icons/idea-light.svg"> 
+                <div>
+                    Clear and comprehendible text is vital for ad success. Many elements such as colour, text style, text size and text contrast contribute to how an individual understands the ad.
+                </div>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card class="report-details-card persuasive" [nzBordered]="false">
+        <div class="description-container">
+            <div class="description-text">
+                <img nz-icon src="assets/icons/idea-light.svg"> 
+                <div>
+                    Simple and straightforward Ad copy with effective colors and background and text placement increases attention
+                </div>
+            </div>
+        </div>
+    </nz-card>
+</div>

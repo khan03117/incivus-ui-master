@@ -1,0 +1,17 @@
+<div class="progress-container">
+    <div class="progress-wrapper">
+        <div class="progress-indicator" [style.background-color]= "color" [style.width]="fill >= 1 ? '100%': fill < 1 ? halfFill+'%' : '0%'"></div>
+    </div>
+    <div class="progress-wrapper">
+        <div class="progress-indicator" [style.background-color]= "color" [style.width]="fill >= 2 ? '100%': fill < 2 && fill > 1 ? halfFill+'%' : '0%'" ></div>
+    </div>
+    <div class="progress-wrapper">
+        <div class="progress-indicator" [style.background-color]= "color" [style.width]="fill >= 3 ? '100%': fill < 3 && fill > 2 ? halfFill+'%' : '0%'"></div>
+    </div>
+    <div class="progress-wrapper">
+        <div class="progress-indicator" [style.background-color]= "color" [style.width]="fill >= 4 ? '100%': fill < 4 && fill > 3 ? halfFill+'%' : '0%'"></div>
+    </div>
+    <div class="progress-wrapper">
+        <div class="progress-indicator" [style.background-color]= "color" [style.width]="fill >= 5 ? '100%': fill < 5 && fill > 4 ? halfFill+'%' : '0%'"></div>
+    </div>
+</div>

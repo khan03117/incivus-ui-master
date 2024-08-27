@@ -1,0 +1,81 @@
+<div class="card-details-container">
+    <nz-breadcrumb nzSeparator=">" class="marginBottomSpace">
+        <nz-breadcrumb-item>Creativeness effectiveness</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Cognitive load</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    
+    <app-report-card
+        title="Cognitive load"
+        description="Low complexity leads to lower cognitive load and higher engagement."
+        [score]="modalData.data.cognitiveLoad"
+        [scoreDisplay]="modalData.data.clDisplay"
+        rangeInfo="Range 40-80"
+        metric="COGNITIVE"
+    ></app-report-card>
+    <nz-divider></nz-divider>
+    <div class="card-details-wrapper cogitive-card-details" style="justify-content: space-evenly;">
+        <nz-card class="report-details-card cogitive" [nzBordered]="false">
+            <div class="details-card-wrapper">
+                <div class="title">Design complexity</div>
+                <div class="score-details">
+                    <div class="score-info">{{scoreDC}}</div>
+                    <div class="score-rank">Score: <span [ngClass]="scoreDCClass">{{scoreDCClass | titlecase}}</span></div>
+                </div>
+                <div class="description">
+                    Design complexity includes the graphic elements in the ad which affects/impacts Cognitive Load
+                </div>
+            </div>
+        </nz-card>
+        <nz-card class="report-details-card cogitive" [nzBordered]="false">
+            <div class="details-card-wrapper">
+                <div class="title">Ad copy complexity</div>
+                <div class="score-details">
+                    <div class="score-info">{{scoreAC}}</div>
+                    <div class="score-rank">Score: <span [ngClass]="scoreACClass">{{scoreACClass | titlecase}}</span></div>
+                </div>
+                <div class="description">
+                    Ad copy complexity includes the text copy in the ad which affects/impacts the Cognitive Load.
+                </div>
+            </div>
+        </nz-card>
+    </div>
+    <div class="card-details-wrapper cogitive-card-details" style="justify-content: space-evenly;">
+        <nz-card class="report-details-card" [nzBordered]="false">
+            <div class="description-container">
+                <div class="description-text">
+                    <img nz-icon src="assets/icons/idea-light.svg"> 
+                    <div>
+                        Advertisements with more elaborate designs in terms of the shapes, objects, and patterns they contain are also more complex.
+                        <br/>
+                        Every added button, image, and line of text increases the complexity of a UI. You can simplify how your UI is understood by using:
+                        <ul>
+                            <li>
+                                Clearly visible elements
+                            </li>
+                            <li>
+                                Sufficient contrast and size
+                            </li>
+                            <li>
+                                A clear hierarchy of importance
+                            </li>
+                            <li>
+                                Key information that is discernable at a glance
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+        <nz-card class="report-details-card" [nzBordered]="false">
+            <div class="description-container">
+                <div class="description-text">
+                    <img nz-icon src="assets/icons/idea-light.svg"> 
+                    <div>
+                        Persuasiveness is negatively impacted by syntactic complexity and presence of a number of different elements such as CTA, Offer, Disclaimer, Warnings, Terms and Conditions, Title, Sub-Title, # hastags, etc.
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+</div>
+

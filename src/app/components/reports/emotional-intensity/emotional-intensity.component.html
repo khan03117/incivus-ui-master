@@ -1,0 +1,30 @@
+<div class="card-details-container" id="emotionalintensity" *ngIf="!isLoading">
+    <nz-breadcrumb nzSeparator=">" class="marginBottomSpace">
+        <nz-breadcrumb-item>{{data.title | titlecase}}</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+            <a>Emotional intensity</a>
+        </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <app-report-card
+        title="Emotions"
+        description= "Emotional intensity in advertising grabs attention and engages viewers."
+        [score]="data.data.emotionalIntensity"
+        [scoreDisplay]="data.data.emotionalIntensity ? data.data.emotionalIntensity.toFixed(2) : 'NA'"
+        rangeInfo="Above 75"
+        metric="EMOTION"
+    ></app-report-card>
+    <nz-divider></nz-divider>
+    <div class="graph-container">
+        <div class="graph-wrapper">
+            <img src="{{data.data.emotionalMap}}" />
+        </div>
+        <!-- <div class="customVerticalSlider" id="customVerticalSlider">
+            <ngx-slider [(value)]="value" [options]="options"></ngx-slider>
+        </div> -->
+    </div>
+    <div class="accordion-container">
+        <div *ngFor="let panel of panels">
+            <app-accordion [panel]="panel"></app-accordion>
+        </div>
+    </div>
+</div>

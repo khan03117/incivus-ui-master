@@ -1,0 +1,127 @@
+<div class="all-reports-main-container">
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<div style="margin-top:1rem;"></div>
+<nz-page-header class="page-header-container heading">
+    <nz-page-header-title>Ad({{adsCount}})<span class="showAll" *ngIf="!searchText">(Showing all ad)</span></nz-page-header-title>
+    <nz-page-header-extra>
+        <nz-space *ngIf="isIncAdmin">
+            <nz-form-item class="creativesFilter">
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <nz-select nzPlaceHolder="Select client" nzDropdownClassName="custom-check-dropdown"
+                            [ngModel]="clientId" nzShowSearch="true" id="clientSelect"
+                            (ngModelChange)="loadClientReports($event)">
+                            <nz-option *ngFor="let client of clientList" [nzValue]="client.id"
+                                [nzLabel]="client.companyName"></nz-option>
+        
+                        </nz-select>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-space>
+        <nz-space style="margin:0 0.25rem;"></nz-space>
+        <nz-space>
+            <!-- <ng-container>
+                <button *nzSpaceItem nz-button>
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Download
+                </button>
+            </ng-container> -->
+            <!-- <ng-container>
+                <button *nzSpaceItem nz-button>
+                    <img nz-icon src="assets/icons/edit-icon.svg"> 
+                    Delete
+                </button>
+            </ng-container> -->
+
+            <nz-input-group [nzPrefix]="prefixIconSearch" *nzSpaceItem>
+                <input type="text" nz-input [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (keyup)="filter()" placeholder="search creative name or creative type" />
+            </nz-input-group>
+            <ng-template #prefixIconSearch>
+                <span nz-icon nzType="search" nzTheme="outline" class="search-extra"></span>
+            </ng-template>
+        </nz-space>
+    </nz-page-header-extra>
+</nz-page-header>
+
+<nz-table
+    #rowSelectionTable
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+    [nzNoResult]="adminCustomerListEmpty"
+    class="creative-list-table"
+    [nzShowPagination]="true"
+>
+    <thead>
+        <tr>
+            <!-- <th
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
+            ></th> -->
+            <th>&nbsp;</th>
+            <th [nzShowSort]="false">Creative name</th>
+            <th [nzShowSort]="false">Created by</th>
+            <th [nzShowSort]="false">Creative type</th>
+            <th [nzShowSort]="false">Brand</th>
+            <th [nzShowSort]="false">Format</th>
+            <th [nzShowSort]="false">Created at</th>
+            <th [nzShowSort]="false">Status</th>
+            <th [nzShowSort]="false">Report</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of rowSelectionTable.data; let i = index">
+            <td>&nbsp;</td>
+            <!-- <td [nzChecked]="setOfCheckedId.has(data.metadata.id)" (nzCheckedChange)="onItemChecked(data.metadata.id, $event)"></td> -->
+            <td>{{ data.metadata.title | titlecase}}</td>
+            <td>{{ data.metadata.createdBy}}</td>
+            <td>{{data.metadata.artifactType === 'video' ? "Video Ad" : "Display Ad"}}</td>
+            <td>{{data.metadata.brand | titlecase}}</td>
+            <td>{{data.metadata.name.split('.').pop()}}</td>
+            <td>{{ data.metadata.uploadedAt | date:'dd/MM/yy; h:mm a' }}</td>
+            <td>
+                <app-badge [status]="data.metadata.status+''" [label]="getStatusLabel(data.metadata.status)"></app-badge>
+            </td>
+            <td>
+                <app-button buttonClass="secondary" *ngIf="timeperiod>90 && showReport(data.metadata.status, data.metadata.artifactType)" label="View report" [myCallback]="popup" [callbackParam]="data.metadata.id"></app-button>
+                <app-button buttonClass="secondary" *ngIf="timeperiod<=90 && showReport(data.metadata.status, data.metadata.artifactType)" label="View report" [myCallback]="viewReport" [callbackParam]="data.metadata.id"></app-button>
+            </td>
+            <td>
+                <button nz-button nzNoAnimation nz-tooltip class="action-trigger ellipsis-button" [nzTooltipTitle]="menu"
+                *ngIf="(!isIncAdmin && isAnalyze && (data.metadata.status == 0 || data.metadata.status == 50)) 
+                || (isIncAdmin && reportType == 'pre-flight')"
+                    nzTooltipOverlayClassName="tableTooltipOverlay" [nzTooltipPlacement]="['bottomRight', 'topRight']">
+                    <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top;"></span>
+                </button>
+                <ng-template #menu>
+                    <ul nz-menu>
+                        <li nz-menu-item *ngIf="data.metadata.status === 0 && isAnalyze" (click)="analyze(data.metadata.id)">
+                            <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
+                            <span>Run analysis</span>
+                        </li>
+                        <li nz-menu-item *ngIf="data.metadata.status === 50 && isAnalyze" (click)="reanalyze(data.metadata.id)">
+                            <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
+                            <span>Retry analysis</span>
+                        </li>
+                        <li nz-menu-item (click)="delete(data.metadata.id, i)" *ngIf="isIncAdmin && reportType == 'pre-flight'">
+                            <span nz-icon><img nz-icon src="assets/icons/delete.svg"></span>
+                            <span>Delete</span>
+                        </li>
+                    </ul>
+                </ng-template>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #adminCustomerListEmpty class="customer-empty">
+    <nz-result>
+        <img nz-result-icon src="assets/icons/no-company.svg">
+        <div nz-result-subtitle>
+            No reports available yet
+        </div>
+    </nz-result>
+</ng-template>
+</div>

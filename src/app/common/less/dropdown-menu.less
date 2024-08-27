@@ -1,0 +1,38 @@
+.tableTooltipOverlay, .buttonDropDownMenuOverlay {
+    .ant-menu, .ant-dropdown-menu{
+        border-right: none;
+        .ant-menu-item, .ant-dropdown-menu-item{
+            font-weight: 500;
+            margin: 0;
+            line-height: 2.5rem;
+            .ant-menu-title-content, .ant-dropdown-menu-title-content{
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    .ant-tooltip-inner{
+        background-color: #FFFFFF;
+        width:200px;
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+    }
+    .ant-tooltip-arrow{
+        bottom: 1px;
+        .ant-tooltip-arrow-content{
+            background: #fff;
+            --antd-arrow-background-color:unset;
+        }
+    }
+}
+
+.buttonDropDownMenuOverlay {
+    .ant-dropdown-menu{
+        padding:0.5rem;
+        border-right:0.5rem;
+        border-radius: 0.8rem;
+        .ant-menu-title-content{
+            gap:0.5rem;
+        }
+    }
+}

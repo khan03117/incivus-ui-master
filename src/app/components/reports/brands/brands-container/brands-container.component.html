@@ -1,0 +1,18 @@
+<div class="card-details-container">
+    <nz-breadcrumb nzSeparator=">">
+        <nz-breadcrumb-item>{{data.title | titlecase}}</nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+        <a>Brand compliance</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item *ngIf="showBrandRecognition">Brand recognition</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    
+    <div class="tab-button-list">
+        <app-button  buttonClass="{{showBrandCompliance && 'default-btn active' || 'default-btn' }}" label="Brand compliance" [myCallback]="switchBtnClick" callbackParam="brandCompliance"></app-button>
+        <app-button *ngIf="showBRTab" buttonClass="{{showBrandRecognition && 'default-btn active' || 'default-btn' }}" label="Brand recognition" [myCallback]="switchBtnClick" callbackParam="brandRecognition"></app-button>
+    </div>
+    
+    <app-brand-compliance [data] = "brandCuesData" *ngIf="showBrandCompliance"></app-brand-compliance>
+    <app-brand-recognition [data] = "brandCuesData" *ngIf="showBrandRecognition"></app-brand-recognition>
+    
+</div>

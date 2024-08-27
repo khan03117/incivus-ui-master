@@ -1,0 +1,89 @@
+<app-breadcrumb [labels]=breadcrumb fullBC="{{true}}"></app-breadcrumb>
+<div style="margin-top:1rem;"></div>
+<app-alert [message]="warningMsg" [alertType]="'warning'" *ngIf="warningMsg"></app-alert>
+<form nz-form nzLayout ="vertical" [formGroup]="addRoleForm" *ngIf="!isLoading">
+    <nz-card [nzTitle]="roleId === 'create' ? 'Create new role' : 'Edit role'">
+        <div class="form-description role-description">Fill in the following information to create new role and permissions.</div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-label class="input-float-label">Role name<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['roleName'].errors && (rnBlur || submitted) ? 'error':''"  nzErrorTip="
+                    {{ f['roleName'].errors && f['roleName'].errors['required'] ? 'Uh! Oh! role name is mandatory' : 
+                        f['roleName'].errors && f['roleName'].errors['minlength'] ? 'Uh! Oh! role name has to have minimum of three characters' :
+                        f['roleName'].errors && f['roleName'].errors['maxlength'] ? 'Uh! Oh! role name can not exceed 100 characters' : 'Uh! Oh! role name cannot contain special characters other than spaces.'}}">
+                    <nz-input-group nzSearch nzSize="large">
+                        <input nz-input type="text" class="rounded-input" (blur)="rnBlur=true" (focus)="rnBlur=false" nz-input placeholder="Role name" formControlName="roleName" id="roleName"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label class="input-float-label">Description</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSearch nzSize="large">
+                        <input nz-input type="text" class="rounded-input" nz-input placeholder="Description" formControlName="roleDescription" id="description"/>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="row-input-container">
+            <nz-form-item>
+                <nz-form-label class="input-float-label">Select user</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group nzSize="large">
+                        <nz-select
+                            [nzMaxTagCount]="1"
+                            [nzMaxTagPlaceholder]="tagPlaceHolder"
+                            [nzShowArrow]="true"
+                            nzMode="multiple"
+                            [nzOptionOverflowSize]="8"
+                            nzPlaceHolder="Select user"
+                            formControlName="email"
+                            nzDropdownClassName="custom-check-dropdown"
+                            nzShowSearch="false"
+                        >
+                            <ng-container *ngIf="userList && userList.length > 0">
+                                <nz-option *ngFor="let user of userList"
+                                    [nzValue]="user"
+                                    [nzLabel]="user"
+                                >
+                                </nz-option>
+                            </ng-container>
+                        </nz-select>
+                        <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label class="input-float-label">Select permission<span style="color:#EF4444">*</span></nz-form-label>
+                <nz-form-control class="role-form" [nzValidateStatus]="f['permission'].errors && submitted ? 'error':''"  nzErrorTip="Permission name is mandatory">
+                    <nz-input-group nzSize="large">
+                        <nz-select
+                            [nzMaxTagCount]="1"
+                            [nzMaxTagPlaceholder]="tagPlaceHolder"
+                            [nzShowArrow]="true"
+                            [nzOptionOverflowSize]="8"
+                            nzMode="multiple"
+                            nzPlaceHolder="Select permission"
+                            formControlName="permission"
+                            nzDropdownClassName="custom-check-dropdown"
+                        >
+                            <nz-option *ngFor="let pItem of permissionList"
+                                [nzValue]="pItem"
+                                [nzLabel]="pItem"
+                            >
+                            </nz-option>
+                        </nz-select>
+                        <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length }}</ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div class="form-footer">
+            <div class="form-footer-wrapper">
+                <app-button buttonClass="secondary" label="Cancel" [myCallback]="cancel"></app-button>
+                <app-button *ngIf="roleId === 'create'" buttonClass="primary" label="Create role" [myCallback]="save"></app-button>
+                <app-button *ngIf="roleId !== 'create'" buttonClass="primary" label="Update role" [myCallback]="update"></app-button>
+            </div>
+        </div>
+    </nz-card>
+</form>

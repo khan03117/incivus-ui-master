@@ -1,0 +1,80 @@
+.setup-conatainer{
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.875rem;
+    .setup-wrapper{
+        max-width: 43.75rem;
+        width: 43.75rem;
+        padding: 1.563rem !important;
+        background-color: #fff;
+        border-radius: 1rem;
+    }
+  }
+  
+nz-collapse{
+    border: none ;
+    ::ng-deep nz-collapse-panel {
+        &.ant-collapse-item-active{
+            .expandCollapseIcon{
+                transform: rotateZ(180deg);
+            }
+        }
+        border: none !important;
+        &.valid-accordion-content{
+            .ant-collapse-header{
+                background-color: #CFF1FF;
+                border:0.063rem solid #00549A;
+                padding-left: 3.125rem !important;
+                &:after{
+                    position: absolute;
+                    content: '';
+                    width:1.25rem;
+                    height:1.25rem;
+                    background: #00549A;
+                    border-radius: 50%;
+                    top: 1.063rem;
+                    left: 1.25rem;
+                }
+                &:before{
+                    position: absolute;
+                    content: '';
+                    width: 0.625rem;
+                    height: 0.313rem;
+                    border-left: 0.125rem solid #fff;
+                    border-bottom: 0.125rem solid #fff;
+                    top: 1.45rem;
+                    left: 1.563rem;
+                    z-index: 1;
+                    transform: rotateZ(-45deg);
+                }
+            }
+        }
+        .ant-collapse-header{
+            border-radius: 0.75rem !important;
+            border: 0.063rem solid #919EAB;
+            background-color: #F4F6F8;
+            color: #212B36 !important;
+            font-size: 0.87rem;
+            font-weight: 500;
+            min-height: 3.438rem;
+            align-items: center !important;
+            padding-left: 1.875rem !important;
+            .expandCollapseIcon{
+                position: absolute;
+                right: 1.5rem;
+                top: 1.3rem;
+                transition: all 0.5s ease;
+            }
+        }
+        .ant-collapse-content {
+            border-top:none;
+            .ant-collapse-content-box{
+                padding-left: 0;
+                padding-right: 0;
+                padding-bottom: 0;
+            }
+        }
+    }
+}

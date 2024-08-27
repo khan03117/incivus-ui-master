@@ -1,0 +1,129 @@
+<form nz-form nzLayout ="vertical" [formGroup]="companyProfileForm">
+  <nz-form-item class="setup-input">
+    <nz-form-label nzFor="email" class="form-label">Select company entities</nz-form-label>
+    <nz-form-control>
+      <nz-checkbox-wrapper style="width: 100%;" class="company-checkbox-selector" (nzOnChange)="entityChange($event)">
+        <div nz-row class="flex-row">
+          <div nz-col>
+            <label nz-checkbox nzValue="Business Unit" [ngModel]="entities && entities.includes('Business Unit')" [ngModelOptions]="{standalone: true}">
+              <span class="chk-icon"><img src="assets/icons/business-entity.svg"></span>
+              <span class="chk-label">Business unit</span>
+            </label>
+          </div>
+          <div nz-col>
+            <label nz-checkbox nzValue="Product Category" [ngModel]="entities && entities.includes('Product Category')" [ngModelOptions]="{standalone: true}">
+              <span class="chk-icon"><img src="assets/icons/business-entity.svg"></span>
+              <span class="chk-label">Product category</span>
+            </label>
+          </div>
+          <div nz-col>
+            <label nz-checkbox nzValue="Market" [ngModel]="entities && entities.includes('Market')" [ngModelOptions]="{standalone: true}">
+              <span class="chk-icon"><img src="assets/icons/business-entity.svg"></span>
+              <span class="chk-label">Market</span>
+            </label>
+          </div>
+          <div nz-col>
+            <label nz-checkbox nzValue="Customer Segment" [ngModel]="entities && entities.includes('Customer Segment')" [ngModelOptions]="{standalone: true}">
+              <span class="chk-icon"><img src="assets/icons/business-entity.svg"></span>
+              <span class="chk-label">Customer segment</span>
+            </label>
+          </div>
+        </div>
+      </nz-checkbox-wrapper>
+    </nz-form-control>
+  </nz-form-item >
+</form>
+<form class="subForm" nzLayout ="vertical" [formGroup]="companyProfileForm">
+  <nz-form-item *ngIf="entities && entities.includes('Business Unit')" >
+    <nz-form-label nzFor="business-unit-name" class="input-float-label">Business unit</nz-form-label>
+    <nz-form-control [nzValidateStatus]="f['businessUnitName'].errors && submBU ? 'error':'noError'"  nzErrorTip="Mandatory field">
+      <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="buButton">
+        <input type="text" nz-input placeholder="Enter name" id="business-unit-name" formControlName="businessUnitName"/>
+      </nz-input-group>
+    </nz-form-control>
+    <div class="tag-details" *ngIf="buTags.length > 0">
+      <nz-tag
+        *ngFor="let tag of buTags; let i = index"
+        nzMode="closeable"
+        (nzOnClose)="removeBUTags(tag)"
+      >
+        <span>{{ sliceTagName(tag) }}</span>
+      </nz-tag>
+    </div>
+    <ng-template #buButton>
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="addBusinessUnitTag()">Add</button>
+    </ng-template>
+  </nz-form-item>
+</form>
+<form class="subForm" nzLayout ="vertical" [formGroup]="companyProfileForm">
+  <nz-form-item *ngIf="entities && entities.includes('Product Category')">
+    <nz-form-label nzFor="product-category-name" class="input-float-label">Product category</nz-form-label>
+    <nz-form-control [nzValidateStatus]="f['productCategoryName'].errors && submPC ? 'error':'noError'"  nzErrorTip="Mandatory field">
+      <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="pcButton">
+        <input type="text" nz-input placeholder="Enter name" id="product-category-name" formControlName="productCategoryName"/>
+      </nz-input-group>
+    </nz-form-control>
+    <div class="tag-details" *ngIf="pcTags.length > 0">
+      <nz-tag
+        *ngFor="let tag of pcTags; let i = index"
+        nzMode="closeable"
+        (nzOnClose)="removePCTags(tag)"
+      >
+        <span>{{ sliceTagName(tag) }}</span>
+      </nz-tag>
+    </div>
+    <ng-template #pcButton>
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="addProductCategory()">Add</button>
+    </ng-template>
+  </nz-form-item>
+</form>
+<form class="subForm" nzLayout ="vertical" [formGroup]="companyProfileForm">
+  <nz-form-item *ngIf="entities && entities.includes('Market')">
+    <nz-form-label nzFor="market-name" class="input-float-label">Market</nz-form-label>
+    <nz-form-control [nzValidateStatus]="f['marketName'].errors && submG ? 'error':'noError'"  nzErrorTip="Mandatory field">
+      <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="gButton">
+        <input type="text" nz-input placeholder="Enter name" id="market-name" formControlName="marketName"/>
+      </nz-input-group>
+    </nz-form-control>
+    <div class="tag-details" *ngIf="gTags.length > 0">
+      <nz-tag
+        *ngFor="let tag of gTags; let i = index"
+        nzMode="closeable"
+        (nzOnClose)="removeGTags(tag)"
+      >
+        <span>{{ sliceTagName(tag) }}</span>
+      </nz-tag>
+    </div>
+  </nz-form-item>
+  <ng-template #gButton>
+    <button nz-button nzType="primary" nzSize="large" nzSearch (click)="addMarket()">Add</button>
+  </ng-template>
+</form>
+<form class="subForm" nzLayout ="vertical" [formGroup]="companyProfileForm">
+  <nz-form-item *ngIf="entities && entities.includes('Customer Segment')">
+    <nz-form-label nzFor="market-name" class="input-float-label">Customer segment</nz-form-label>
+    <nz-form-control [nzValidateStatus]="f['customerSegmentName'].errors && submCS ? 'error':'noError'"  nzErrorTip="Mandatory field">
+      <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="csButton">
+        <input type="text" nz-input placeholder="Enter name" id="cusomer-segment-name" formControlName="customerSegmentName"/>
+      </nz-input-group>
+    </nz-form-control>
+    <div class="tag-details" *ngIf="csTags.length > 0">
+      <nz-tag
+        *ngFor="let tag of csTags; let i = index"
+        nzMode="closeable"
+        (nzOnClose)="removeCSTags(tag)"
+      >
+        <span>{{ sliceTagName(tag) }}</span>
+      </nz-tag>
+    </div>
+  </nz-form-item>
+  <ng-template #csButton>
+    <button nz-button nzType="primary" nzSize="large" nzSearch (click)="addCustomerSegment()">Add</button>
+  </ng-template>
+</form>
+  <div class="form-footer">
+    <div class="form-footer-wrapper" *ngIf="check">
+      <app-button buttonClass="primary" label="Save progress" [myCallback]="continue"></app-button>
+      <!-- <app-button buttonClass="primary" label="Continue" [myCallback]="continue"></app-button> -->
+    </div>
+  </div>

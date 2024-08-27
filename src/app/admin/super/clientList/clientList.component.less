@@ -1,0 +1,37 @@
+@import url("../../../common/less/table-component.less");
+@import url("../../../common/less/page-sub-header.less");
+@import url("../../../common/less/dropdown-menu.less");
+
+.feature-td {
+  overflow: visible !important;
+}
+.feature-name {
+  position: relative;
+  cursor: default;
+  overflow: hidden;
+  max-width: 100%;
+}
+.feature-td:hover .feature-desc {
+  display: block;
+  opacity: 1;
+}
+.feature-td .feature-desc {
+  display: block; /* Initially hidden */
+  z-index: 2;
+  position: absolute;
+  padding: .35rem 1rem;
+  top: 2.5rem;
+  left: 0;
+  color: #ffffff;
+  font-size: .8rem;
+  background: #000000b7;
+  border-radius: 0.5rem;
+  opacity: 0;
+  max-width: 100%;
+  height: fit-content;
+  overflow: hidden;
+  white-space: normal; /* Allows text to wrap normally */
+  word-break: break-word; /* Ensures long words break and wrap to the next line */
+  transition: opacity 0.3s ease;
+  transition-delay: 1s; 
+}

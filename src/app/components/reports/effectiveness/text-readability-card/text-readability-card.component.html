@@ -1,0 +1,138 @@
+<app-report-card
+    title="Text readability"
+    description="High attention score leads to Ad being highly memorable therefore enabling you to meet your Ad goals effectively."
+    description="You have a relatively low Ad copy effectiveness."
+    [score]="adCopy.textRedability"
+    [scoreDisplay]="adCopy.textRedability ? adCopy.textRedability.toFixed(2) : 'NA'"
+    rangeInfo=""
+    metric="TEXTR"
+></app-report-card>
+<nz-divider></nz-divider>
+<div class="card-details-wrapper tr-card-details" style="justify-content: space-evenly;">
+    <nz-card class="report-details-card textReCon" [nzBordered]="false">
+        <div class="details-card-wrapper perCardHt">
+            <div class="title">Word density</div>
+            <div class="score-details">
+                <div class="score-info" *ngIf="data.isVideoReport">{{adCopy.wordDensity ? adCopy.wordDensity?.toFixed(2) : 'NA'}}</div>
+                <div class="score-info" *ngIf="!data.isVideoReport">{{adCopy.wordDensity}}</div>
+                <div class="score-rank" *ngIf="adCopy.wordDensity != 'NA'">Score: <span [ngClass]="adCopy.wordDensity_cls">{{adCopy.wordDensity_desc | titlecase}}</span></div>
+            </div>
+            <div class="description">
+                Word density is the number of words that appear in the ad every few seconds, too many of which can negatively impact text readability thereby reducing comprehension and ROAS.
+                <div *ngIf="data.isVideoReport" class="range-details">Recommended: 12 words per 3 seconds</div>
+                <div *ngIf="!data.isVideoReport" class="range-details">Recommended: 12 overall words</div>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card class="report-details-card textReCon" [nzBordered]="false">
+        <div class="details-card-wrapper perCardHt">
+            <div class="title">Text contrast</div>
+            <div class="score-details">
+                <div class="score-info" *ngIf="!adCopy.text_contrast">NA</div>
+                <div class="score-rank" *ngIf="adCopy.text_contrast">Score: <span [ngClass]="adCopy.text_contrast_cls">{{adCopy.text_contrast_desc | titlecase}}</span></div>
+            </div>
+            <div class="description">
+                Text Contrast is the level of contrast between the design elements and the text on the screen.
+                <div class="range-details">Recommended: <span>High</span></div>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card class="report-details-card textReCon" [nzBordered]="false">
+        <div class="details-card-wrapper perCardHt">
+            <div class="title">Font visibility</div>
+            <ng-container *ngIf="adCopy.font_visibility">
+                <div class="score-details">
+                    <div class="score-rank">Score: <span [ngClass]="adCopy.font_visibility_cls">{{adCopy.font_visibility_cls | titlecase}}</span></div>
+                </div>
+                <div class="description">
+                    Font Visibility is defined by the font size of the ad copy, ensuring the size is optimal for high text readability leads to better brand message communication.
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!adCopy.font_visibility">
+                <div class="score-details" style="font-size: 0.87rem;font-weight: 500;" >NA</div>
+            </ng-container>
+        </div>
+    </nz-card>
+</div>
+<div class="card-details-wrapper tr-card-info" style="justify-content: space-evenly;">
+    <nz-card class="report-details-card textReCon" [nzBordered]="false">
+        <div class="description-container">
+            <div class="description-text">
+                <img nz-icon src="assets/icons/idea-light.svg"> 
+                <div>
+                    Many people who see or hear an ad don't want to sit for long. You risk losing your audience's attention if your copy is wordy, repetitive or lengthy.
+                </div>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card class="report-details-card textReCon" [nzBordered]="false">
+        <div class="description-container">
+            <div class="description-text">
+                <img nz-icon src="assets/icons/idea-light.svg"> 
+                <div>
+                    The color of the elements in the ad plays an important role in how the audience understands the ad. We recommend using black or darker colors amongst light coloured backgrounds or elements and accompany light coloured text like white or beige when the other design elements are darker.
+                </div>
+            </div>
+        </div>
+    </nz-card>
+    <nz-card class="report-details-card textReCon" [nzBordered]="false">
+        <div class="description-container">
+            <div class="description-text">
+                <img nz-icon src="assets/icons/idea-light.svg"> 
+                <div>
+                    The size and style of the font can greatly improve the readability of the ad thereby increasing the comprehension and skimmability which are vital for ad success.
+                </div>
+            </div>
+        </div>
+    </nz-card>
+</div>
+<!-- <div class="tag-container">
+    <div class="title">Keywords Identified:</div>
+    <div class="tag-details compliance-tag-details">
+        <nz-tag [nzColor]="'gold'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'green'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'purple'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'blue'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'red'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'gold'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'green'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'purple'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'blue'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'red'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'gold'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'green'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'purple'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'blue'">
+            <span>Envy 1</span>
+        </nz-tag>
+        <nz-tag [nzColor]="'red'">
+            <span>Envy 1</span>
+        </nz-tag>
+    </div>
+</div> -->

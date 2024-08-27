@@ -1,0 +1,18 @@
+<!-- <div class="overviewContainer">
+    <app-nav></app-nav>
+    <div class="overviewContent" [ngClass]="hideMenu ? 'expand-content' : ''">
+    <div class="overviewContent">
+        <app-header></app-header>
+        <div class="overviewWrapper">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div> -->
+
+<nz-layout class="main-layout">
+    <app-nav></app-nav>
+    <nz-layout class="right-layout">
+        <app-header></app-header>
+        <app-content></app-content>
+    </nz-layout>
+</nz-layout>

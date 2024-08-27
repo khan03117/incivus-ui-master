@@ -1,0 +1,21 @@
+<app-alert [message]="infoMsg" [alertType]="'info'" *ngIf="infoMsg"></app-alert>
+<app-alert
+  [message]="errorMsg"
+  [alertType]="'error'"
+  *ngIf="errorMsg"
+></app-alert>
+
+<app-breadcrumb
+  label="{{ breadcrumbTitle }}"
+  myCallback="/client/list"
+></app-breadcrumb>
+
+<ng-container *ngIf="!isLoading">
+  <div *ngFor="let panel of panels; let i = index">
+    <app-accordion [panel]="panel" [index]="i + 1"></app-accordion>
+  </div>
+</ng-container>
+<!-- <div class="form-container-footer">
+    <app-button buttonClass="secondary" label="Save Progress" [myCallback]="buttonCallback"></app-button>
+    <app-button buttonClass="primary" label="Done" [myCallback]="buttonCallback"></app-button>
+</div> -->

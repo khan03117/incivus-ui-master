@@ -1,0 +1,71 @@
+@import url("../../../common/less/table-component.less");
+@import url("../../../common/less/page-sub-header.less");
+@import url("../../../common/less/dropdown-menu.less");
+@import url("../../../common/less/modal.less");
+@import url('../../../common/less/form-component.less');
+
+
+.all-reports-main-container {
+  .tableTooltipOverlay,
+  .buttonDropDownMenuOverlay {
+    .ant-menu-item,
+    .ant-dropdown-menu-item {
+      padding: 0 0.3rem;
+    }
+  }
+
+  .ant-modal-title {
+    color: #212b36 !important;
+    font-size: 0.87rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+  }
+
+  .breadcrumb-container {
+    .secondary-btn {
+      font-size: 0.87rem !important;
+      font-weight: 400 !important;
+    }
+
+    .primary-btn {
+      font-size: 0.87rem !important;
+      font-weight: 500 !important;
+      width: 140px;
+    }
+  }
+
+  .page-header-container {
+    .select-radio-container {
+      width: 18.75rem;
+      .ant-select-selector {
+        width: 100% !important;
+        .ant-select-selection-item {
+          font-family: inherit;
+        }
+      }
+    }
+  }
+
+  nz-select-item,
+  nz-option-item {
+    text-transform: none !important;
+  }
+
+  .custom-radio-dropdown {
+    .ant-select-dropdown {
+      width: 18.75rem;
+      border-radius: 0.75rem;
+    }
+  }
+
+  .userProfile {
+    ::ng-deep .ant-dropdown-menu-item:hover {
+      background-color: transparent;
+    }
+    ::ng-deep .ant-menu-title-content {
+      width: 7%;
+      font-size: 0.87rem;
+      font-weight: 400;
+    }
+  }
+}

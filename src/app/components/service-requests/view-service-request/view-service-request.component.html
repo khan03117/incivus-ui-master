@@ -1,0 +1,379 @@
+<!-- viewing {{ id }}
+<br />
+{{ serviceRequest | json }} -->
+
+<div class="sr-header">
+  <app-breadcrumb
+    [labels]="breadcrumb"
+    fullBC="{{ true }}"
+    myCallback="/client/list"
+    [capitalize]="false"
+  ></app-breadcrumb>
+  <div class="assignment-container">
+    <div
+      class="assigned-to-container"
+      *ngIf="
+        (isUserServiceManager || isSuperAdmin) &&
+        serviceRequest?.assignedTo != null
+      "
+    >
+      <span>Assigned To : </span>
+      <span class="value">{{
+        serviceRequest?.assignedTo?.firstName +
+          " " +
+          serviceRequest?.assignedTo?.lastName
+      }}</span>
+    </div>
+    <div
+      class="checkbox-container"
+      *ngIf="
+        isUserServiceManager === true &&
+        (serviceRequest?.assignedTo == null ||
+          serviceRequest?.assignedTo?.id == user?.id) &&
+        serviceRequest?.status?.toLowerCase() != 'completed' &&
+        serviceRequest?.status?.toLowerCase() != 'draft'
+      "
+    >
+      <input
+        type="checkbox"
+        id="myCheckbox"
+        [(ngModel)]="assignToMe"
+        (ngModelChange)="onAssignChange()"
+      />
+      <label for="myCheckbox" class="label">Assign to me</label>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="request-heading">Service request details</div>
+  <div class="campaign-info" *ngIf="serviceRequest">
+    <div class="left-info">
+      <div class="info">
+        <div class="heading">Summary:</div>
+        <div class="value">{{ serviceRequest?.summary }}</div>
+      </div>
+      <div class="info">
+        <div class="heading">Brand:</div>
+        <div class="value">{{ serviceRequest?.brand }}</div>
+      </div>
+      <div class="info">
+        <div class="heading">Creative Type:</div>
+        <div class="value">{{ serviceRequest?.creativeType?.join(", ") }}</div>
+      </div>
+      <div class="info">
+        <div class="heading">Channels:</div>
+        <div class="value">
+          {{ serviceRequest?.channels?.join(", ") }}
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Ad Brief:</div>
+        <div class="value justify-inter-word">
+          {{ truncateAdBrief(serviceRequest?.adBrief) }}
+          <span class="read-more" *ngIf="isReadMore" (click)="adBriefReadMore()"
+            >read more</span
+          >
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Additional details:</div>
+        <div class="value">{{ serviceRequest?.additionalDetails }}</div>
+      </div>
+    </div>
+    <div class="right-info" *ngIf="serviceRequest">
+      <div class="info">
+        <div class="heading">Request type:</div>
+        <div class="value">{{ serviceRequest?.requestType }}</div>
+      </div>
+
+      <div class="info">
+        <div class="heading">Requested by:</div>
+        <div class="value">
+          {{
+            serviceRequest.submittedBy?.firstName +
+              " " +
+              serviceRequest.submittedBy?.lastName
+          }}
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Created at:</div>
+        <div class="value">
+          {{ serviceRequest?.submittedAt | date : "dd-MM-yyyy; hh:mm:ss a" }}
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Launch date:</div>
+        <div class="value">
+          {{ serviceRequest?.launchDate | date : "dd-MM-yyyy" }}
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Emotions:</div>
+        <div class="value">
+          {{
+            (serviceRequest?.emotions != null
+              ? serviceRequest?.emotions.join(", ")
+              : ""
+            ) | capitalize
+          }}
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Colors:</div>
+        <div class="value">
+          <div class="br-selected-list fullWidth">
+            <ul style="display: flex; flex-wrap: wrap">
+              <li
+                *ngFor="let color of serviceRequest['colors']; let i = index"
+                class="br-selected-logo"
+                [attr.style]="'background-color:' + color + '!important'"
+                [style.background-color]="color"
+              >
+                <div
+                  class="color-hex"
+                  style="
+                    position: absolute;
+                    bottom: -1.1rem;
+                    font: normal normal normal 0.75rem/1.1rem Open Sans;
+                    display: none;
+                  "
+                >
+                  {{ color }}
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Attachments:</div>
+        <div class="attachments value">
+          <div
+            class="icon-container"
+            style="align-items: center; gap: 6px; margin-bottom: 8px"
+            *ngFor="let url of serviceRequest.documents"
+          >
+            <!-- <img class="file-icon" src="assets/icons/attachments.svg" alt="" /> -->
+            {{ getFileName(url) }}
+            <a [href]="url" target="_blank">
+              <img
+                class="file-icon"
+                src="assets/icons/download_report.svg"
+                alt=""
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="heading">Brand Assets:</div>
+        <div class="attachments value">
+          <div
+            class="icon-container"
+            style="align-items: center; gap: 6px; margin-bottom: 8px"
+            *ngFor="let url of serviceRequest.brandAssetDocuments"
+          >
+            <!-- <img class="file-icon" src="assets/icons/attachments.svg" alt="" /> -->
+            {{ getFileName(url) }}
+            <a [href]="url" target="_blank">
+              <img
+                class="file-icon"
+                src="assets/icons/download_report.svg"
+                alt=""
+              />
+            </a>
+          </div>
+          <div class="icon-container" style="align-items: center; gap: 6px; margin-bottom: 8px"
+            *ngFor="let url of serviceRequest.brandAssets">
+            {{ getFileName(url) }}
+            <a [href]="url" target="_blank">
+              <img class="file-icon" src="assets/icons/download_report.svg" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 302px; height: 38px; position: relative"></div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="card"
+  *ngIf="
+    (isUserServiceManager === true &&
+      serviceRequest?.assignedTo != null) ||
+    serviceRequest?.status?.toLowerCase() == 'completed' ||
+    (isSuperAdmin && serviceRequest?.status?.toLowerCase()== 'on-hold')
+  "
+>
+  <div class="campaign-info">
+    <div class="left-info">
+      <div class="bottom-request-heading">Service request update</div>
+      <div
+        class="info"
+        *ngIf="
+          isUserServiceManager === true &&
+          serviceRequest?.status?.toLowerCase() != 'completed'
+        "
+      >
+        <div class="heading">Upload files</div>
+        <input
+          type="file"
+          id="fileInput"
+          (change)="onFileChange($event)"
+          multiple
+        />
+        <label for="fileInput" class="custom-file-upload value">
+          <img src="assets/icons/upload-files.svg" alt="" />
+        </label>
+      </div>
+
+      <div class="info">
+        <div class="heading">Comments</div>
+        <textarea
+          id="myTextarea"
+          (change)="onChange($event.target!)"
+          rows="4"
+          cols="50"
+          [(ngModel)]="comments"
+          [disabled]="serviceRequest?.status?.toLowerCase() == 'completed' || isSuperAdmin"
+          [placeholder]="
+            serviceRequest?.status?.toLowerCase() == 'completed'
+              ? ''
+              : 'Enter any comments or details you would like to communicate regarding this creative'
+          "
+          class="value"
+        ></textarea>
+      </div>
+    </div>
+    <div class="right-info" *ngIf="serviceRequest">
+      <ng-container>
+        <div
+          class="status-container"
+          *ngIf="serviceRequest?.status?.toLowerCase() == 'completed'"
+        >
+          <img class="image" src="assets/icons/green-circle-tick.svg" alt="" />
+          <label for="myCheckbox" class="label">Completed</label>
+        </div>
+        <div
+          class="status-container"
+          *ngIf="serviceRequest?.status?.toLowerCase() == 'on-hold'"
+        >
+          <img class="image" src="assets/icons/hold.svg" alt="" />
+          <label for="myCheckbox" class="label">On-hold</label>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          isUserServiceManager && serviceRequest?.assignedTo?.id == user?.id
+        "
+      >
+        <div
+          class="radio-buttons"
+          *ngIf="serviceRequest?.status?.toLowerCase() != 'completed'"
+        >
+          <div class="value">
+            <input
+              type="radio"
+              [(ngModel)]="selectedStatus"
+              id="completed"
+              name="status"
+              value="completed"
+              (change)="onStatusChange()"
+            />
+            <label for="completed">Mark as complete</label>
+          </div>
+          <div
+            class="value"
+            *ngIf="serviceRequest?.status?.toLowerCase() != 'on-hold'"
+          >
+            <input
+              type="radio"
+              [(ngModel)]="selectedStatus"
+              id="on-hold"
+              name="status"
+              value="on-hold"
+              (change)="onStatusChange()"
+            />
+            <label for="on-hold">Mark as on-hold</label>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="selected-images" *ngIf="files.length > 0">
+    <div *ngFor="let file of files">
+      <ng-container>
+        <div class="image-container">
+          <img
+            class="image"
+            *ngIf="isImage(file)"
+            [src]="getImageUrl(file)"
+            alt="Selected Image"
+          />
+          <video
+            *ngIf="isVideo(file)"
+            class="image"
+            [src]="getVideoUrl(file)"
+            controls
+            poster="{{ getThumbnailUrl(file) }}"
+          ></video>
+          <div class="image" *ngIf="isOtherType(file)">{{ getType(file) }}</div>
+          <div class="flex">
+            <img
+              class="image-icon"
+              src="assets/icons/creative_image.svg"
+              alt="Selected Image"
+            />
+            <img
+              class="image-icon"
+              src="assets/icons/remove.svg"
+              alt="remove Image"
+              (click)="removeFile(file)"
+            />
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div
+    class="selected-images"
+    *ngIf="uploadedFiles != null && uploadedFiles.length > 0"
+  >
+    <div *ngFor="let url of uploadedFiles">
+      <div class="image-container">
+        <img
+          class="image"
+          *ngIf="getFileType(url) == 'image'"
+          [src]="url"
+          alt="Selected Image"
+        />
+        <video
+          *ngIf="getFileType(url) == 'video'"
+          class="image"
+          [src]="url"
+          controls
+          [poster]="url"
+        ></video>
+        <div
+          class="image"
+          *ngIf="getFileType(url) != 'image' && getFileType(url) != 'video'"
+        ></div>
+        <div class="flex" style="align-items: center; margin-left: 8px">
+          {{ getFileName(url) }}
+          <a [href]="url" target="_blank">
+            <img
+              class="image-icon"
+              src="assets/icons/download_report.svg"
+              alt="download Image"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<form nz-form nzLayout ="vertical" [formGroup]="activateUserForm">
+    <div class="form-description">Edit status of the user(s)</div>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group nzSize="large">
+                <nz-select
+                    nzPlaceHolder="*Status"
+                    formControlName="selectedStatus"
+                    nzDropdownClassName="custom-radio-dropdown"
+                    nzShowSearch="false"
+                >
+                    <nz-option nzValue="active" nzLabel="Active"></nz-option>
+                    <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
+                </nz-select>
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <div class="form-footer">
+        <div class="form-footer-wrapper">
+            <app-button buttonClass="primary" label="Done" class="full-width-btn" [loading]="submitted" [myCallback]="update"></app-button>
+        </div>
+    </div>
+</form>

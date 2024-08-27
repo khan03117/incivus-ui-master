@@ -1,0 +1,9 @@
+<div class="badge-label" nz-dropdown [nzDropdownMenu]="tooltipDescription" [nzPlacement]="'bottomRight'">
+    <nz-tag nzColor="{{badgeColor}}">{{ label ? label : '--.--' | titlecase}}</nz-tag>
+</div>
+
+<nz-dropdown-menu #tooltipDescription="nzDropdownMenu">
+    <div class="tooltip-description" [ngClass]="showTooltip ? badgeColor : 'hideTooltip'" nz-menu>
+        {{description}}
+    </div>
+</nz-dropdown-menu>

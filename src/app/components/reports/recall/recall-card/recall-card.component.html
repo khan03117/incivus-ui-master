@@ -1,0 +1,109 @@
+<app-report-card
+    title="Recall score"
+    description="High Recall score leads to Ad being highly memorable therefore enabling you to meet your Ad goals effectively."
+    [score] = "recallData.videoScore ? recallData.videoScore.toFixed(2) : 'NA'"
+    [scoreDisplay] = "recallData.videoScore ? recallData.videoScore.toFixed(2) : 'NA'"
+    rangeInfo="Above 75"
+    metric="RECALL"
+></app-report-card>
+<div class="video-container" *ngIf="isVideoReport">
+    <div nz-row class="flex-card" style="width:100%">
+        <!-- <div nz-row class="flex-card">
+            
+        </div> -->
+        <div nz-col style="width:49%">
+            <div class="title">Recall timeline</div>
+            <div class="description">This timeline shows you which section of your Ad has the most Recall value.</div>
+            <video controls>
+                <source src="{{url}}" type="video/mp4">
+            </video>
+        </div>
+        <div nz-col id="chartContPH" style="width:49%">
+            <app-apxChart [data]="getChartData()"></app-apxChart>
+            <div nz-row class="flex-card" style="margin: -0.3rem 0 0 0;align-items: center;justify-content: space-around;background: #F1F5F9;padding: 0.75rem;border-radius: 0.5rem;">
+                <div nz-col style="color: #1E293B; margin-top: 0;">
+                    Beginning: <span style="color: #00549A;">{{getPartScore(0) | number : '1.2-2'}}</span>
+                </div>
+                <div nz-col style="color: #1E293B; margin-top: 0;">
+                    Middle: <span style="color: #00549A;">{{getPartScore(1) | number : '1.2-2'}}</span>
+                </div>
+                <div nz-col style="color: #1E293B; margin-top: 0;">
+                    End: <span style="color: #00549A;">{{getPartScore(2) | number : '1.2-2'}}</span>
+                </div>
+            </div>        
+        </div>
+    </div>
+    
+    <div class="flex-card-container">
+        <div class="title">Peak moments</div>
+        <div nz-row class="flex-card third-column" style="justify-content: space-around;" *ngFor="let peak of peakImage;">
+            <div nz-col>
+                <img nz-icon style="max-height: 183px;" src="{{peak.hmImage}}">
+                <div class="description-wrapper" style="visibility: hidden;">
+                    <div class="title">Image | {{peak.timeOffset}} secs.</div>
+                    <div class="sub-title">Score : {{peak.score | number : '1.2-2'}}</div>
+                </div>
+            </div>
+            <div nz-col>
+                <img nz-icon style="max-height: 183px;" src="{{peak.image}}">
+                <div class="description-wrapper">
+                    <div class="title">Image | {{peak.timeOffset}} secs.</div>
+                    <div class="sub-title">Score : {{peak.score | number : '1.2-2'}}</div>
+                </div>
+            </div>
+            <!-- <div nz-col>
+                <div class="description-wrapper">
+                    <div class="desc-sub-title" *ngIf="peak.logoAttention">Logo attention: {{peak.logoAttention  | titlecase}}</div>
+                    <div class="desc-sub-title" *ngIf="!peak.logoAttention">Logo attention: NA</div>
+                </div>
+                <div class="description-wrapper">
+                    <div class="desc-sub-title" *ngIf="peak.productAttention">Product attention: {{peak.productAttention  | titlecase}}</div>
+                    <div class="desc-sub-title" *ngIf="!peak.productAttention">Product attention: NA</div>
+                </div>
+                <div class="description-wrapper">
+                    <div class="desc-sub-title" *ngIf="peak.faceAttention">Human attention: {{peak.faceAttention  | titlecase}}</div>
+                    <div class="desc-sub-title" *ngIf="!peak.faceAttention">Human attention: NA</div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="flex-card-container">
+        <div class="title">Pits moments</div>
+        <div nz-row class="flex-card third-column" style="justify-content: space-around;" *ngFor="let peak of pitImage;">
+            <div nz-col>
+                <img nz-icon style="max-height: 183px;" src="{{peak.hmImage}}">
+                <div class="description-wrapper" style="visibility: hidden;">
+                    <div class="title">Image | {{peak.timeOffset}} secs.</div>
+                    <div class="sub-title">Score : {{peak.score | number : '1.2-2'}}</div>
+                </div>
+            </div>
+            <div nz-col>
+                <img nz-icon style="max-height: 183px;" src="{{peak.image}}">
+                <div class="description-wrapper">
+                    <div class="title">Image | {{peak.timeOffset}} secs.</div>
+                    <div class="sub-title">Score : {{peak.score | number : '1.2-2'}}</div>
+                </div>
+            </div>
+            <!-- <div nz-col>
+                <div class="description-wrapper">
+                    <div class="desc-sub-title" *ngIf="peak.logoAttention">Logo attention: {{peak.logoAttention  | titlecase}}</div>
+                    <div class="desc-sub-title" *ngIf="!peak.logoAttention">Logo attention: NA</div>
+                </div>
+                <div class="description-wrapper">
+                    <div class="desc-sub-title" *ngIf="peak.productAttention">Product attention: {{peak.productAttention  | titlecase}}</div>
+                    <div class="desc-sub-title" *ngIf="!peak.productAttention">Product attention: NA</div>
+                </div>
+                <div class="description-wrapper">
+                    <div class="desc-sub-title" *ngIf="peak.faceAttention">Human attention: {{peak.faceAttention  | titlecase}}</div>
+                    <div class="desc-sub-title" *ngIf="!peak.faceAttention">Human attention: NA</div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<div class="description-container" *ngIf="!isVideoReport">
+    <div class="description-text">
+        <img nz-icon src="assets/icons/idea-light.svg"> 
+        <p>Memorability is not about aesthetics or low-level visual features like color or contrast. Instead, what makes content memorable are higher-level properties such as semantics (i.e., the meaning of objects and actions) and composition (i.e., the arrangement and organization of elements in an image or video).</p>
+    </div>
+</div>
