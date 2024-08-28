@@ -1,1 +1,120 @@
-<p>rule-matrix-show works!</p>
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="w-100 p-3 rounded-3 shadow shadow-lg bg-white">
+
+
+                    <div class="w-100">
+                        <div class="w-100 mb-3 d-flex ">
+                            <button type="button" [ngClass]="{'btnBlue': apiResponse.creativeType === 'DISPLAY'}"
+                                class="btn arrowBtn">Display
+                                Ads</button>
+                            <button type="button" [ngClass]="{'btnBlue': apiResponse.creativeType === 'VIDEO'}"
+                                class="btn arrowBtn ml-4">Video
+                                Ads</button>
+                        </div>
+                        <div *ngFor="let rscore of apiResponse.customRuleRangesResponse; let i = index"
+                            class="w-100 mb-4 rangeform">
+                            <h4 class="subHeading mb-3">{{ rscore.name | titlecase }}</h4>
+                            <div class="w-100">
+
+                                <div *ngFor="let level of rscore.customRuleRangeScores; let j = index"
+                                    class="row align-items-center">
+                                    <div class="col-md-3">
+                                        <label for="" class="mb">{{ level.name| titlecase }} range</label>
+                                    </div>
+                                    <div class="col-md-9">
+
+                                        <div class="w-100">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="">From</label>
+
+                                                    <div>
+                                                        <div class="border p-2 bg-light form-control disabled"
+                                                            disabled="disabled">
+                                                            {{level.from}}
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="">Condition</label>
+
+                                                    <div class="w-100 p-2 form-control disabled bg-light border">
+                                                        {{level.condition}}
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-3">
+
+
+                                                    <div>
+                                                        <label for="">To</label>
+                                                        <div class="border p-2 form-control disabled bg-light">
+                                                            {{level.to}}
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="w-100">
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="w-100 p-3 rounded-3 shadow shadow-lg bg-white">
+                                    <button
+                                        class="btn mb-3 btn-light arrowBtn py-3 rounded-4 d-flex align-items-center justify-content-between w-100">
+                                        <span>Weights</span>
+
+                                        <span class="arrowIcon">
+                                            &#10094;
+                                        </span>
+                                    </button>
+
+                                    <div *ngFor="let weight of apiResponse.customRuleWeightsResponse"
+                                        class="w-100 mb-4 rangeform">
+                                        <h4 class="subHeading mb-3">{{weight.name}}</h4>
+                                        <div class="w-100 bg-info-alert p-1 rolecreatealert">
+
+                                            {{ weight.name }} =
+                                            <span *ngFor="let score of weight.scores; let i = index">
+                                                {{ score.name }} {{score?.weight}}
+                                                <small *ngIf="i < weight.scores.length - 1"> + </small>
+                                            </span>
+
+                                        </div>
+                                        <div class="w-100">
+                                            <div class="row">
+                                                <div *ngFor="let wt of weight.scores" class="col-md-4">
+                                                    <label for="">{{wt.name}}</label>
+                                                    <input type="text" [(ngModel)]="wt.weight" class="form-control">
+                                                    <div class="text-danger" *ngIf="weight.invalidWeight">
+                                                        The total weight must be 100.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

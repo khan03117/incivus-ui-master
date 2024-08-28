@@ -42,6 +42,7 @@ import { AddMediaAccountComponent } from "./components/media-channels/add-media-
 import { MediaAccountListComponent } from "./components/media-channels/media-list-channels/media-list.component";
 import { RulesComponent } from './customrules/rules.component';
 import { RuleCreateComponent } from './customrulecreate/rule-create.component';
+import { RuleMatrixShowComponent } from './customrulecreate/rule-matrix-show/rule-matrix-show.component';
 
 const routes: Routes = [
   {
@@ -232,6 +233,10 @@ const routes: Routes = [
         path: "create",
         component: RuleCreateComponent,
       },
+      {
+        path: "show/:id/:type",
+        component: RuleMatrixShowComponent,
+      },
     ],
   },
   {
@@ -272,4 +277,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
