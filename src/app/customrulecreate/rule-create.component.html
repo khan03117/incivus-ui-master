@@ -17,201 +17,248 @@
                     {{saved}}
                 </div>
                 <div class="w-full p-3 shadow shadow-lg rounded-3">
-                    <div *ngIf="!stepOne" class="w-100">
-                        <div class="row text-left">
-                            <div class="col-md-6 mb-3">
-                                <label for="name" class="mb-2 block">Role name</label>
-                                <input type="text" name="name" id="name" class="form-control" [(ngModel)]="ruleObj.name"
-                                    aria-required="true">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="brands" class="mb-2 block">Select Brands</label>
-                                <nz-form-item>
-                                    <nz-form-control>
-                                        <nz-input-group nzSearch nzSize="large">
-                                            <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
-                                                [nzShowArrow]="true" [nzOptionOverflowSize]="8" nzMode="multiple"
-                                                nzPlaceHolder="Select Brand" [(ngModel)]="selectedBrands" name="brands">
-                                                <ng-container *ngIf="brands && brands.length > 0">
-                                                    <nz-option *ngFor="let brand of brands" [nzValue]="brand.id"
-                                                        [nzLabel]="brand.title">
-                                                    </nz-option>
-                                                </ng-container>
-                                            </nz-select>
-                                            <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length
-                                                }}</ng-template>
-                                        </nz-input-group>
-                                    </nz-form-control>
-                                </nz-form-item>
-                            </div>
+                    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+                        <div class="w-100">
+                            <div class="row text-left">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="mb-2 block">Role name</label>
+                                    <input type="text" name="name" id="name" class="form-control"
+                                        [(ngModel)]="ruleObj.name" aria-required="true" required #name="ngModel"
+                                        [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}">
+                                    <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                        class="text-danger text-erorshow">
+                                        Role name is required.
+                                    </div>
+                                </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="channels" class="mb-2 block">Select Channels</label>
-                                <nz-form-item>
-                                    <nz-form-control>
-                                        <nz-input-group nzSearch nzSize="large">
-                                            <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
-                                                [nzShowArrow]="true" [nzOptionOverflowSize]="8" nzMode="multiple"
-                                                nzPlaceHolder="Select Channels" [(ngModel)]="selectedChannels"
-                                                name="channels">
-                                                <ng-container *ngIf="channels && channels.length > 0">
-                                                    <nz-option *ngFor="let channel of channels" [nzValue]="channel.id"
-                                                        [nzLabel]="channel.title">
-                                                    </nz-option>
-                                                </ng-container>
-                                            </nz-select>
-                                            <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length
-                                                }}</ng-template>
-                                        </nz-input-group>
-                                    </nz-form-control>
-                                </nz-form-item>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="mark_as_default" class="mb-2 block">Mark as default</label>
-                                <select name="mark_as_default" id="mark_as_default" class="form-control"
-                                    [(ngModel)]="ruleObj.isDefault" aria-required="true">
-                                    <option value="">Select</option>
-                                    <option value="true">Yes</option>
-                                    <!-- Add more options here -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="w-100 ">
-                                    <span></span>
+                                <div class="col-md-6 mb-3">
+                                    <label for="brands" class="mb-2 block">Select Brands</label>
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <nz-input-group nzSearch nzSize="large">
+                                                <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                    [nzShowArrow]="true" [nzOptionOverflowSize]="8" nzMode="multiple"
+                                                    nzPlaceHolder="Select Brand" [(ngModel)]="selectedBrands"
+                                                    name="brnds" #brnds="ngModel" required>
+                                                    <ng-container *ngIf="brands && brands.length > 0">
+                                                        <nz-option *ngFor="let brand of brands" [nzValue]="brand.id"
+                                                            [nzLabel]="brand.title">
+                                                        </nz-option>
+                                                    </ng-container>
+                                                </nz-select>
+                                                <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length
+                                                    }}</ng-template>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <div *ngIf="brnds.invalid && (brnds.dirty || brnds.touched)"
+                                        class="text-danger text-erorshow">
+                                        Please select at least one brand.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="channels" class="mb-2 block">Select Channels</label>
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <nz-input-group nzSearch nzSize="large">
+                                                <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                    [nzShowArrow]="true" [nzOptionOverflowSize]="8" nzMode="multiple"
+                                                    nzPlaceHolder="Select Channels" [(ngModel)]="selectedChannels"
+                                                    name="channels" #channels="ngModel" required>
+                                                    <ng-container *ngIf="channelsList && channelsList.length > 0">
+                                                        <nz-option *ngFor="let channel of channelsList"
+                                                            [nzValue]="channel.id" [nzLabel]="channel.title">
+                                                        </nz-option>
+                                                    </ng-container>
+                                                </nz-select>
+                                                <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length
+                                                    }}</ng-template>
+                                            </nz-input-group>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <div *ngIf="channels.invalid && (channels.dirty || channels.touched)"
+                                        class="text-danger text-erorshow">
+                                        Please select at least one channel.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="mark_as_default" class="mb-2 block">Mark as default</label>
+                                    <select name="mark_as_default" #mark_as_default="ngModel" id="mark_as_default"
+                                        class="form-control" [(ngModel)]="ruleObj.isDefault" aria-required="true"
+                                        required>
+                                        <option value="">Select</option>
+                                        <option [value]="!ruleObj.isDefault">Yes</option>
+                                        <option [value]="ruleObj.isDefault">No</option>
+                                    </select>
+                                    <div *ngIf="mark_as_default.invalid && (mark_as_default.dirty || mark_as_default.touched)"
+                                        class="text-danger text-erorshow">
+                                        Please select an option.
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 text-right">
-                                <button class="btn btn-light">Cancel</button>
-                                <button class="btn btn-primary ml-3" (click)="onSubmit()">Save</button>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="w-100 ">
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <button type="button" class="btn btn-light">Cancel</button>
+                                    <button [disabled]="form.invalid" class="btn btn-primary ml-3"
+                                        type="submit">Save</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
 
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div *ngIf="ruleId" class="w-100 p-3 rounded-3 shadow shadow-lg bg-white">
-                    <button (click)="changeSaveScore()"
-                        class="btn mb-3 btn-light arrowBtn py-3 rounded-4 d-flex align-items-center justify-content-between w-100">
-                        <span>Ranges</span>
-                        <span *ngIf="!scoreSaved" class="arrowIcon">
-                            &#10094;
-                        </span>
-                        <span *ngIf="scoreSaved" class="arrowIcon">
-                            &#10095;
-                        </span>
+                <form #form="ngForm" (ngSubmit)="saveScores(form)">
+                    <div class="w-100 p-3 rounded-3 shadow shadow-lg bg-white">
+                        <button type="button" (click)="changeSaveScore()"
+                            class="btn mb-3 btn-light arrowBtn py-3 rounded-4 d-flex align-items-center justify-content-between w-100">
+                            <span>Ranges</span>
+                            <span *ngIf="!scoreSaved" class="arrowIcon">
+                                &#10094;
+                            </span>
+                            <span *ngIf="scoreSaved" class="arrowIcon">
+                                &#10095;
+                            </span>
 
-                    </button>
-                    <div *ngIf="!scoreSaved" class="w-100">
-
-
-                        <div class="w-100 mb-3 d-flex ">
-                            <button (click)="handleCreative('DISPLAY')" [ngClass]="{'btnBlue': creative === 'DISPLAY'}"
-                                class="btn arrowBtn">Display Ads</button>
-                            <button (click)="handleCreative('VIDEO')" [ngClass]="{'btnBlue': creative === 'VIDEO'}"
-                                class="btn arrowBtn ml-4">Video Ads</button>
-                        </div>
-
-
-                        <div *ngFor="let rscore of ranges; let i = index" class="w-100 mb-4 rangeform">
-                            <h4 class="subHeading mb-3">{{ rscore.name | titlecase }}</h4>
-                            <div class="w-100">
-                                <div class="d-flex align-items-center text-left">
-                                    <input type="checkbox" [id]="rscore._id" class="form-checkbox mr-1"
-                                        (change)="toggleCheckbox(rscore._id, $event)"
-                                        [checked]="isChecked(rscore._id)" />
-                                    <label [for]="rscore._id" class="mb-0"> Incivus ranges </label>
+                        </button>
+                        <div *ngIf="ruleId" class="w-100">
+                            <div *ngIf="!scoreSaved" class="w-100">
+                                <div class="w-100 mb-3 d-flex ">
+                                    <button type="button" (click)="handleCreative('DISPLAY')"
+                                        [ngClass]="{'btnBlue': creative === 'DISPLAY'}" class="btn arrowBtn">Display
+                                        Ads</button>
+                                    <button type="button" (click)="handleCreative('VIDEO')"
+                                        [ngClass]="{'btnBlue': creative === 'VIDEO'}" class="btn arrowBtn ml-4">Video
+                                        Ads</button>
                                 </div>
-                                <div *ngFor="let level of getScores(rscore); let j = index"
-                                    class="row align-items-center">
-                                    <div class="col-md-3">
-                                        <label for="" class="mb">{{ level.name| titlecase }} range</label>
-                                    </div>
+                                <div *ngFor="let rscore of ranges; let i = index" class="w-100 mb-4 rangeform">
+                                    <h4 class="subHeading mb-3">{{ rscore.name | titlecase }}</h4>
+                                    <div class="w-100">
+                                        <div class="d-flex align-items-center text-left">
+                                            <input type="checkbox" [id]="rscore._id" class="form-checkbox mr-1"
+                                                (change)="toggleCheckbox(rscore._id, $event)"
+                                                [checked]="isChecked(rscore._id)" />
+                                            <label [for]="rscore._id" class="mb-0"> Incivus ranges </label>
+                                        </div>
+                                        <div *ngFor="let level of getScores(rscore); let j = index"
+                                            class="row align-items-center">
+                                            <div class="col-md-3">
+                                                <label for="" class="mb">{{ level.name| titlecase }} range</label>
+                                            </div>
+                                            <div class="col-md-9">
 
-                                    <div class="col-md-9">
+                                                <div class="w-100">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label for="">From</label>
+                                                            <div *ngIf="!isChecked(rscore._id)">
+                                                                <input type="text" name="from{{rscore._id}}_{{j}}"
+                                                                    [(ngModel)]="level.from" placeholder="Enter from"
+                                                                    class="form-control" required #from="ngModel"
+                                                                    [ngClass]="{'is-invalid': from.invalid && (from.dirty || from.touched)}" />
+                                                                <div *ngIf="from.invalid && (from.dirty || from.touched)"
+                                                                    class="text-danger text-erorshow">
+                                                                    From is required.
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="isChecked(rscore._id)">
+                                                                <div class="border p-2 bg-light form-control disabled"
+                                                                    disabled="disabled">
+                                                                    {{getFieldValue(rscore._id, j, 'from')}}
+                                                                </div>
 
-                                        <div class="w-100">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <label for="">From</label>
-                                                    <div *ngIf="!isChecked(rscore._id)">
-                                                        <input type="text" name="from" [(ngModel)]="level.from"
-                                                            placeholder="Enter from" class="form-control" />
-                                                    </div>
-                                                    <div *ngIf="isChecked(rscore._id)">
-                                                        <div class="border p-2 bg-light form-control disabled"
-                                                            disabled="disabled">
-                                                            {{getFieldValue(rscore._id, j, 'from')}}
+                                                            </div>
                                                         </div>
+                                                        <div class="col-md-6">
+                                                            <label for="">Condition</label>
+                                                            <div *ngIf="!isChecked(rscore._id)" class="w-100">
+                                                                <nz-form-item>
+                                                                    <nz-form-control>
+                                                                        <nz-input-group nzSearch nzSize="large">
+                                                                            <nz-select
+                                                                                [disabled]="isChecked(rscore._id)"
+                                                                                [nzMaxTagCount]="2"
+                                                                                [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                                                [nzShowArrow]="true" nzSize="large"
+                                                                                [nzOptionOverflowSize]="8"
+                                                                                nzMode="default"
+                                                                                nzPlaceHolder="Select Channels"
+                                                                                [(ngModel)]="level.condition"
+                                                                                name="channels{{rscore._id}}_{{j}}"
+                                                                                #channels="ngModel" required>
+                                                                                <ng-container
+                                                                                    *ngIf="conditions && conditions.length > 0">
+                                                                                    <nz-option
+                                                                                        *ngFor="let condition of conditions"
+                                                                                        [nzValue]="condition.id"
+                                                                                        [nzLabel]="condition.title"></nz-option>
+                                                                                </ng-container>
+                                                                            </nz-select>
+                                                                            <ng-template #tagPlaceHolder
+                                                                                let-selectedList>+ {{
+                                                                                selectedList.length }}</ng-template>
+                                                                        </nz-input-group>
+                                                                    </nz-form-control>
+                                                                </nz-form-item>
+                                                                <div *ngIf="channels.invalid && (channels.dirty || channels.touched)"
+                                                                    class="text-danger text-erorshow">
+                                                                    Condition is required.
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="isChecked(rscore._id)"
+                                                                class="w-100 p-2 form-control disabled bg-light border">
+                                                                {{ getFieldValue(rscore._id, j, 'condition') }}
+                                                            </div>
 
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="">Condition</label>
-                                                    <div *ngIf="!isChecked(rscore._id)" class="w-100">
-                                                        <nz-form-item>
-                                                            <nz-form-control>
-                                                                <nz-input-group nzSearch nzSize="large">
-                                                                    <nz-select [disabled]="isChecked(rscore._id)"
-                                                                        [nzMaxTagCount]="2"
-                                                                        [nzMaxTagPlaceholder]="tagPlaceHolder"
-                                                                        [nzShowArrow]="true" [nzOptionOverflowSize]="8"
-                                                                        nzMode="default" nzPlaceHolder="Select Channels"
-                                                                        [(ngModel)]="level.condition" name="channels">
-                                                                        <ng-container
-                                                                            *ngIf="conditions && conditions.length > 0">
-                                                                            <nz-option
-                                                                                *ngFor="let condition of conditions"
-                                                                                [nzValue]="condition.id"
-                                                                                [nzLabel]="condition.title">
-                                                                            </nz-option>
-                                                                        </ng-container>
-                                                                    </nz-select>
-                                                                    <ng-template #tagPlaceHolder let-selectedList>+ {{
-                                                                        selectedList.length
-                                                                        }}</ng-template>
-                                                                </nz-input-group>
-                                                            </nz-form-control>
-                                                        </nz-form-item>
-                                                    </div>
-                                                    <div *ngIf="isChecked(rscore._id)"
-                                                        class="w-100 p-2 form-control disabled bg-light border">
-                                                        {{getFieldValue(rscore._id, j, 'condition')}}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label for="">To</label>
-                                                    <div *ngIf="!isChecked(rscore._id)">
-                                                        <input type="text" name="from" [(ngModel)]="level.to"
-                                                            placeholder="Enter from" class="form-control" />
-                                                    </div>
-                                                    <div *ngIf="isChecked(rscore._id)">
-                                                        <div class="border p-2 form-control disabled bg-light">
-                                                            {{getFieldValue(rscore._id, j, 'to')}}
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <label for="">To</label>
+                                                            <div *ngIf="!isChecked(rscore._id)">
+                                                                <input type="text" name="to{{rscore._id}}_{{j}}"
+                                                                    [(ngModel)]="level.to" placeholder="Enter to"
+                                                                    class="form-control" required #to="ngModel"
+                                                                    [ngClass]="{'is-invalid': to.invalid && (to.dirty || to.touched)}" />
+                                                                <div *ngIf="to.invalid && (to.dirty || to.touched)"
+                                                                    class="text-danger text-erorshow">
+                                                                    To is required.
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="isChecked(rscore._id)">
+                                                                <div class="border p-2 form-control disabled bg-light">
+                                                                    {{getFieldValue(rscore._id, j, 'to')}}
+                                                                </div>
 
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div class="w-100 mt-5">
+                                    <div class="d-flex justify-content-between">
+                                        <span></span>
+                                        <button type="submit" [disabled]="form.invalid"
+                                            class="btn btn-primary">Save</button>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                        </div>
-                        <div class="w-100 mt-5">
-                            <div class="d-flex justify-content-between">
-                                <span></span>
-                                <button (click)="saveScores()" class="btn btn-primary">Save</button>
-                            </div>
-                        </div>
                     </div>
-
-                </div>
+                </form>
             </div>
         </div>
         <div *ngIf="scoreSaved" class="row justify-content-center">

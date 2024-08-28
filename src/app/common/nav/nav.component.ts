@@ -38,7 +38,7 @@ export class NavComponent implements OnInit {
     private eventBusService: EventBusService,
     private storageService: StorageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (document.body.classList.contains("navCollapse")) {
@@ -95,6 +95,8 @@ export class NavComponent implements OnInit {
         this.page = campaignName[campaignName.length - 1];
       } else if (url.includes("/compare")) {
         this.page = "compare";
+      } else if (url.includes("/custom-rules")) {
+        this.page = "custom-rules/list";
       } else {
         this.page = "company";
       }

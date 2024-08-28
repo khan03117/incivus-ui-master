@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RuleService } from '../_services/rule.service';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 
 interface Brand {
   id: string;
@@ -54,6 +54,7 @@ interface RulesRangesDto {
   styleUrls: ['./rule-create.component.less'],
 })
 export class RuleCreateComponent implements OnInit {
+  @ViewChild('form') form: NgForm;
   formGroup: FormGroup;
   checkedIds: Set<string> = new Set();
   toggleCheckbox(rangeId: string, event: any) {
@@ -86,8 +87,8 @@ export class RuleCreateComponent implements OnInit {
   ruleId = "";
   ranges: any = [];
   rangeScores: any = [];
-  channels: Channel[] = [];
-  conditions: any = [{ title: 'more than or equal to', id: "<=" }, { title: "less than", 'id': "<" }, { title: "more than", id: ">" }];
+  channelsList: Channel[] = [];
+  conditions: any = [{ title: 'more than or equal to', id: "<=x<" }, { title: "less than", 'id': "<" }, { title: "more than", id: ">=" }];
 
   ruleObj: RuleObj = {
     name: '',
@@ -113,8 +114,18 @@ export class RuleCreateComponent implements OnInit {
   changeSaveScore() {
     this.scoreSaved = false;
   }
-  saveScores() {
-    this.scoreSaved = true;
+  saveScores(form: any) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      console.log(`${field} Control:`, control);
+      control.markAsTouched({ onlySelf: true });
+    });
+    if (form.valid) {
+      this.scoreSaved = true;
+    } else {
+      console.log('form invalid')
+      form.control.markAllAsTouched();
+    }
   }
   getScores(rscore: any) {
     return this.creative === 'VIDEO' ? rscore.videoruleRangeScores : rscore.ruleRangeScores;
@@ -132,7 +143,7 @@ export class RuleCreateComponent implements OnInit {
         console.error(error);
       }
     );
-    this.channels = [
+    this.channelsList = [
       { id: 'TIKTOK', title: 'TIKTOK' },
       { id: 'YOUTUBE', title: 'YOUTUBE' },
       { id: 'META', title: 'META' }
@@ -173,24 +184,32 @@ export class RuleCreateComponent implements OnInit {
     };
   }
 
-  onSubmit() {
-
-    this.ruleObj.brandNames = this.selectedBrands;
-    this.ruleObj.channels = this.selectedChannels;
-    this.ruleObj.isDefault = !!this.ruleObj.isDefault;
-    this.ruleObj.userId = this.clientId;
-    this.ruleService.createRule(this.ruleObj).subscribe(
-      response => {
-        if (response._id) {
-          this.ruleId = response._id;
-          this.stepOne = true;
+  onSubmit(form: any) {
+    Object.keys(form.controls).forEach(field => {
+      const control = form.controls[field];
+      control.markAsTouched({ onlySelf: true });
+    });
+    if (form.valid) {
+      this.ruleObj.brandNames = this.selectedBrands;
+      this.ruleObj.channels = this.selectedChannels;
+      this.ruleObj.isDefault = !!this.ruleObj.isDefault;
+      this.ruleObj.userId = this.clientId;
+      this.ruleService.createRule(this.ruleObj).subscribe(
+        response => {
+          if (response._id) {
+            this.ruleId = response._id;
+            this.stepOne = true;
+          }
+        },
+        error => {
+          console.error('Error creating rule', error);
         }
-      },
-      error => {
-        console.error('Error creating rule', error);
-      }
-    );
-    console.log(this.rangeScores);
+      );
+      console.log(this.rangeScores);
+    } else {
+      console.log('form invalid values');
+      form.control.markAllAsTouched()
+    }
   }
   onRuleCreate() {
     this.ruleWeights = this.weights.flatMap((category: any) =>

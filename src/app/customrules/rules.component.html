@@ -7,7 +7,7 @@
             <!-- <button class="btn btn-outline-primary">
                 Edit Column Header
             </button> -->
-            <a [routerLink]="['/reports/rules/create']" class="btn btn-primary ms-3 ml-3">
+            <a [routerLink]="['/custom-rules/create']" class="btn btn-primary ms-3 ml-3">
                 + Add new rules
             </a>
         </nz-space>
@@ -40,7 +40,7 @@
             <td>{{ rule.market.join(', ') }}</td>
             <td>{{ rule.channels.join(', ').toUpperCase() }}</td>
             <td>{{ rule.isDefault ? 'Yes' : 'No' }}</td>
-            
+
             <td>
                 <a [routerLink]="['/reports/rules/show/'+rule._id + '/DISPLAY']" class="btn btn-primary ms-3 ml-3">
                     Show
