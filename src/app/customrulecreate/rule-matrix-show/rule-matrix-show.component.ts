@@ -13,7 +13,6 @@ export class RuleMatrixShowComponent implements OnInit {
   creativeType: string | null = 'DISPLAY';
   apiResponse: any = [];
   customRuleWeightsResponse: any = {};
-
   constructor(
     private ruleService: RuleService,
     private fb: FormBuilder,
@@ -25,8 +24,6 @@ export class RuleMatrixShowComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.ruleId = params.get('ruleId');
       this.creativeType = params.get('creativeType');
-      console.log('Updated ruleId:', this.ruleId);
-      console.log('Updated creativeType:', this.creativeType);
 
       // Make sure to call the API only if both parameters are available
       if (this.ruleId && this.creativeType) {

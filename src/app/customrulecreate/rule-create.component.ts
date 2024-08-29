@@ -57,6 +57,7 @@ export class RuleCreateComponent implements OnInit {
   @ViewChild('form') form: NgForm;
   formGroup: FormGroup;
   checkedIds: Set<string> = new Set();
+  isDefaults: any = [{ id: true, label: 'Yes' }, { id: false, label: 'No' }];
   toggleCheckbox(rangeId: string, event: any) {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
@@ -73,6 +74,7 @@ export class RuleCreateComponent implements OnInit {
     const index = this.rangeScores.findIndex((obj: { _id: string; }) => obj._id === id);
     return this.rangeScores[index][arr][idx][key];
   }
+  isFormInvalid: boolean = false;
   scoreSaved: boolean = false;
   clientId: string = "";
   brands: Brand[] = [];
@@ -110,6 +112,11 @@ export class RuleCreateComponent implements OnInit {
     }, 0);
 
     itm.invalidWeight = totalWeight !== 100;
+    console.log(`Weight validation for ${itm.name}: ${itm.invalidWeight}`); // Debugging line
+    this.checkFormValidity();
+  }
+  checkFormValidity(): void {
+    this.isFormInvalid = this.weights.some((weight: { invalidWeight: any; }) => weight.invalidWeight);
   }
   changeSaveScore() {
     this.scoreSaved = false;
@@ -212,48 +219,54 @@ export class RuleCreateComponent implements OnInit {
     }
   }
   onRuleCreate() {
-    this.ruleWeights = this.weights.flatMap((category: any) =>
-      category.scores.map((score: any) => ({
-        weightNames: score._id,
-        weight: score.weight
-      }))
-    );
-    const allRangeScores = this.ranges.map((rscore: any) => {
-      console.log(rscore)
-      if (this.checkedIds.has(rscore._id)) {
-        const index = this.rangeScores.findIndex((r: { _id: any; }) => r._id == rscore._id);
-        const scores = this.creative === 'VIDEO' ? 'videoruleRangeScores' : 'ruleRangeScores';
-        return {
-          rangeNames: rscore._id,
-          ruleRangesScores: this.rangeScores[index][scores]
-        };
-      } else {
-        // If not checked, keep the incoming ruleRangesScores
-        return {
-          rangeNames: rscore._id,
-          ruleRangesScores: rscore.ruleRangeScores
-        };
-      }
-    });
-    const obj = {
-      'ruleWeights': this.ruleWeights,
-      'rulesRanges': allRangeScores,
-      'creativeType': this.creative,
-      'customRuleId': this.ruleId
-    }
-    console.log(obj)
-    this.ruleService.saveRuleWeight(obj).subscribe(
-      (resp: any) => {
-        if (resp.code === 200) {
-          this.saved = "Rule score saved successfully for " + this.creative + " creative type";
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (!this.isFormInvalid) {
+      this.ruleWeights = this.weights.flatMap((category: any) =>
+        category.scores.map((score: any) => ({
+          weightNames: score._id,
+          weight: score.weight
+        }))
+      );
+      const allRangeScores = this.ranges.map((rscore: any) => {
+
+        if (this.checkedIds.has(rscore._id)) {
+          const index = this.rangeScores.findIndex((r: { _id: any; }) => r._id == rscore._id);
+          const scores = this.creative === 'VIDEO' ? 'videoruleRangeScores' : 'ruleRangeScores';
+          return {
+            rangeNames: rscore._id,
+            ruleRangeScores: this.rangeScores[index][scores]
+          };
+        } else {
+          const index1 = this.rangeScores.findIndex((r: { _id: any; }) => r._id == rscore._id);
+          const scores1 = this.creative === 'VIDEO' ? 'videoruleRangeScores' : 'ruleRangeScores';
+          return {
+            rangeNames: rscore._id,
+            ruleRangeScores: rscore.ruleRangeScores ?? this.rangeScores[index1][scores1]
+          };
         }
-      },
-      (err: any) => {
-        console.log(err)
+      });
+      const obj = {
+        'ruleWeights': this.ruleWeights,
+        'rulesRanges': allRangeScores,
+        'creativeType': this.creative,
+        'customRuleId': this.ruleId
       }
-    )
-    console.log(obj)
+      console.log(obj)
+      this.ruleService.saveRuleWeight(obj).subscribe(
+        (resp: any) => {
+          if (resp.code === 200) {
+            this.saved = "Rule score saved successfully for " + this.creative + " creative type";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        },
+        (err: any) => {
+          console.log(err)
+        }
+      )
+      console.log(obj)
+    } else {
+      alert('Weight form is invalid')
+    }
   }
 
   handleCreative(type: string) {

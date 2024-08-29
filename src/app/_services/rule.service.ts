@@ -77,6 +77,8 @@ export class RuleService {
   showRule(ruleId: string, creative: string) {
     return this.httpClient.get(this.apiUrl + "rule_matrix?customRuleID=" + ruleId + "&creativeType=" + creative, { headers: headers, withCredentials: true });
   }
-
+  getRuleOnReport(id: string, type: string) {
+    return this.httpClient.get(this.apiUrl + "custom_rule_view/artifactId?artifactId=" + id, { headers: headers, withCredentials: true });
+  }
 }
 

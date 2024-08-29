@@ -9,12 +9,12 @@ import { Range } from 'src/app/common/models/range.model';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { EventBusService } from 'src/app/_shared/event-bus.service';
 import { EventData } from 'src/app/_shared/event.class';
- 
+
 interface ItemData {
   id: string;
   brand: string;
 }
- 
+
 @Component({
   selector: 'app-comparison',
   templateUrl: './comparison.component.html',
@@ -38,7 +38,7 @@ export class ComparisonComponent {
   bcExpand: boolean = false;
   dcExpand: boolean = false;
   eiExpand: boolean = false;
-  showOptimizedForSound:boolean=true;
+  showOptimizedForSound: boolean = true;
   Range: any;
   adList: any = [];
   inputObj: any = {};
@@ -50,7 +50,7 @@ export class ComparisonComponent {
       link: "/compare/creative"
     }
   ];
- 
+
   constructor(
     private viewContainerRef: ViewContainerRef,
     private dynamicModalService: DynamicModalComponentService,
@@ -60,21 +60,21 @@ export class ComparisonComponent {
     private service: AppServices,
     private modal: NzModalService,
     private eventBusService: EventBusService
-  ) {}
- 
+  ) { }
+
   ngOnInit() {
     setTimeout(() => {
       this.eventBusService.emit(new EventData('startFull', ''));
       this.Range = Range;
       this.user = this.storage.getUser();
-      if( this.user) {
+      if (this.user) {
         this.productBrand = this.user.brands;
       }
       this.compareId = this.route.snapshot.params["compareId"] ? this.route.snapshot.params["compareId"] : 'create';
       this.selection = localStorage.getItem("compareIds");
-      if(this.selection) {
+      if (this.selection) {
         this.selection = JSON.parse(this.selection);
-        if( this.selection.title) {
+        if (this.selection.title) {
           this.breadcrumb.push({
             name: this.capitalizeFirstLetter(this.selection.title),
             link: null
@@ -85,7 +85,6 @@ export class ComparisonComponent {
             link: null
           });
         }
-        
         this.compareType = this.selection.type;
       } else {
         //this.router.navigate(["compare","creative"]);
@@ -93,42 +92,42 @@ export class ComparisonComponent {
       this.getAdsByBrand();
     }, 0);
   }
- 
+
   capitalizeFirstLetter(name: string) {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
- 
+
   getAdsByBrand() {
     this.service.getArtifactByBrand().subscribe({
-      next : (data: any) => {
+      next: (data: any) => {
         this.adsByBrand = data;
-        if( this.selection) {
-          
-          this.brandArray = this.selection.adSet.map( (item: any) => { return item.brand });
+        if (this.selection) {
+
+          this.brandArray = this.selection.adSet.map((item: any) => { return item.brand });
           this.compareName = this.selection.title;
           this.compareObj = [];
-            this.selection.adSet.forEach((item:any) => {
-              this.selectedIndex = 0;
-              this.getAdDetails(item.id);
-            });
+          this.selection.adSet.forEach((item: any) => {
+            this.selectedIndex = 0;
+            this.getAdDetails(item.id);
+          });
         }
       }
     });
   }
- 
-  getAdDetails(id:string) {
+
+  getAdDetails(id: string) {
     this.service.getAdCompareReport(id, this.selection.type).subscribe({
-      next : (data:any) => {
+      next: (data: any) => {
         if (data) {
           let reportData = data;
           this.compareObj[this.selectedIndex] = reportData;
-          if(this.compareObj[this.selectedIndex].optimizedForSound==null){
-            this.showOptimizedForSound=false;
+          if (this.compareObj[this.selectedIndex].optimizedForSound == null) {
+            this.showOptimizedForSound = false;
           }
           if (this.selection) {
             this.selectedIndex++;
           }
-          if( this.selectedIndex >= this.selection.adSet.length ) {
+          if (this.selectedIndex >= this.selection.adSet.length) {
             this.eventBusService.emit(new EventData('loader', 'stopFull'));
           }
           this.closeSelectAd();
@@ -136,26 +135,26 @@ export class ComparisonComponent {
       }
     });
   }
-  
-  openSaveFolderModal(){
+
+  openSaveFolderModal() {
     this.dynamicModalService.createComponentModal('', SaveFolderComponent, this.viewContainerRef);
     this.dynamicModalService.updateModalCotentComponent(MODALCOMPONENT.SAVE_FOLDER);
   }
- 
+
   closeSelectAd() {
     const modalOverlay = document.getElementById('overlayModal') as HTMLElement;
     const modalAdSelector = document.getElementById('adPickerModal') as HTMLElement;
     modalOverlay.style.display = "none";
     modalAdSelector.style.display = 'none';
   }
- 
+
   addNewComp() {
-    if( this.compareObj[this.compareObj.length - 1] ) {
+    if (this.compareObj[this.compareObj.length - 1]) {
       this.compareObj.push(null);
       this.brandArray.push(null);
     }
   }
- 
+
   selectAd(index: number) {
     if (!this.brandArray[index]) {
       this.modal.error({
@@ -165,7 +164,7 @@ export class ComparisonComponent {
         nzClosable: false,
         nzMaskClosable: false,
         nzKeyboard: false,
-        nzOnOk: () => {}
+        nzOnOk: () => { }
       });
       return;
     } else {
@@ -174,12 +173,12 @@ export class ComparisonComponent {
       const modalAdSelector = document.getElementById('adPickerModal') as HTMLElement;
       modalOverlay.style.display = "block";
       modalAdSelector.style.display = 'block';
-      this.adList = this.adsByBrand.filter((item:any) => {
+      this.adList = this.adsByBrand.filter((item: any) => {
         return item.metadata.artifactType === this.compareType && item.metadata.brand === this.brandArray[index];
       });
     }
   }
- 
+
   removeAd(index: number) {
     this.brandArray.splice(index, 1);
     this.compareObj.splice(index, 1);
@@ -190,15 +189,15 @@ export class ComparisonComponent {
       this.brandArray.push(null);
     }
   }
- 
+
   selectBrand(event: any, index: number) {
-    
-    let brandAds = this.adsByBrand.filter((item:any)=> {
+
+    let brandAds = this.adsByBrand.filter((item: any) => {
       return item.metadata.brand === event;
     });
-    
+
     if (brandAds.length) {
- 
+
       if (this.brandArray[index] !== event) {
         this.compareObj[index] = null;
       }
@@ -211,19 +210,19 @@ export class ComparisonComponent {
         nzClosable: false,
         nzMaskClosable: false,
         nzKeyboard: false,
-        nzOnOk: () => {}
+        nzOnOk: () => { }
       });
       return;
     }
   }
- 
+
   toggleAdSelection(evt: any, ad: any) {
-    let isAlreadySelected = this.compareObj.filter(function (item:any) {
+    let isAlreadySelected = this.compareObj.filter(function (item: any) {
       return item && item.artifactId == ad.metadata.id;
     });
- 
+
     evt.target.checked = false;
- 
+
     if (isAlreadySelected.length) {
       this.modal.error({
         nzTitle: "Error",
@@ -232,13 +231,13 @@ export class ComparisonComponent {
         nzClosable: false,
         nzMaskClosable: false,
         nzKeyboard: false,
-        nzOnOk: () => {}
+        nzOnOk: () => { }
       });
     } else {
       this.getAdDetails(ad.metadata.id);
     }
   }
- 
+
   checkCompareName() {
     if (this.selection && this.selection.title && this.selection.title.toLowerCase() === this.compareName.toLowerCase()) {
       this.save();
@@ -246,12 +245,12 @@ export class ComparisonComponent {
       let pattern = /^[a-zA-Z0-9]+(?:[\w -]*[a-zA-Z0-9]+)*$/;
       if (this.compareName.match(pattern)) {
         this.service.checkName(this.compareName).subscribe({
-          next: (data:any) => {
+          next: (data: any) => {
             this.save();
             return;
           },
           error: err => {
-            if( err && err.error && err.error.errorCode === 'Name_Exist') {
+            if (err && err.error && err.error.errorCode === 'Name_Exist') {
               this.modal.error({
                 nzTitle: "Error",
                 nzContent: "The name entered is already been used please use other name",
@@ -259,7 +258,7 @@ export class ComparisonComponent {
                 nzClosable: false,
                 nzMaskClosable: false,
                 nzKeyboard: false,
-                nzOnOk: () => {}
+                nzOnOk: () => { }
               });
             } else {
               this.modal.error({
@@ -269,7 +268,7 @@ export class ComparisonComponent {
                 nzClosable: false,
                 nzMaskClosable: false,
                 nzKeyboard: false,
-                nzOnOk: () => {}
+                nzOnOk: () => { }
               });
             }
           }
@@ -282,20 +281,20 @@ export class ComparisonComponent {
           nzClosable: false,
           nzMaskClosable: false,
           nzKeyboard: false,
-          nzOnOk: () => {}
+          nzOnOk: () => { }
         });
         return;
       }
     }
   }
- 
+
   save() {
     let inputObj = this.inputObj;
     const modalOverlay = document.getElementById('overlayModal') as HTMLElement;
     const modalcompareName = document.getElementById('compareNameModal') as HTMLElement;
     modalOverlay.style.display = "none";
     modalcompareName.style.display = 'none';
- 
+
     if (this.compareId) {
       inputObj["id"] = this.compareId === 'create' ? "" : this.compareId;
     }
@@ -323,7 +322,7 @@ export class ComparisonComponent {
             nzClosable: false,
             nzMaskClosable: false,
             nzKeyboard: false,
-            nzOnOk: () => {}
+            nzOnOk: () => { }
           });
         }
       },
@@ -335,20 +334,20 @@ export class ComparisonComponent {
           nzClosable: false,
           nzMaskClosable: false,
           nzKeyboard: false,
-          nzOnOk: () => {}
+          nzOnOk: () => { }
         });
       }
     });
   }
- 
+
   saveCompare() {
     let nonNullElement = 0;
     let totalObj = this.compareObj.length;
- 
+
     for (var i = 0; i < totalObj; i++) {
       nonNullElement += (this.compareObj[i]) ? 1 : 0;
     }
- 
+
     if (nonNullElement < 2) {
       this.modal.error({
         nzTitle: "Error",
@@ -357,40 +356,39 @@ export class ComparisonComponent {
         nzClosable: false,
         nzMaskClosable: false,
         nzKeyboard: false,
-        nzOnOk: () => {}
+        nzOnOk: () => { }
       });
       return;
     } else {
       this.adSetInput.clear();
-      this.compareObj.forEach( (compareO: any, index: number) => {
-        if( compareO ) {
-          this.adSetInput.add({'brand': this.brandArray[index], 'id': compareO.artifactId});
+      this.compareObj.forEach((compareO: any, index: number) => {
+        if (compareO) {
+          this.adSetInput.add({ 'brand': this.brandArray[index], 'id': compareO.artifactId });
         }
       });
- 
+
       let inputObj = {
         'adIds': Array.from(this.adSetInput),
         'compareType': this.selection.type
       }
- 
+
       this.inputObj = inputObj;
       this.openNameModal();
     }
   }
- 
+
   openNameModal() {
     const modalOverlay = document.getElementById('overlayModal') as HTMLElement;
     const modalcompareName = document.getElementById('compareNameModal') as HTMLElement;
     modalOverlay.style.display = "block";
     modalcompareName.style.display = 'block';
   }
- 
+
   closeCompareName() {
     const modalOverlay = document.getElementById('overlayModal') as HTMLElement;
     const modalcompareName = document.getElementById('compareNameModal') as HTMLElement;
     modalOverlay.style.display = "none";
     modalcompareName.style.display = 'none';
   }
-  
+
 }
- 

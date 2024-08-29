@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12 mb-4">
                 <div class="w-100 bg-info-alert p-1 rolecreatealert">
-                    You can edit ranges and weights for the matrics
+                    You can edit ranges and weights for the matrics {{isFormInvalid ? 'yes' : 'no'}}
                 </div>
             </div>
             <div class="col-md-8">
@@ -37,7 +37,7 @@
                                         <nz-form-control>
                                             <nz-input-group nzSearch nzSize="large">
                                                 <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
-                                                    [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                    [nzShowArrow]="true" nzSize="small" [nzOptionOverflowSize]="8"
                                                     nzMode="multiple" nzPlaceHolder="Select Brand"
                                                     [(ngModel)]="selectedBrands" name="brnds" #brnds="ngModel" required>
                                                     <ng-container *ngIf="brands && brands.length > 0">
@@ -89,9 +89,10 @@
                                     <select name="mark_as_default" #mark_as_default="ngModel" id="mark_as_default"
                                         class="form-control" [(ngModel)]="ruleObj.isDefault" aria-required="true"
                                         required>
-                                        <option value="">Select</option>
-                                        <option [value]="!ruleObj.isDefault">Yes</option>
-                                        <option [value]="ruleObj.isDefault">No</option>
+
+                                        <option *ngFor="let item of isDefaults" [value]="item.id">{{item.label}}
+                                        </option>
+
                                     </select>
                                     <div *ngIf="mark_as_default.invalid && (mark_as_default.dirty || mark_as_default.touched)"
                                         class="text-danger text-erorshow">
@@ -165,7 +166,7 @@
                                                             <div *ngIf="!isChecked(rscore._id)">
                                                                 <input type="text" name="from{{rscore._id}}_{{j}}"
                                                                     [(ngModel)]="level.from" placeholder="Enter from"
-                                                                    class="form-control" required #from="ngModel"
+                                                                    class="form-control" #from="ngModel"
                                                                     [ngClass]="{'is-invalid': from.invalid && (from.dirty || from.touched)}" />
                                                                 <div *ngIf="from.invalid && (from.dirty || from.touched)"
                                                                     class="text-danger text-erorshow">
@@ -273,36 +274,46 @@
                             &#10094;
                         </span>
                     </button>
+                    <form #form="ngForm" (ngSubmit)="onRuleCreate()" novalidate>
 
-                    <div *ngFor="let weight of weights" class="w-100 mb-4 rangeform">
-                        <h4 class="subHeading mb-3">{{weight.name}}</h4>
-                        <div class="w-100 bg-info-alert p-1 rolecreatealert">
 
-                            {{ weight.name }} =
-                            <span *ngFor="let score of weight.scores; let i = index">
-                                {{ score.name }} {{score?.weight}}
-                                <small *ngIf="i < weight.scores.length - 1"> + </small>
-                            </span>
+                        <div *ngFor="let weight of weights" class="w-100 mb-4 rangeform">
+                            <h4 class="subHeading mb-3">{{weight.name}}</h4>
+                            <div class="w-100 bg-info-alert p-1 rolecreatealert">
 
-                        </div>
-                        <div class="w-100">
-                            <div class="row">
-                                <div *ngFor="let wt of weight.scores" class="col-md-4">
-                                    <label for="">{{wt.name}}</label>
-                                    <input type="text" [(ngModel)]="wt.weight" (ngModelChange)="validateWeight(weight)"
-                                        class="form-control">
-                                    <div class="text-danger" *ngIf="weight.invalidWeight">
-                                        The total weight must be 100.
+                                {{ weight.name }} =
+                                <span *ngFor="let score of weight.scores; let i = index">
+                                    {{ score.name }} {{score?.weight}}
+                                    <small *ngIf="i < weight.scores.length - 1"> + </small>
+                                </span>
+
+                            </div>
+                            <div class="w-100">
+                                <div class="row">
+                                    <div *ngFor="let wt of weight.scores; let k = index;" class="col-md-4">
+                                        <label for="">{{wt.name}}</label>
+                                        <input type="text" [(ngModel)]="wt.weight"
+                                            (ngModelChange)="validateWeight(weight)" class="form-control"
+                                            name="{{ wt.name }}{{k}}" [ngClass]="" required #wtField="ngModel"
+                                            [ngClass]="{'is-invalid': wtField.invalid && (wtField.dirty || wtField.touched)}">
+                                        <div class="text-danger"
+                                            *ngIf="wtField.invalid && (wtField.dirty || wtField.touched)">
+                                            Weight is required.
+                                        </div>
+                                        <div class="text-danger" *ngIf="weight.invalidWeight">
+                                            The total weight must be 100.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
 
                     <div class="w-100 mt-5">
                         <div class="d-flex justify-content-between">
                             <span></span>
-                            <button (click)="onRuleCreate()" class="btn btn-primary">Save</button>
+                            <button (click)="onRuleCreate()" [disabled]="isFormInvalid || form.invalid"
+                                class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>

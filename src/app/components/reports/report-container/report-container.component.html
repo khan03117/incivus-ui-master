@@ -28,7 +28,7 @@
                     </table>
                 </div>
                 <div class="meta-content" *ngIf="!isVideoReport">
-                    <table>
+                    <table class="table table-borderless">
                         <tr>
                             <td style="width:30%;">
                                 <p>{{creative?.metadata?.uploadedAt | date:'dd MMM, yyyy'}}</p>
@@ -44,6 +44,14 @@
                             <td>
                                 <p><span *ngIf="creative.metadata.groupName">Campaign:
                                         {{capitalizeFirstLetter(creative.metadata.groupName)}}</span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-primary">View</button>
                             </td>
                         </tr>
                     </table>

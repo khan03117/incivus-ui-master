@@ -20,16 +20,16 @@ export class EventBusService {
   //     ).subscribe(action);
   // }
 
-    private emit$ = new Subject<EventData>();
-    readEvent = this.emit$.asObservable();
+  private emit$ = new Subject<EventData>();
+  readEvent = this.emit$.asObservable();
 
-    constructor() {
+  constructor() {
 
-    }
+  }
 
-    emit(event: EventData) {
-        this.emit$.next(event)
-    }
+  emit(event: EventData) {
+    this.emit$.next(event)
+  }
 
 
 
