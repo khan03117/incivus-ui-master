@@ -75,7 +75,7 @@ export class RuleService {
     return this.httpClient.post(this.apiUrl + "rule_matrix", obj, { headers: headers, withCredentials: true });
   }
   showRule(ruleId: string, creative: string) {
-    return this.httpClient.get(this.apiUrl + "rule_matrix?customRuleID=" + ruleId + "&creativeType" + creative, { headers: headers, withCredentials: true });
+    return this.httpClient.get(this.apiUrl + "rule_matrix?customRuleID=" + ruleId + "&creativeType=" + creative, { headers: headers, withCredentials: true });
   }
 
 }

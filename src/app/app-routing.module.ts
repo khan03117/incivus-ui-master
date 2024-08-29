@@ -234,7 +234,7 @@ const routes: Routes = [
         component: RuleCreateComponent,
       },
       {
-        path: "show/:id/:type",
+        path: "show/:ruleId/:creativeType",
         component: RuleMatrixShowComponent,
       },
     ],

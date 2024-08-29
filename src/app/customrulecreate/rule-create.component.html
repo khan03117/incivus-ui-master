@@ -37,9 +37,9 @@
                                         <nz-form-control>
                                             <nz-input-group nzSearch nzSize="large">
                                                 <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
-                                                    [nzShowArrow]="true" [nzOptionOverflowSize]="8" nzMode="multiple"
-                                                    nzPlaceHolder="Select Brand" [(ngModel)]="selectedBrands"
-                                                    name="brnds" #brnds="ngModel" required>
+                                                    [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                    nzMode="multiple" nzPlaceHolder="Select Brand"
+                                                    [(ngModel)]="selectedBrands" name="brnds" #brnds="ngModel" required>
                                                     <ng-container *ngIf="brands && brands.length > 0">
                                                         <nz-option *ngFor="let brand of brands" [nzValue]="brand.id"
                                                             [nzLabel]="brand.title">
@@ -63,9 +63,10 @@
                                         <nz-form-control>
                                             <nz-input-group nzSearch nzSize="large">
                                                 <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
-                                                    [nzShowArrow]="true" [nzOptionOverflowSize]="8" nzMode="multiple"
-                                                    nzPlaceHolder="Select Channels" [(ngModel)]="selectedChannels"
-                                                    name="channels" #channels="ngModel" required>
+                                                    [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                    nzMode="multiple" nzPlaceHolder="Select Channels"
+                                                    [(ngModel)]="selectedChannels" name="channels" #channels="ngModel"
+                                                    required>
                                                     <ng-container *ngIf="channelsList && channelsList.length > 0">
                                                         <nz-option *ngFor="let channel of channelsList"
                                                             [nzValue]="channel.id" [nzLabel]="channel.title">
