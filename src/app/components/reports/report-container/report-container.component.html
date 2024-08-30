@@ -51,7 +51,15 @@
 
                             </td>
                             <td>
-                                <button class="btn btn-primary">View</button>
+                                <div class="w-100 position-relative">
+                                    <button style="width: 20px;height:20px;line-height: 20px;"
+                                        class="btn-primary rounded-circle">i</button>
+                                    <div
+                                        class="relative position-absolute bg-white text-wrap  d-inline-block p-4 bg white rounded-3">
+                                        Custom rule {{ruleResponse.rule.name}} for matrix applied for the report. <a
+                                            href="">View rule</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -342,4 +350,10 @@
             </nz-card>
         </div>
     </div>
+
+    <div class="modal">
+
+    </div>
+
+
 </div>
