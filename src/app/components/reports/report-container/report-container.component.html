@@ -52,17 +52,97 @@
                             </td>
                             <td>
                                 <div class="w-100 position-relative">
-                                    <button style="width: 20px;height:20px;line-height: 20px;"
-                                        class="btn-primary rounded-circle">i</button>
+                                    <button class="btn-primary rounded-circle infoBtnReport">i</button>
                                     <div
-                                        class="relative position-absolute bg-white text-wrap  d-inline-block p-4 bg white rounded-3">
-                                        Custom rule {{ruleResponse.rule.name}} for matrix applied for the report. <a
-                                            href="">View rule</a>
+                                        class="relative  position-absolute bg-white text-wrap infoReportBox ml-auto right-0  left-100 d-inline-block p-2 bg white">
+                                        Custom rule {{ruleResponse.rule.name}} for matrix applied for the report.
+                                        <button class="btn p-0 text-primary" (click)="handleOpen()">View rule</button>
                                     </div>
+
                                 </div>
                             </td>
                         </tr>
                     </table>
+                    <div *ngIf="open" class="customModal">
+                        <div class="modalbody p-4">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12 mb-4">
+                                        <p>Matrix Rule Summary</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <ul class="position-sticky top-0 p-0 m-0 rangeReportSidebar">
+                                            <li [ngClass]="{active: viewResp === 'range'}"
+                                                (click)="handleRangeType('range')">
+                                                Ranges
+                                            </li>
+                                            <li [ngClass]="{active: viewResp === 'weight'}"
+                                                (click)="handleRangeType('weight')">
+                                                Weights
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-9 rangeViewCard">
+                                        <div *ngIf="viewResp == 'range'" class="w-100 ">
+                                            <div *ngFor="let metric of ruleResponse.data.customRuleRangesResponse">
+                                                <div class="card border-0 p-0 m-0 mb-4">
+                                                    <div class="card-header p-0 m-0 border-0">
+                                                        <h5>{{ metric.name }}</h5>
+                                                    </div>
+                                                    <div>
+                                                        <div class="card-body p-0 m-0">
+
+
+                                                            <div *ngFor="let range of metric.customRuleRangeScores">
+                                                                <p class="rangeValues">
+                                                                    {{ range.name }}: {{ range.from }}
+                                                                    {{range.condition}} {{
+                                                                    range.to }}
+                                                                </p>
+                                                            </div>
+
+                                                            <!-- Weights (similarly map weights here) -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="viewResp == 'weight'" class="w-100">
+
+                                            <div class="w-100">
+                                                <!-- Dynamically Loop through the Metric categories -->
+                                                <div *ngFor="let metricKey of getMetricKeys()"
+                                                    class="w-100 p-0 border-0 mb-4">
+                                                    <div class="w-100 p-0 m-0 mb-2 border-0" id="{{ metricKey }}">
+                                                        <h5 class="mb-0">{{ metricKey }}</h5>
+                                                    </div>
+
+                                                    <div class="w-100">
+                                                        <div class="row showWeight position-relative">
+                                                            <!-- Loop through each sub-metric for the category -->
+                                                            <div class="col-4 position-relative"
+                                                                *ngFor="let item of ruleResponse.customRuleWeightsResponse[metricKey]">
+                                                                <p>
+                                                                    {{ item.name }}
+                                                                </p>
+                                                                <p>
+                                                                    {{ item.weight }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
 
                 </div>
                 <div class="btn-container">

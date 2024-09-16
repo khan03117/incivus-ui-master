@@ -74,6 +74,8 @@ export class ReportContainerComponent {
   scoreText: string = '';
   scoreText2: string = '';
   ruleResponse: any = {};
+  viewResp: string = 'range'
+  open: boolean = false;
   breadcrumb: any = [
     {
       name: "Reports",
@@ -111,13 +113,18 @@ export class ReportContainerComponent {
       this.runTime = 0;
     }
   }
-
+  handleOpen = () => {
+    this.open = !this.open;
+  }
+  handleRangeType = (type: string) => {
+    this.viewResp = type
+  }
   ngOnInit(): void {
     this.artifactId = this.route.snapshot.params["artifactId"];
     this.ruleService.getRuleOnReport('9950e65b-9ab5-405e-bae3-1e86a236f6bb', this.isVideoReport ? 'image' : 'image').subscribe(
       (data) => {
         this.ruleResponse = data;
-        console.log(data);
+        console.log(data)
       },
       (err) => {
         console.log(err);
@@ -162,6 +169,9 @@ export class ReportContainerComponent {
         }
       }
     });
+  }
+  getMetricKeys() {
+    return Object.keys(this.ruleResponse.customRuleWeightsResponse);
   }
 
   capitalizeFirstLetter(name: string) {

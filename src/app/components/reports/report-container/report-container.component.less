@@ -227,4 +227,68 @@
             }
         }
     }
+    .infoBtnReport{
+        width: 20px !important;
+        height: 20px !important;
+        text-align: center !important;
+        line-height: 20px !important;
+        box-shadow: none;
+        position: absolute;
+        right: 0;
+        top: -20px;
+    }
+    .infoReportBox{
+        margin-left: auto !important;
+        max-width: 350px;
+        border-radius: 1rem;
+        font-size: 12px !important;
+        right: 0 !important;
+    }
+    .customModal{
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #00000038;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        max-height: 100vh;
+        overflow: hidden;
+
+       
+        .modalbody{
+            margin: 0 auto;
+            height: 100%;
+            max-height: 90vh;
+            min-height: 50vh;
+            margin-top: 4vh;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 50vw;
+            background-color: #fff;
+            border-radius: 1rem;
+        }
+    }
+    .rangeViewCard h5{
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .rangeViewCard .rangeValues{
+        font-size: 14px;
+        margin-bottom: 1.5rem;
+    }
+    .rangeReportSidebar li{
+        color: #334155;
+        font-weight: 600;
+        font-size: 15px;
+    }
+    .rangeReportSidebar li.active{
+        color: #00549A;
+    }
+    .showWeight .col-4:not(:last-child)::before{
+        content: "+";
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 }
