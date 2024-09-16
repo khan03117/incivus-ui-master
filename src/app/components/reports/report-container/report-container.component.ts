@@ -76,6 +76,7 @@ export class ReportContainerComponent {
   ruleResponse: any = {};
   viewResp: string = 'range'
   open: boolean = false;
+  infoOpen: boolean = false;
   breadcrumb: any = [
     {
       name: "Reports",
@@ -113,6 +114,9 @@ export class ReportContainerComponent {
       this.runTime = 0;
     }
   }
+  handleInfo = () => {
+    this.infoOpen = !this.infoOpen
+  }
   handleOpen = () => {
     this.open = !this.open;
     if (this.open) {
@@ -128,7 +132,7 @@ export class ReportContainerComponent {
   }
   ngOnInit(): void {
     this.artifactId = this.route.snapshot.params["artifactId"];
-    this.ruleService.getRuleOnReport('9950e65b-9ab5-405e-bae3-1e86a236f6bb', this.isVideoReport ? 'image' : 'image').subscribe(
+    this.ruleService.getRuleOnReport('9950e65b-9ab5-405e-bae3-1e86a236f6bb', this.isVideoReport ? 'video' : 'image').subscribe(
       (data) => {
         this.ruleResponse = data;
         console.log(data)
