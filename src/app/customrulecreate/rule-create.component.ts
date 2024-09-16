@@ -37,17 +37,6 @@ interface Score {
   condition: string;
 }
 
-
-
-
-interface RulesRangesDto {
-  _id: string;
-  rangeNames: string;
-  ruleRangesScores: Score[]
-
-}
-
-
 @Component({
   selector: 'app-roule-create',
   templateUrl: './rule-create.component.html',

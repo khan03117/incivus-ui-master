@@ -216,7 +216,7 @@ export class CreativeListComponent {
           MODALCOMPONENT.SHARE_CAMPAIGN
         );
       },
-      error: (err) => {},
+      error: (err) => { },
     });
   }
 
@@ -243,7 +243,9 @@ export class CreativeListComponent {
       MODALCOMPONENT.LINK_CAMPAIGN
     );
   }
-
+  openEditCampaign(i: number) {
+    this.route.navigate(['campaign', i]);
+  }
   openEditCampaignModal(campaignName: string) {
     this.dynamicModalService.setCampaignName(campaignName);
     this.dynamicModalService.createComponentModal(
@@ -298,7 +300,7 @@ export class CreativeListComponent {
           nzClosable: false,
           nzMaskClosable: false,
           nzKeyboard: false,
-          nzOnOk: () => {},
+          nzOnOk: () => { },
         });
       },
     });
@@ -354,7 +356,7 @@ export class CreativeListComponent {
             nzClosable: false,
             nzMaskClosable: false,
             nzKeyboard: false,
-            nzOnOk: () => {},
+            nzOnOk: () => { },
           });
         }
       },
@@ -366,7 +368,7 @@ export class CreativeListComponent {
           nzClosable: false,
           nzMaskClosable: false,
           nzKeyboard: false,
-          nzOnOk: () => {},
+          nzOnOk: () => { },
         });
       },
     });
@@ -396,7 +398,7 @@ export class CreativeListComponent {
           nzClosable: false,
           nzMaskClosable: false,
           nzKeyboard: false,
-          nzOnOk: () => {},
+          nzOnOk: () => { },
         });
       },
     });
@@ -427,7 +429,7 @@ export class CreativeListComponent {
           nzClosable: false,
           nzMaskClosable: false,
           nzKeyboard: false,
-          nzOnOk: () => {},
+          nzOnOk: () => { },
         });
       },
     });

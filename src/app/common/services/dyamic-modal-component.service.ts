@@ -6,10 +6,10 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { AlertModalComponent } from '../modal/alert-modal/alert-modal.component';
 
 @Injectable({
-  providedIn:"root"
+  providedIn: "root"
 })
 export class DynamicModalComponentService {
-  
+
   brandDetails: any = null;
   completeBD: any = null;
   clientId: string = '';
@@ -22,22 +22,22 @@ export class DynamicModalComponentService {
   campaign: any = {};
   private updateModalContent$ = new BehaviorSubject<any>({});
   updateModalContentInfo$ = this.updateModalContent$.asObservable();
-  
-  constructor(
-    private modal: NzModalService, 
-    private guidelineModalRef : NzModalRef, 
-    // public viewContainerRef: ViewContainerRef
-  ) {}
 
-  showAlertModal({title, description, componentRef}:any){
+  constructor(
+    private modal: NzModalService,
+    private guidelineModalRef: NzModalRef,
+    // public viewContainerRef: ViewContainerRef
+  ) { }
+
+  showAlertModal({ title, description, componentRef }: any) {
     this.createComponentModal(title, AlertModalComponent, componentRef);
   }
 
-  closeModal(){
+  closeModal() {
     this.guidelineModalRef.destroy();
   }
 
-  createComponentModal(title:string, component?:any, viewModelRef?:any, data?:any, modalClassName?:string): void {
+  createComponentModal(title: string, component?: any, viewModelRef?: any, data?: any, modalClassName?: string): void {
     console.log('modalClassName', modalClassName)
     this.guidelineModalRef = this.modal.create<UserManagementModalComponent, IModalData>({
       nzTitle: title,
@@ -48,10 +48,10 @@ export class DynamicModalComponentService {
       nzKeyboard: false,
       nzData: {
         title,
-        displayComponent:component,
+        displayComponent: component,
         data
       },
-      nzFooter:null
+      nzFooter: null
     });
     const instance = this.guidelineModalRef.getContentComponent();
     this.guidelineModalRef.afterOpen.subscribe(() => {
@@ -68,7 +68,7 @@ export class DynamicModalComponentService {
     this.updateModalContent$.next(action);
   }
 
-  public setBrandDetails(bd:any): void {
+  public setBrandDetails(bd: any): void {
     this.brandDetails = bd;
   }
 
@@ -84,24 +84,24 @@ export class DynamicModalComponentService {
     return this.completeBD;
   }
 
-  updateCompleteBrand(brandDetails: any) : void {
-    let newBD = this.completeBD.filter( (bd:any) => {
-      return bd.masterBrand.name !== brandDetails.masterBrand.name 
+  updateCompleteBrand(brandDetails: any): void {
+    let newBD = this.completeBD.filter((bd: any) => {
+      return bd.masterBrand.name !== brandDetails.masterBrand.name
     });
     newBD.push(brandDetails);
     this.completeBD = newBD;
   }
 
-  updateBrandDetailsId(master: string, product: string, id: string) : any {
-    this.completeBD.forEach( (element: any) => {
-      if( !product ) {
-        if( element.masterBrand.name === master) {
+  updateBrandDetailsId(master: string, product: string, id: string): any {
+    this.completeBD.forEach((element: any) => {
+      if (!product) {
+        if (element.masterBrand.name === master) {
           element.masterBrand.id = 'id';
         }
       } else {
-        if( element.masterBrand.name === master) {
-          element.productBrand.forEach( (pb: any) => {
-            if( pb.name === product) {
+        if (element.masterBrand.name === master) {
+          element.productBrand.forEach((pb: any) => {
+            if (pb.name === product) {
               pb.id = id;
             }
           })
@@ -120,7 +120,7 @@ export class DynamicModalComponentService {
     return this.clientId;
   }
 
-  setBrandGuideline(bg: any) : void {
+  setBrandGuideline(bg: any): void {
     this.brandGuideline = bg;
   }
 
@@ -136,11 +136,11 @@ export class DynamicModalComponentService {
     return this.clientDetails;
   }
 
-  setUserIds(userIds: any) : void {
+  setUserIds(userIds: any): void {
     this.userIds = userIds;
   }
 
-  getUserIds() : any {
+  getUserIds(): any {
     return this.userIds;
   }
 
@@ -152,19 +152,19 @@ export class DynamicModalComponentService {
     return this.sharableUserList;
   }
 
-  setCampaignName( campaignName: string ) : void {
+  setCampaignName(campaignName: string): void {
     this.campaignName = campaignName;
   }
 
-  getCampaignName() : string {
+  getCampaignName(): string {
     return this.campaignName;
   }
 
-  setCreativeMeta( creativeMeta: any ) : void {
+  setCreativeMeta(creativeMeta: any): void {
     this.creativeMeta = creativeMeta;
   }
 
-  getCreativeMeta() : any {
+  getCreativeMeta(): any {
     return this.creativeMeta;
   }
 

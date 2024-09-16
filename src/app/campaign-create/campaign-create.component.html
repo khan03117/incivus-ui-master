@@ -1,0 +1,134 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="w-100  card card-body shadow shadow-lg">
+                    <div class="w-100 text-left">
+                        <p>Fill the following information</p>
+                    </div>
+                    <div class="w-100 text-left formcapaign">
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <app-alert [message]="respMessage" [alertType]="'info'" *ngIf="respMessage"></app-alert>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="">Campaign Title</label>
+                                <input type="text" name="title" [(ngModel)]="title" id="title"
+                                    placeholder="Enter Campaign Title " class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Select Channels</label>
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <nz-input-group nzSearch nzSize="large">
+                                            <nz-select [nzMaxTagCount]="2" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                nzMode="default" nzPlaceHolder="Select Channels"
+                                                [(ngModel)]="selectedChannels" name="channels" #channels="ngModel"
+                                                required>
+                                                <ng-container *ngIf="channelsList && channelsList.length > 0">
+                                                    <nz-option *ngFor="let channel of channelsList"
+                                                        [nzValue]="channel.id" [nzLabel]="channel.title">
+                                                    </nz-option>
+                                                </ng-container>
+                                            </nz-select>
+                                            <ng-template #tagPlaceHolder let-selectedList>+ {{ selectedList.length
+                                                }}</ng-template>
+                                        </nz-input-group>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Brand</label>
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <nz-input-group nzSearch nzSize="large">
+                                            <nz-select [nzMaxTagCount]="1" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                nzMode="default" nzPlaceHolder="Select Brand"
+                                                [(ngModel)]="selectedBrands" name="brands" #channels="ngModel" required>
+                                                <ng-container *ngIf="brands && brands.length > 0">
+                                                    <nz-option *ngFor="let channel of brands" [nzValue]="channel"
+                                                        [nzLabel]="channel">
+                                                    </nz-option>
+                                                </ng-container>
+                                            </nz-select>
+                                            <ng-template #tagPlaceHolder let-selectedList>+ {{
+                                                selectedList.length}}</ng-template>
+                                        </nz-input-group>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Budget</label>
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <nz-input-group nzSearch nzSize="large">
+                                            <nz-select [nzMaxTagCount]="1" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                nzMode="default" nzPlaceHolder="Select Brand"
+                                                [(ngModel)]="selectedBuget" name="budget" #channels="ngModel" required>
+                                                <ng-container *ngIf="budgets && budgets.length > 0">
+                                                    <nz-option *ngFor="let channel of budgets" [nzValue]="channel"
+                                                        [nzLabel]="channel">
+                                                    </nz-option>
+                                                </ng-container>
+                                            </nz-select>
+                                            <ng-template #tagPlaceHolder let-selectedList>+ {{
+                                                selectedList.length}}</ng-template>
+                                        </nz-input-group>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Objectives</label>
+                                <nz-form-item>
+                                    <nz-form-control>
+                                        <nz-input-group nzSearch nzSize="large">
+                                            <nz-select [nzMaxTagCount]="1" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                                                [nzShowArrow]="true" nzSize="default" [nzOptionOverflowSize]="8"
+                                                nzMode="default" nzPlaceHolder="Select Brand"
+                                                [(ngModel)]="selectedObjective" name="objective" #channels="ngModel"
+                                                required>
+                                                <ng-container *ngIf="objectives && objectives.length > 0">
+                                                    <nz-option *ngFor="let channel of objectives" [nzValue]="channel"
+                                                        [nzLabel]="channel">
+                                                    </nz-option>
+                                                </ng-container>
+                                            </nz-select>
+                                            <ng-template #tagPlaceHolder let-selectedList>+ {{
+                                                selectedList.length}}</ng-template>
+                                        </nz-input-group>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Status</label>
+                                <div class="form-control disabled bg-light readonly">Draft</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Start Date</label>
+                                <input type="date" name="start_date" [(ngModel)]="start_date" id=""
+                                    class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">End Date</label>
+                                <input type="date" name="end_date" [(ngModel)]="end_date" id="" class="form-control">
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <label for="">Description</label>
+                                <textarea name="" id="" [(ngModel)]="description" class="form-control"
+                                    rows="4"></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <button (click)="createCampaign()" class="btn btn-info">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

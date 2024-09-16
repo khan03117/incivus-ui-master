@@ -133,6 +133,7 @@ import { RulesComponent } from './customrules/rules.component';
 import { RuleCreateComponent } from './customrulecreate/rule-create.component';
 import { ShowRuleComponent } from './show-rule/show-rule.component';
 import { RuleMatrixShowComponent } from './customrulecreate/rule-matrix-show/rule-matrix-show.component';
+import { CampaignCreateComponent } from './campaign-create/campaign-create.component';
 const fbOptions = {
   config_id: "486243237425446",
   configId: "486243237425446",
@@ -253,7 +254,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
     RulesComponent,
     RuleCreateComponent,
     ShowRuleComponent,
-    RuleMatrixShowComponent
+    RuleMatrixShowComponent,
+    CampaignCreateComponent
   ],
   imports: [
     BrowserModule,

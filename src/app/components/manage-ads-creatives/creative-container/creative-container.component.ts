@@ -39,7 +39,7 @@ export class CreativeContainerComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private storage: StorageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -135,8 +135,11 @@ export class CreativeContainerComponent {
       MODALCOMPONENT.CREATE_CAMPAIGN
     );
   }
-
+  openCreateCampaign() {
+    this.router.navigate(["campaign", "create"]);
+  }
   createCreatives() {
     this.router.navigate(["creatives", "create"]);
   }
+
 }

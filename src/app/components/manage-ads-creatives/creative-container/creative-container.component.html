@@ -9,6 +9,9 @@
                 <button *nzSpaceItem nz-button (click)="openCreateCampaignModal()">
                     Create campaign
                 </button>
+                <button *nzSpaceItem nz-button (click)="openCreateCampaign()">
+                    Create campaign
+                </button>
             </ng-container>
             <ng-container *ngIf="!isIncAdmin">
                 <button class="primary" *nzSpaceItem nz-button (click)="createCreatives()">
@@ -46,15 +49,11 @@
             <nz-form-item class="creativesFilter">
                 <nz-form-control>
                     <nz-input-group nzSearch nzSize="large">
-                        <nz-select
-                            nzPlaceHolder="Select client"
-                            nzDropdownClassName="custom-check-dropdown"
-                            [ngModel] = "clientId"
-                            nzShowSearch="true"
-                            id="clientSelect"
-                            (ngModelChange)="loadClientCreatives($event)"
-                        >
-                            <nz-option *ngFor="let client of clientList" [nzValue]="client.id" [nzLabel]="client.companyName"></nz-option>
+                        <nz-select nzPlaceHolder="Select client" nzDropdownClassName="custom-check-dropdown"
+                            [ngModel]="clientId" nzShowSearch="true" id="clientSelect"
+                            (ngModelChange)="loadClientCreatives($event)">
+                            <nz-option *ngFor="let client of clientList" [nzValue]="client.id"
+                                [nzLabel]="client.companyName"></nz-option>
 
                         </nz-select>
                     </nz-input-group>
@@ -66,17 +65,12 @@
             <nz-form-item class="creativesFilter">
                 <nz-form-control>
                     <nz-input-group nzSearch nzSize="large">
-                        <nz-select
-                            nzPlaceHolder="Creative type"
-                            nzDropdownClassName="custom-check-dropdown"
-                            [ngModel] = "filterList"
-                            nzShowSearch="false"
-                            id="creativeType"
-                            (ngModelChange)="filterCreatives($event)"
-                        >
+                        <nz-select nzPlaceHolder="Creative type" nzDropdownClassName="custom-check-dropdown"
+                            [ngModel]="filterList" nzShowSearch="false" id="creativeType"
+                            (ngModelChange)="filterCreatives($event)">
                             <nz-option nzValue="all" nzLabel="All"></nz-option>
-                            <nz-option nzValue="image" nzLabel="Display Ad" ></nz-option>
-                            <nz-option nzValue="video" nzLabel="Video Ad" ></nz-option>
+                            <nz-option nzValue="image" nzLabel="Display Ad"></nz-option>
+                            <nz-option nzValue="video" nzLabel="Video Ad"></nz-option>
                         </nz-select>
                     </nz-input-group>
                 </nz-form-control>
@@ -85,5 +79,6 @@
     </nz-page-header-extra>
 </nz-page-header>
 <nz-content>
-    <app-creative-list [creativeData]="creatives" [flightType]="flightType" [filterList]="filterList"></app-creative-list>
+    <app-creative-list [creativeData]="creatives" [flightType]="flightType"
+        [filterList]="filterList"></app-creative-list>
 </nz-content>

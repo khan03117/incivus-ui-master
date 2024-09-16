@@ -1,9 +1,6 @@
 <div class="ant-layout-content-list">
     <ng-container *ngIf="finalCreativeData.length === 0">
-        <nz-empty
-            nzNotFoundImage="assets/no-creatives.svg"
-            [nzNotFoundContent]="contentTpl"
-        >
+        <nz-empty nzNotFoundImage="assets/no-creatives.svg" [nzNotFoundContent]="contentTpl">
             <ng-template #contentTpl>
                 <h4>
                     No creatives yet!
@@ -12,119 +9,137 @@
             </ng-template>
         </nz-empty>
     </ng-container>
-<ng-container *ngIf="!isLoading && !finalLoad">
-    <ng-container *ngIf="campaignData.length === 0">
-        <ng-container *ngIf="finalCreativeData.length > 0">
-            <nz-list nzGrid>
-                <div nz-row [nzGutter]="16">
-                    <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="6" [nzXs]="6" *ngFor="let creativeItem of finalCreativeData">
-                        <nz-list-item>
-                            <nz-card class="all-creatives" [nzCover]="coverTemplate" [nzActions]="[actionIcon, actionEllipsis]" (click)="openCreative(creativeItem['metadata']['id'])">
+    <ng-container *ngIf="!isLoading && !finalLoad">
+        <ng-container *ngIf="campaignData.length === 0">
+            <ng-container *ngIf="finalCreativeData.length > 0">
+                <nz-list nzGrid>
+                    <div nz-row [nzGutter]="16">
+                        <div nz-col [nzXXl]="6" [nzXl]="6" [nzLg]="6" [nzMd]="6" [nzSm]="6" [nzXs]="6"
+                            *ngFor="let creativeItem of finalCreativeData">
+                            <nz-list-item>
+                                <nz-card class="all-creatives" [nzCover]="coverTemplate"
+                                    [nzActions]="[actionIcon, actionEllipsis]"
+                                    (click)="openCreative(creativeItem['metadata']['id'])">
+                                    <nz-card-meta></nz-card-meta>
+                                </nz-card>
+                                <ng-template #coverTemplate>
+                                    <ng-container *ngIf="creativeItem['metadata']['artifactType'] === 'video'">
+                                        <img alt="example" *ngIf="creativeItem['metadata']['thumbnail']"
+                                            [src]="creativeItem['metadata']['thumbnail']" />
+                                        <video width="100%" playsinline *ngIf="!creativeItem['metadata']['thumbnail']">
+                                            <source src="{{creativeItem['url']}}" type="video/mp4">
+                                        </video>
+                                    </ng-container>
+                                    <ng-container *ngIf="creativeItem['metadata']['artifactType'] === 'image'">
+                                        <img alt="example" [src]="creativeItem['url']" />
+                                    </ng-container>
+                                </ng-template>
+                                <ng-template #actionIcon>
+                                    <img *ngIf="creativeItem['metadata']['artifactType'] === 'video'" nz-icon
+                                        src="assets/icons/creative_video.svg">
+                                    <img *ngIf="creativeItem['metadata']['artifactType'] === 'image'" nz-icon
+                                        src="assets/icons/creative_image.svg">
+                                </ng-template>
+                                <ng-template #actionEllipsis>
+                                    <span *ngIf="creativeItem['metadata']['status'] === 100" nz-icon
+                                        nzType="check-circle" nzTheme="fill"></span>
+                                    <span
+                                        *ngIf="creativeItem['metadata']['status'] === 10 || creativeItem['metadata']['status'] === 0"
+                                        nz-icon nzType="exclamation-circle" nzTheme="fill"></span>
+                                    <span *ngIf="creativeItem['metadata']['status'] === 90 && isIncAdmin" nz-icon
+                                        nzType="check-circle" nzTheme="fill"></span>
+                                    <span *ngIf="creativeItem['metadata']['status'] === 90 && !isIncAdmin" nz-icon
+                                        nzType="exclamation-circle" nzTheme="fill"></span>
+                                    <span *ngIf="creativeItem['metadata']['status'] === 50" nz-icon nzType="warning"
+                                        nzTheme="outline"></span>
+                                    <app-badge *ngIf="creativeItem['metadata']['status'] !== 90"
+                                        [status]="creativeItem['metadata']['status']"
+                                        [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
+                                    <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && isIncAdmin"
+                                        status="100" [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
+                                    <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && !isIncAdmin"
+                                        status="" label=""></app-badge>
+                                    <button nz-button nzNoAnimation nz-tooltip class="action-trigger"
+                                        [nzTooltipTitle]="menu" nzTooltipOverlayClassName="tableTooltipOverlay"
+                                        [nzTooltipPlacement]="['bottomRight', 'topRight']"
+                                        *ngIf="!isIncAdmin || flightType == 'pre-flight' || showReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType']); else fakeMenu">
+                                        <span nz-icon nzType="more" nzTheme="outline"
+                                            style="font-size: 0.87rem; vertical-align: top;"></span>
+                                    </button>
+                                    <ng-template #fakeMenu>
+                                        <div></div>
+                                    </ng-template>
+                                </ng-template>
+
+                                <ng-template #menu>
+                                    <ul nz-menu>
+                                        <li nz-menu-item (click)="openLinkCampaignModal(creativeItem['metadata'])"
+                                            *ngIf="!isIncAdmin">
+                                            <span nz-icon><img nz-icon src="assets/icons/link_to_campaign.svg"></span>
+                                            <span>Link to campaign</span>
+                                        </li>
+                                        <li nz-menu-item
+                                            *ngIf="showReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])"
+                                            (click)="viewReport(creativeItem['metadata']['id'])">
+                                            <span nz-icon><img nz-icon src="assets/icons/report.svg"></span>
+                                            <span>View report</span>
+                                        </li>
+                                        <li nz-menu-item *ngIf="isIncAdmin && flightType == 'pre-flight'"
+                                            (click)="delete(creativeItem['metadata']['id'])">
+                                            <img nz-icon src="assets/icons/delete.svg">
+                                            <span>Delete</span>
+                                        </li>
+                                        <!-- <li nz-menu-item  *ngIf="showDownloadReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])">
+                                        <span nz-icon><img nz-icon src="assets/icons/download_report.svg"></span>
+                                        <span>Download report</span>
+                                    </li> -->
+                                        <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 0 && isAnalyze"
+                                            (click)="analyze(creativeItem['metadata']['id'])">
+                                            <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
+                                            <span>Run analysis</span>
+                                        </li>
+                                        <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 50 && isAnalyze"
+                                            (click)="reanalyze(creativeItem['metadata']['id'])">
+                                            <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
+                                            <span>Retry analysis</span>
+                                        </li>
+                                        <!-- <li nz-menu-item>
+                                        <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                                        <span>Edit report</span>
+                                    </li> -->
+                                        <!-- <li nz-menu-item>
+                                        <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
+                                        <span>Delete</span>
+                                    </li> -->
+                                    </ul>
+                                </ng-template>
+                            </nz-list-item>
+                        </div>
+                    </div>
+                </nz-list>
+            </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="campaignData.length > 0">
+            <div class="carousel-container carousel-creatives">
+                <owl-carousel-o [options]="creativeOptions" #creativeCarousel>
+                    <ng-container *ngFor="let creativeItem of finalCreativeData">
+                        <ng-template carouselSlide>
+                            <nz-card class="carousel-card" [nzCover]="coverTemplate"
+                                [nzActions]="[actionIcon, actionEllipsis]"
+                                (click)="openCreative(creativeItem['metadata']['id'])">
                                 <nz-card-meta></nz-card-meta>
                             </nz-card>
                             <ng-template #coverTemplate>
                                 <ng-container *ngIf="creativeItem['metadata']['artifactType'] === 'video'">
-                                    <img alt="example" *ngIf="creativeItem['metadata']['thumbnail']" [src]="creativeItem['metadata']['thumbnail']" />
-                                    <video width="100%" playsinline
-                                        *ngIf="!creativeItem['metadata']['thumbnail']">
+                                    <img alt="example" *ngIf="creativeItem['metadata']['thumbnail']"
+                                        [src]="creativeItem['metadata']['thumbnail']" />
+                                    <video width="100%" playsinline *ngIf="!creativeItem['metadata']['thumbnail']">
                                         <source src="{{creativeItem['url']}}" type="video/mp4">
                                     </video>
                                 </ng-container>
                                 <ng-container *ngIf="creativeItem['metadata']['artifactType'] === 'image'">
-                                    <img alt="example" [src]="creativeItem['url']" />
-                                </ng-container>
-                            </ng-template>
-                            <ng-template #actionIcon>
-                                <img *ngIf="creativeItem['metadata']['artifactType'] === 'video'" nz-icon src="assets/icons/creative_video.svg">
-                                <img *ngIf="creativeItem['metadata']['artifactType'] === 'image'" nz-icon src="assets/icons/creative_image.svg">
-                            </ng-template>
-                            <ng-template #actionEllipsis>
-                                <span *ngIf="creativeItem['metadata']['status'] === 100" nz-icon nzType="check-circle" nzTheme="fill"></span>
-                                <span *ngIf="creativeItem['metadata']['status'] === 10 || creativeItem['metadata']['status'] === 0" nz-icon nzType="exclamation-circle" nzTheme="fill"></span>
-                                <span *ngIf="creativeItem['metadata']['status'] === 90 && isIncAdmin" nz-icon nzType="check-circle" nzTheme="fill"></span>
-                                <span *ngIf="creativeItem['metadata']['status'] === 90 && !isIncAdmin" nz-icon nzType="exclamation-circle" nzTheme="fill"></span>
-                                <span *ngIf="creativeItem['metadata']['status'] === 50" nz-icon nzType="warning" nzTheme="outline"></span>
-                                <app-badge *ngIf="creativeItem['metadata']['status'] !== 90" [status]="creativeItem['metadata']['status']" [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
-                                <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && isIncAdmin" status="100" [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
-                                <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && !isIncAdmin" status="" label=""></app-badge>
-                                <button
-                                    nz-button
-                                    nzNoAnimation
-                                    nz-tooltip
-                                    class="action-trigger"
-                                    [nzTooltipTitle]="menu"
-                                    nzTooltipOverlayClassName="tableTooltipOverlay"
-                                    [nzTooltipPlacement]="['bottomRight', 'topRight']"
-                                    *ngIf="!isIncAdmin || flightType == 'pre-flight' || showReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType']); else fakeMenu"
-                                >
-                                    <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top;"></span>
-                                </button>
-                                <ng-template #fakeMenu>
-                                    <div></div>
-                                </ng-template>
-                            </ng-template>
-                            
-                            <ng-template #menu>
-                                <ul nz-menu>
-                                    <li nz-menu-item (click)="openLinkCampaignModal(creativeItem['metadata'])" *ngIf="!isIncAdmin">
-                                        <span nz-icon><img nz-icon src="assets/icons/link_to_campaign.svg"></span>
-                                        <span>Link to campaign</span>
-                                    </li>
-                                    <li nz-menu-item *ngIf="showReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])" (click)="viewReport(creativeItem['metadata']['id'])">
-                                        <span nz-icon><img nz-icon src="assets/icons/report.svg"></span>
-                                        <span>View report</span>
-                                    </li>
-                                    <li nz-menu-item *ngIf="isIncAdmin && flightType == 'pre-flight'" (click)="delete(creativeItem['metadata']['id'])">
-                                        <img nz-icon src="assets/icons/delete.svg">
-                                        <span>Delete</span>
-                                    </li>
-                                    <!-- <li nz-menu-item  *ngIf="showDownloadReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])">
-                                        <span nz-icon><img nz-icon src="assets/icons/download_report.svg"></span>
-                                        <span>Download report</span>
-                                    </li> -->
-                                    <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 0 && isAnalyze" (click)="analyze(creativeItem['metadata']['id'])">
-                                        <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
-                                        <span>Run analysis</span>
-                                    </li>
-                                    <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 50 && isAnalyze" (click)="reanalyze(creativeItem['metadata']['id'])">
-                                        <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
-                                        <span>Retry analysis</span>
-                                    </li>
-                                    <!-- <li nz-menu-item>
-                                        <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
-                                        <span>Edit report</span>
-                                    </li> -->
-                                    <!-- <li nz-menu-item>
-                                        <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
-                                        <span>Delete</span>
-                                    </li> -->
-                                </ul>
-                            </ng-template>
-                        </nz-list-item>
-                    </div>
-                </div>
-            </nz-list>
-        </ng-container>
-    </ng-container>
 
-    <ng-container *ngIf="campaignData.length > 0">
-        <div class="carousel-container carousel-creatives">
-            <owl-carousel-o [options]="creativeOptions" #creativeCarousel>
-                <ng-container *ngFor="let creativeItem of finalCreativeData">
-                    <ng-template carouselSlide>
-                        <nz-card class="carousel-card" [nzCover]="coverTemplate" [nzActions]="[actionIcon, actionEllipsis]" (click)="openCreative(creativeItem['metadata']['id'])">
-                            <nz-card-meta></nz-card-meta>
-                        </nz-card>
-                        <ng-template #coverTemplate>
-                                <ng-container *ngIf="creativeItem['metadata']['artifactType'] === 'video'">
-                                    <img alt="example" *ngIf="creativeItem['metadata']['thumbnail']" [src]="creativeItem['metadata']['thumbnail']" />
-                                    <video width="100%" playsinline
-                                        *ngIf="!creativeItem['metadata']['thumbnail']">
-                                        <source src="{{creativeItem['url']}}" type="video/mp4">
-                                    </video>
-                                </ng-container>
-                                <ng-container *ngIf="creativeItem['metadata']['artifactType'] === 'image'">
-                                    
                                     <div class="image-grid-cover">
                                         <img alt="creativeItem['metadata']['title']" [src]="creativeItem['url']" />
                                         <!-- nz-popover [nzPopoverContent]="contentTemplate" nzPopoverPlacement="bottom"/> -->
@@ -133,134 +148,152 @@
                                           </ng-template> -->
                                     </div>
                                 </ng-container>
-                        </ng-template>
-                        <ng-template #actionIcon>
-                            <img *ngIf="creativeItem['metadata']['artifactType'] === 'video'" nz-icon src="assets/icons/creative_video.svg">
-                            <img *ngIf="creativeItem['metadata']['artifactType'] === 'image'" nz-icon src="assets/icons/creative_image.svg">
-                        </ng-template>
-                        <ng-template #actionEllipsis>
-                            <span *ngIf="creativeItem['metadata']['status'] === 100" nz-icon nzType="check-circle" nzTheme="fill"></span>
-                            <span *ngIf="creativeItem['metadata']['status'] === 90 || creativeItem['metadata']['status'] === 10 || creativeItem['metadata']['status'] === 0" nz-icon nzType="exclamation-circle" nzTheme="fill"></span>
-                            <span *ngIf="creativeItem['metadata']['status'] === 50" nz-icon nzType="warning" nzTheme="outline"></span>
-                            <app-badge *ngIf="creativeItem['metadata']['status'] !== 90" [status]="creativeItem['metadata']['status']" [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
-                            <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && isIncAdmin" status="100" [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
-                            <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && !isIncAdmin" status="" label=""></app-badge>
-                            <button
-                                nz-button
-                                nzNoAnimation
-                                nz-tooltip
-                                class="action-trigger"
-                                [nzTooltipTitle]="menu"
-                                nzTooltipOverlayClassName="tableTooltipOverlay"
-                                [nzTooltipPlacement]="['bottomRight', 'topRight']"
-                            >
-                                <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top;"></span>
-                            </button>
-                        </ng-template>
-                        
-                        <ng-template #menu>
-                            <ul nz-menu>
-                                <li nz-menu-item (click)="openLinkCampaignModal(creativeItem['metadata'])" *ngIf="!isIncAdmin">
-                                    <span nz-icon><img nz-icon src="assets/icons/link_to_campaign.svg"></span>
-                                    <span>Link to campaign</span>
-                                </li>
-                                <li nz-menu-item *ngIf="showReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])" (click)="viewReport(creativeItem['metadata']['id'])">
-                                    <span nz-icon><img nz-icon src="assets/icons/report.svg"></span>
-                                    <span>View report</span>
-                                </li>
-                                <!-- <li nz-menu-item  *ngIf="showDownloadReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])">
+                            </ng-template>
+                            <ng-template #actionIcon>
+                                <img *ngIf="creativeItem['metadata']['artifactType'] === 'video'" nz-icon
+                                    src="assets/icons/creative_video.svg">
+                                <img *ngIf="creativeItem['metadata']['artifactType'] === 'image'" nz-icon
+                                    src="assets/icons/creative_image.svg">
+                            </ng-template>
+                            <ng-template #actionEllipsis>
+                                <span *ngIf="creativeItem['metadata']['status'] === 100" nz-icon nzType="check-circle"
+                                    nzTheme="fill"></span>
+                                <span
+                                    *ngIf="creativeItem['metadata']['status'] === 90 || creativeItem['metadata']['status'] === 10 || creativeItem['metadata']['status'] === 0"
+                                    nz-icon nzType="exclamation-circle" nzTheme="fill"></span>
+                                <span *ngIf="creativeItem['metadata']['status'] === 50" nz-icon nzType="warning"
+                                    nzTheme="outline"></span>
+                                <app-badge *ngIf="creativeItem['metadata']['status'] !== 90"
+                                    [status]="creativeItem['metadata']['status']"
+                                    [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
+                                <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && isIncAdmin" status="100"
+                                    [label]="getCes(creativeItem['metadata']['ces'])"></app-badge>
+                                <app-badge *ngIf="creativeItem['metadata']['status'] === 90 && !isIncAdmin" status=""
+                                    label=""></app-badge>
+                                <button nz-button nzNoAnimation nz-tooltip class="action-trigger"
+                                    [nzTooltipTitle]="menu" nzTooltipOverlayClassName="tableTooltipOverlay"
+                                    [nzTooltipPlacement]="['bottomRight', 'topRight']">
+                                    <span nz-icon nzType="more" nzTheme="outline"
+                                        style="font-size: 0.87rem; vertical-align: top;"></span>
+                                </button>
+                            </ng-template>
+
+                            <ng-template #menu>
+                                <ul nz-menu>
+                                    <li nz-menu-item (click)="openLinkCampaignModal(creativeItem['metadata'])"
+                                        *ngIf="!isIncAdmin">
+                                        <span nz-icon><img nz-icon src="assets/icons/link_to_campaign.svg"></span>
+                                        <span>Link to campaign</span>
+                                    </li>
+                                    <li nz-menu-item
+                                        *ngIf="showReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])"
+                                        (click)="viewReport(creativeItem['metadata']['id'])">
+                                        <span nz-icon><img nz-icon src="assets/icons/report.svg"></span>
+                                        <span>View report</span>
+                                    </li>
+                                    <!-- <li nz-menu-item  *ngIf="showDownloadReport(creativeItem['metadata']['status'], creativeItem['metadata']['artifactType'])">
                                     <span nz-icon><img nz-icon src="assets/icons/download_report.svg"></span>
                                     <span>Download report</span>
                                 </li> -->
-                                <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 0 && isAnalyze" (click)="analyze(creativeItem['metadata']['id'])">
-                                    <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
-                                    <span>Run analysis</span>
-                                </li>
-                                <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 50 && isAnalyze" (click)="reanalyze(creativeItem['metadata']['id'])">
-                                    <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
-                                    <span>Retry analysis</span>
-                                </li>
-                                <!-- <li nz-menu-item>
+                                    <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 0 && isAnalyze"
+                                        (click)="analyze(creativeItem['metadata']['id'])">
+                                        <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
+                                        <span>Run analysis</span>
+                                    </li>
+                                    <li nz-menu-item *ngIf="creativeItem['metadata']['status'] === 50 && isAnalyze"
+                                        (click)="reanalyze(creativeItem['metadata']['id'])">
+                                        <span nz-icon><img nz-icon src="assets/icons/run_analysis.svg"></span>
+                                        <span>Retry analysis</span>
+                                    </li>
+                                    <!-- <li nz-menu-item>
                                     <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
                                     <span>Edit report</span>
                                 </li> -->
-                                <!-- <li nz-menu-item>
+                                    <!-- <li nz-menu-item>
                                     <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
                                     <span>Delete</span>
                                 </li> -->
-                            </ul>
+                                </ul>
+                            </ng-template>
                         </ng-template>
-                    </ng-template>
-                </ng-container>
-            </owl-carousel-o>
-        </div>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
 
-        <div class="carousel-container">
-            <div class="title">Campaigns</div>
-            <owl-carousel-o [options]="campaignOptions" #campaignCarousel>
-                <ng-container *ngFor="let slide of campaignData">
-                    <ng-template carouselSlide>
-                        <div class="dropdown">
-                            <div class="userInfo" nz-dropdown [nzDropdownMenu]="userInfo">
-                                <nz-card [nzCover]="coverTemplate" class="campaignCard" (click)="gotoCampaign(slide)">        
-                                    <ng-container [ngTemplateOutlet]="actionEllipsis">
-                                            <nz-card-meta class="campaignTitle" nzTitle="{{slide.campaignName | titlecase}}" nzDescription="{{slide.campaignCount}} file(s)"></nz-card-meta>
-                                    </ng-container>
-                                </nz-card>
+            <div class="carousel-container">
+                <div class="title">Campaigns</div>
+                <owl-carousel-o [options]="campaignOptions" #campaignCarousel>
+                    <ng-container *ngFor="let slide of campaignData;let i = index">
+                        <ng-template carouselSlide>
+                            <div class="dropdown">
+                                <div class="userInfo" nz-dropdown [nzDropdownMenu]="userInfo">
+                                    <nz-card [nzCover]="coverTemplate" class="campaignCard"
+                                        (click)="gotoCampaign(slide)">
+                                        <ng-container [ngTemplateOutlet]="actionEllipsis">
+                                            <nz-card-meta class="campaignTitle"
+                                                nzTitle="{{slide.campaignName | titlecase}}"
+                                                nzDescription="{{slide.campaignCount}} file(s)"></nz-card-meta>
+                                        </ng-container>
+                                    </nz-card>
+                                </div>
+                                <nz-dropdown-menu #userInfo="nzDropdownMenu">
+                                    <ul nz-menu class="userProfile"
+                                        style="width:10rem; padding: 0.2rem; font-size: 1rem;  -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto ;hyphens :auto; ">
+                                        <li nz-menu-item style="cursor: default;">
+                                            <div class="user-profile">
+                                                <div class="user-title">
+                                                    <p style="font-size: 0.83rem; line-height: 2;">{{slide.campaignName
+                                                        | titlecase}}</p>
+                                                </div>
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nz-dropdown-menu>
                             </div>
-                            <nz-dropdown-menu #userInfo="nzDropdownMenu">
-                                <ul nz-menu class="userProfile" style="width:10rem; padding: 0.2rem; font-size: 1rem;  -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto ;hyphens :auto; ">
-                                    <li nz-menu-item style="cursor: default;">
-                                        <div class="user-profile">
-                                          <div class="user-title" >
-                                            <p style="font-size: 0.83rem; line-height: 2;">{{slide.campaignName | titlecase}}</p>
-                                          </div>
-                                         
-                                        </div>
+                            <ng-template #coverTemplate>
+                                <img alt="example" src="assets/icons/campaign-phone.svg" />
+                            </ng-template>
+                            <ng-template #actionEllipsis>
+                                <button *ngIf="slide.cmpType==='user'" nz-button nzNoAnimation nz-tooltip
+                                    class="action-trigger" [nzTooltipTitle]="menu"
+                                    nzTooltipOverlayClassName="tableTooltipOverlay"
+                                    [nzTooltipPlacement]="['bottomRight', 'topRight']">
+                                    <span nz-icon nzType="more" nzTheme="outline"
+                                        style="font-size: 0.87rem; vertical-align: top;"></span>
+                                </button>
+                            </ng-template>
+
+                            <ng-template #menu>
+                                <ul nz-menu>
+                                    <li nz-menu-item *ngIf="slide.campaignCount > 0 && slide.cmpType === 'user'"
+                                        (click)="openShareCampaignModal(slide)">
+                                        <span nz-icon><img nz-icon src="assets/icons/share-campaign.svg"></span>
+                                        <span>Share campaign</span>
+                                    </li>
+                                    <li nz-menu-item *ngIf="slide.cmpType === 'user'"
+                                        (click)="openEditCampaignModal(slide.campaignName)">
+                                        <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                                        <span>Edit campaign</span>
+                                    </li>
+                                    <li nz-menu-item *ngIf="slide.cmpType === 'user'" (click)="openEditCampaign(i)">
+                                        <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
+                                        <span>Edit campaign new</span>
+                                    </li>
+                                    <li nz-menu-item *ngIf="slide.campaignCount === 0"
+                                        (click)="deleteCampaign(slide.campaignName)">
+                                        <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
+                                        <span>Delete</span>
                                     </li>
                                 </ul>
-                            </nz-dropdown-menu>
-                        </div>
-                        <ng-template #coverTemplate>
-                            <img alt="example" src="assets/icons/campaign-phone.svg" />
+                            </ng-template>
+
+
                         </ng-template>
-                        <ng-template #actionEllipsis>
-                            <button *ngIf="slide.cmpType==='user'"
-                                nz-button
-                                nzNoAnimation
-                                nz-tooltip
-                                class="action-trigger"
-                                [nzTooltipTitle]="menu"
-                                nzTooltipOverlayClassName="tableTooltipOverlay"
-                                [nzTooltipPlacement]="['bottomRight', 'topRight']"
-                            >
-                                <span nz-icon nzType="more" nzTheme="outline" style="font-size: 0.87rem; vertical-align: top;"></span>
-                            </button>
-                        </ng-template>
-                        
-                        <ng-template #menu>
-                            <ul nz-menu>
-                                <li nz-menu-item *ngIf="slide.campaignCount > 0 && slide.cmpType === 'user'" (click)="openShareCampaignModal(slide)">
-                                    <span nz-icon><img nz-icon src="assets/icons/share-campaign.svg"></span>
-                                    <span>Share campaign</span>
-                                </li>
-                                <li nz-menu-item *ngIf="slide.cmpType === 'user'" (click)="openEditCampaignModal(slide.campaignName)">
-                                    <span nz-icon><img nz-icon src="assets/icons/edit-icon.svg"></span>
-                                    <span>Edit campaign</span>
-                                </li>
-                                <li nz-menu-item *ngIf="slide.campaignCount === 0" (click)="deleteCampaign(slide.campaignName)">
-                                    <span nz-icon nzType="delete" nzTheme="fill" class="delete-icon"></span>
-                                    <span>Delete</span>
-                                </li>
-                            </ul>
-                        </ng-template>
-                       
-                        
-                    </ng-template>
-                </ng-container>
-            </owl-carousel-o>
-        </div>
-        
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+
+        </ng-container>
     </ng-container>
-</ng-container>
 </div>

@@ -43,6 +43,7 @@ import { MediaAccountListComponent } from "./components/media-channels/media-lis
 import { RulesComponent } from './customrules/rules.component';
 import { RuleCreateComponent } from './customrulecreate/rule-create.component';
 import { RuleMatrixShowComponent } from './customrulecreate/rule-matrix-show/rule-matrix-show.component';
+import { CampaignCreateComponent } from './campaign-create/campaign-create.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,14 @@ const routes: Routes = [
         path: ":brand/:campaignName",
         component: CampaignDetailsComponent,
       },
+      {
+        path: "create",
+        component: CampaignCreateComponent
+      },
+      {
+        path: ":id",
+        component: CampaignCreateComponent
+      }
     ],
   },
   {
