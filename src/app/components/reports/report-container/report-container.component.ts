@@ -115,6 +115,13 @@ export class ReportContainerComponent {
   }
   handleOpen = () => {
     this.open = !this.open;
+    if (this.open) {
+      // When modal is open, prevent background scrolling
+      document.body.style.overflow = 'hidden';
+    } else {
+      // When modal is closed, allow background scrolling
+      document.body.style.overflow = '';
+    }
   }
   handleRangeType = (type: string) => {
     this.viewResp = type
